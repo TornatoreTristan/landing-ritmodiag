@@ -1,0 +1,18 @@
+---
+import Layout from '../layouts/Layout.astro';
+import villes from '../data/villes.json';
+export async function getStaticPaths() {
+  return villes.map((f) => ({
+    params: { ville: f.slug },
+    props: { data: f },
+  }));
+}
+
+const { data } = Astro.props;
+---
+
+<Layout title={data.seo_titre}>
+	<section>
+		<h1>Votre DPE à {data.city_name}</h1>
+	</section>
+</Layout>

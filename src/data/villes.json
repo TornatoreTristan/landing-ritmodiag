@@ -1,0 +1,37 @@
+[
+  {
+    "slug": "caen",
+    "city_name": "Caen",
+    "id_crm": "",
+    "telephone": "02 31 15 64 88",
+    "email_contact": "contact@ritmodiag.com",
+    "seo_titre": "DPE et Diagnostics Immobiliers à Caen (14) - RITMODiag",
+    "seo_desc": "Votre diagnostic immobilier certifié à Caen. Devis en ligne immédiat et intervention sous 24h pour votre DPE.",
+    "sales_team": [
+      {
+        "nom": "Margot LADROUE",
+        "role": "Conseillère",
+        "photo": "/images/equipe/alice.jpg"
+      },
+      {
+        "nom": "Hugo BELLIARD",
+        "role": "Conseiller",
+        "photo": "/images/equipe/alice.jpg"
+      }
+    ],
+    "technical_team": [
+      {
+        "nom": "Marc Lefebvre",
+        "role": "Diagnostiqueur certifié",
+        "photo": "/images/equipe/marc.jpg",
+        "certifs": "DPE, Amiante, Plomb"
+      },
+      {
+        "nom": "Julien B.",
+        "role": "Auditeur Énergétique",
+        "photo": "/images/equipe/julien.jpg",
+        "certifs": "Audit, Thermographie"
+      }
+    ]
+  }
+]
