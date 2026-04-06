@@ -1,0 +1,54 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import Header from '../../components/header-page.astro'
+import Equipe from '../../components/equipe.astro'
+import Diagnostics from '../../components/diagnostics.astro'
+import Reassurance from '../../components/reassurance.astro'
+import Faq from '../../components/faq.astro'
+import ZoneIntervention from '../../components/zone-intervention.astro'
+import Conseillers from '../../components/conseillers.astro'
+import PhoneIcon from '../../components/phone-icon.astro'
+import villes from '../../data/villes.json';
+
+export async function getStaticPaths() {
+  return villes.map((f) => ({
+    params: { ville: f.slug },
+    props: { data: f },
+  }));
+}
+
+const { data } = Astro.props;
+const telHref = `tel:${data.telephone.replace(/\s/g, '')}`
+---
+
+<Layout title={data.seo_titre} description={data.seo_desc} ville={data.city_name} slug={data.slug} telephone={data.telephone} agence={data.agence}>
+	<Header ville={data.city_name} avis={data.avis} slug={data.slug} telephone={data.telephone} departements={data.departements} />
+
+	<section class="bg-secondary py-12 lg:py-16">
+		<div class="container-content flex justify-center">
+			<div class="max-w-3xl">
+				<span class="inline-block bg-dark/5 text-dark px-4 py-2 rounded-lg font-semibold text-sm">Notre mission, au-delà du diagnostic immobilier : concrétiser votre projet</span>
+				<p class="text-lg lg:text-xl mt-6 leading-relaxed">Confiez-nous votre projet, nous vous guidons sur les règles administratives et dans la réalisation de diagnostics immobiliers fiables, compréhensibles et clairs afin d'éviter les mauvaises surprises.</p>
+				<div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 mt-8">
+					<a href={`/${data.slug}/simulateur`} class="bg-primary text-white px-6 py-3.5 rounded-lg font-semibold hover:bg-primary/85 transition-colors text-center text-sm sm:text-base">Simulez vos diagnostics obligatoires</a>
+					<a href={telHref} class="flex items-center justify-center gap-2 bg-dark text-white px-6 py-3.5 rounded-lg font-semibold hover:bg-dark/90 transition-colors text-sm sm:text-base">
+						<PhoneIcon class="size-5 shrink-0" />
+						Contactez un conseiller
+					</a>
+				</div>
+			</div>
+		</div>
+	</section>
+
+	<Diagnostics ville={data.city_name} />
+
+	<Equipe equipe={data.technical_team} ville={data.city_name} mode={data.mode} />
+
+	<Reassurance telephone={data.telephone} />
+
+	<ZoneIntervention agence={data.agence} franchises={data.franchises} />
+
+	<Conseillers conseillers={data.sales_team} telephone={data.telephone} />
+
+	<Faq ville={data.city_name} />
+</Layout>

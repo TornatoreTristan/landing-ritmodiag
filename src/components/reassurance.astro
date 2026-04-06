@@ -1,0 +1,38 @@
+---
+interface Props {
+  telephone?: string
+}
+
+const { telephone = '02 31 15 64 88' } = Astro.props
+const telHref = `tel:${telephone.replace(/\s/g, '')}`
+---
+
+<section class="py-12 lg:py-16 bg-secondary">
+  <div class="container-content max-w-5xl">
+    <div class="bg-dark rounded-2xl px-6 py-10 sm:px-10 sm:py-14">
+      <h2 class="text-xl sm:text-2xl font-bold text-white text-center leading-snug">
+        Une <span class="text-primary">réactivité</span> absolue tout en<br class="hidden sm:block" />
+        conservant une <span class="text-primary">qualité irréprochable</span>
+      </h2>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-0 mt-10">
+        <div class="px-0 md:px-6 md:border-r md:border-white/20">
+          <p class="text-white font-bold">Intervention en 48h</p>
+          <p class="text-white/60 text-sm mt-2 leading-relaxed">Obtenez votre rendez-vous rapidement entre 24h et 48h après la signature de votre devis. Parfait pour les urgences.</p>
+        </div>
+        <div class="px-0 md:px-6 md:border-r md:border-white/20">
+          <p class="text-white font-bold">Rapport sous 72h</p>
+          <p class="text-white/60 text-sm mt-2 leading-relaxed">Recevez votre Dossier de Diagnostics Technique 72h maximum après l'intervention. Avec le règlement en ligne, vous le recevez immédiatement.</p>
+        </div>
+        <div class="px-0 md:px-6">
+          <p class="text-white font-bold">Rapport qualité/prix</p>
+          <p class="text-white/60 text-sm mt-2 leading-relaxed">Réduisez la facture en profitant des meilleurs prix du marché. Notre organisation nous permet de proposer un rapport qualité/prix imbattable.</p>
+        </div>
+      </div>
+
+      <div class="flex justify-center mt-10">
+        <a href={telHref} class="bg-primary text-white px-6 py-3.5 rounded-lg font-semibold hover:bg-primary/85 transition-colors text-sm sm:text-base">Appeler un conseiller</a>
+      </div>
+    </div>
+  </div>
+</section>

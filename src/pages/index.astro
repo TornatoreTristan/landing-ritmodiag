@@ -1,0 +1,117 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { Image } from 'astro:assets';
+import imageHeader from '../assets/img/caen-diagnostics-immobilier-dpe.jpg';
+import GoogleAvis from '../components/google-avis.astro';
+import CarouselAvis from '../components/carousel-avis.astro';
+import Diagnostics from '../components/diagnostics.astro';
+import Equipe from '../components/equipe.astro';
+import Reassurance from '../components/reassurance.astro';
+import Faq from '../components/faq.astro';
+import PhoneIcon from '../components/phone-icon.astro';
+import ZoneIntervention from '../components/zone-intervention.astro';
+import Conseillers from '../components/conseillers.astro';
+import AvisMobile from '../components/avis-mobile.astro';
+import villes from '../data/villes.json';
+
+const data = villes[0];
+const allReviews = villes.flatMap((v) => v.avis).slice(0, 5);
+const allTechnicalTeam = villes.flatMap((v) => v.technical_team);
+const allSalesTeam = villes.flatMap((v) => v.sales_team);
+---
+
+<Layout title="RITMODiag — Diagnostics Immobiliers, DPE et Audits Énergétiques" description="RITMODiag, votre partenaire de confiance pour vos diagnostics immobiliers, DPE et audits énergétiques. Certifiés, réactifs et à votre écoute. Devis en ligne immédiat.">
+
+	<!-- Hero -->
+	<section class="pt-8 pb-12 lg:pt-0 lg:pb-0">
+		<div class="container-content flex flex-col lg:flex-row lg:items-center gap-8 lg:gap-12 lg:h-[calc(100vh-60px)]">
+			<div class="flex flex-col gap-4 lg:flex-1 lg:max-w-xl xl:max-w-2xl">
+				<p class="text-gray-400 border-b border-gray-200 pb-2 text-sm">Intervention partout en France</p>
+				<h1 class="text-2xl sm:text-3xl lg:text-4xl font-bold leading-tight">
+					<span class="text-primary">DPE et diagnostics immobiliers</span> fiables de votre bien par des experts qualifiés et reconnus
+				</h1>
+				<p class="text-base lg:text-lg text-gray-500">
+					RITMODiag vous guide dans la réalisation de vos diagnostics, DPE, Audits que ce soit pour la vente, la location ou la rénovation de votre bien immobilier.
+				</p>
+
+				<div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 mt-2">
+					<a href="/caen/simulateur" class="bg-primary text-white px-6 py-3.5 rounded-lg font-semibold hover:bg-primary/85 transition-colors text-center text-sm sm:text-base">
+						Estimez le prix de votre DPE
+					</a>
+					<a href="tel:0231156488" class="flex items-center justify-center gap-2 bg-dark text-white px-6 py-3.5 rounded-lg font-semibold hover:bg-dark/90 transition-colors text-sm sm:text-base">
+						<PhoneIcon class="size-5 shrink-0" />
+						02 31 15 64 88
+					</a>
+				</div>
+
+				<ul class="flex flex-col gap-2.5 mt-4" role="list">
+					<li class="flex items-center gap-2.5 font-semibold text-sm sm:text-base">
+						<span class="text-primary shrink-0" aria-hidden="true">
+							<svg xmlns="http://www.w3.org/2000/svg" class="size-5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" /></svg>
+						</span>
+						RDV en moins de 48 heures
+					</li>
+					<li class="flex items-center gap-2.5 font-semibold text-sm sm:text-base">
+						<span class="text-primary shrink-0" aria-hidden="true">
+							<svg xmlns="http://www.w3.org/2000/svg" class="size-5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" /></svg>
+						</span>
+						Diagnostics livrés en 3 jours ouvrés
+					</li>
+					<li class="flex items-center gap-2.5 font-semibold text-sm sm:text-base">
+						<span class="text-primary shrink-0" aria-hidden="true">
+							<svg xmlns="http://www.w3.org/2000/svg" class="size-5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" /></svg>
+						</span>
+						Des rapports clairs, lisibles et expliqués
+					</li>
+					<li class="flex items-center gap-2.5 font-semibold text-sm sm:text-base">
+						<span class="text-primary shrink-0" aria-hidden="true">
+							<svg xmlns="http://www.w3.org/2000/svg" class="size-5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" /></svg>
+						</span>
+						Diagnostiqueurs certifiés et expérimentés
+					</li>
+				</ul>
+
+				<GoogleAvis />
+			</div>
+
+			<!-- Image + carousel desktop -->
+			<div class="hidden sm:block relative w-full lg:flex-1 lg:self-stretch lg:py-6">
+				<div class="overflow-hidden rounded-2xl h-full">
+					<Image src={imageHeader} alt="Diagnostics immobiliers et DPE - RITMODiag" class="block w-full h-full object-cover" widths={[768, 1024]} sizes="(max-width: 1023px) 100vw, 50vw" loading="eager" />
+					<CarouselAvis avis={allReviews} />
+				</div>
+			</div>
+
+			<AvisMobile avis={allReviews} />
+		</div>
+	</section>
+
+	<!-- Mission -->
+	<section class="bg-secondary py-12 lg:py-16">
+		<div class="container-content flex justify-center">
+			<div class="max-w-3xl">
+				<span class="inline-block bg-dark/5 text-dark px-4 py-2 rounded-lg font-semibold text-sm">Notre mission, au-delà du diagnostic immobilier : concrétiser votre projet</span>
+				<p class="text-lg lg:text-xl mt-6 leading-relaxed">Confiez-nous votre projet, nous vous guidons sur les règles administratives et dans la réalisation de diagnostics immobiliers fiables, compréhensibles et clairs afin d'éviter les mauvaises surprises.</p>
+				<div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 mt-8">
+					<a href="/caen/simulateur" class="bg-primary text-white px-6 py-3.5 rounded-lg font-semibold hover:bg-primary/85 transition-colors text-center text-sm sm:text-base">Simulez vos diagnostics obligatoires</a>
+					<a href="tel:0231156488" class="flex items-center justify-center gap-2 bg-dark text-white px-6 py-3.5 rounded-lg font-semibold hover:bg-dark/90 transition-colors text-sm sm:text-base">
+						<PhoneIcon class="size-5 shrink-0" />
+						Contactez un conseiller
+					</a>
+				</div>
+			</div>
+		</div>
+	</section>
+
+	<Diagnostics />
+
+	<Equipe equipe={allTechnicalTeam} />
+
+	<Reassurance />
+
+	<ZoneIntervention />
+
+	<Conseillers conseillers={allSalesTeam} />
+
+	<Faq />
+</Layout>

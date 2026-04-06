@@ -1,0 +1,18 @@
+<svg width="1613" height="1613" viewBox="0 0 1613 1613" fill="none" xmlns="http://www.w3.org/2000/svg">
+<rect width="1613" height="1613" fill="white"/>
+<ellipse cx="1171.5" cy="1172" rx="270.5" ry="272" fill="#56A681"/>
+<path d="M477.504 842.38H742.879V583.547H477.504V842.38ZM550.075 656.117H670.309V769.81H550.075V656.117Z" fill="#2D342E"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M242.102 701.299V1317.72H739.812V1245.14V980.667H480.574V1245.14H314.672V640.108L610.194 390.927L922.021 654.052V379.405H849.451V499.632L610.194 296L171 666.325L217.779 721.808L242.102 701.299ZM553.145 1245.14V1053.24H667.242V1245.14H553.145Z" fill="#2D342E"/>
+<mask id="path-4-inside-1_35_96" fill="white">
+<rect x="780.198" y="1120.71" width="661.802" height="196.844" rx="51"/>
+</mask>
+<rect x="780.198" y="1120.71" width="661.802" height="196.844" rx="51" stroke="#2D342E" stroke-width="112" mask="url(#path-4-inside-1_35_96)"/>
+<mask id="path-5-inside-2_35_96" fill="white">
+<rect x="780.198" y="900.107" width="492.11" height="198.541" rx="51"/>
+</mask>
+<rect x="780.198" y="900.107" width="492.11" height="198.541" rx="51" stroke="#2D342E" stroke-width="112" mask="url(#path-5-inside-2_35_96)"/>
+<mask id="path-6-inside-3_35_96" fill="white">
+<rect x="781.895" y="679.506" width="330.901" height="196.844" rx="51"/>
+</mask>
+<rect x="781.895" y="679.506" width="330.901" height="196.844" rx="51" stroke="#2D342E" stroke-width="112" mask="url(#path-6-inside-3_35_96)"/>
+</svg>

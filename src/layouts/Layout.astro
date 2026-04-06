@@ -1,19 +1,296 @@
 ---
 import '../styles/global.css';
-const { title } = Astro.props
+import 'vanilla-cookieconsent/dist/cookieconsent.css';
+import logo from '../assets/logo-ritmodiag-diagnostics-immobiliers-dpe.svg'
+import PhoneIcon from '../components/phone-icon.astro'
+
+interface Agence {
+	ville: string
+	adresse: string
+	code_postal: string
+}
+
+interface Props {
+	title: string
+	description?: string
+	ville?: string
+	slug?: string
+	telephone?: string
+	agence?: Agence
+	hideMobileCta?: boolean
+}
+
+const defaultAgence = { ville: 'Ifs', adresse: '500 boulevard Charles Cros', code_postal: '14123' }
+const { title, description, ville, slug, telephone = '02 31 15 64 88', agence = defaultAgence, hideMobileCta } = Astro.props
+const simulateurHref = slug ? `/${slug}/simulateur` : '/caen/simulateur'
+const telHref = `tel:${telephone.replace(/\s/g, '')}`
+const metaDescription = description || "RITMODiag, votre partenaire de confiance pour vos diagnostics immobiliers, DPE et audits énergétiques en Normandie. Certifiés, réactifs et à votre écoute."
+const canonicalURL = new URL(Astro.url.pathname, Astro.site || 'https://ritmodiag.com')
+const ogImage = new URL('/og-image.jpg', Astro.site || 'https://ritmodiag.com').href
 ---
 
 <!doctype html>
 <html lang="fr">
 	<head>
 		<meta charset="UTF-8" />
-		<meta name="viewport" content="width=device-width" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<link rel="icon" href="/favicon.ico" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<meta name="description" content={metaDescription} />
+		<link rel="canonical" href={canonicalURL.href} />
+		<link rel="icon" type="image/png" href="/favicon.png" />
 		<meta name="generator" content={Astro.generator} />
 		<title>{title}</title>
+		<!-- Open Graph -->
+		<meta property="og:type" content="website" />
+		<meta property="og:title" content={title} />
+		<meta property="og:description" content={metaDescription} />
+		<meta property="og:url" content={canonicalURL.href} />
+		<meta property="og:image" content={ogImage} />
+		<meta property="og:locale" content="fr_FR" />
+		<meta property="og:site_name" content="RITMODiag" />
+		<script is:inline>
+			window.dataLayer = window.dataLayer || [];
+			function gtag(){dataLayer.push(arguments);}
+			gtag('consent', 'default', {
+				'ad_storage': 'denied',
+				'ad_user_data': 'denied',
+				'ad_personalization': 'denied',
+				'analytics_storage': 'denied',
+				'wait_for_update': 500
+			});
+		</script>
+		{ville ? (
+			<script type="application/ld+json" set:html={JSON.stringify({
+				"@context": "https://schema.org",
+				"@type": "LocalBusiness",
+				"name": `RITMODiag ${ville}`,
+				"description": `Diagnostics immobiliers, DPE et audits énergétiques à ${ville}`,
+				"url": canonicalURL.href,
+				"telephone": telephone,
+				"address": {
+					"@type": "PostalAddress",
+					"streetAddress": agence.adresse,
+					"addressLocality": agence.ville,
+					"postalCode": agence.code_postal,
+					"addressCountry": "FR"
+				},
+				"aggregateRating": {
+					"@type": "AggregateRating",
+					"ratingValue": "4.9",
+					"reviewCount": "267"
+				},
+				"priceRange": "€€"
+			})} />
+		) : (
+			<script type="application/ld+json" set:html={JSON.stringify({
+				"@context": "https://schema.org",
+				"@type": "Organization",
+				"name": "RITMODiag",
+				"description": metaDescription,
+				"url": canonicalURL.href,
+				"telephone": telephone,
+				"email": "contact@ritmodiag.com",
+				"address": {
+					"@type": "PostalAddress",
+					"streetAddress": "500 boulevard Charles Cros",
+					"addressLocality": "Ifs",
+					"postalCode": "14123",
+					"addressCountry": "FR"
+				},
+				"aggregateRating": {
+					"@type": "AggregateRating",
+					"ratingValue": "4.9",
+					"reviewCount": "267"
+				}
+			})} />
+		)}
+		<!-- Google Tag Manager -->
+		<script is:inline>
+			(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+			new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+			j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+			'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+			})(window,document,'script','dataLayer','GTM-M3S4JH7');
+		</script>
+		<!-- End Google Tag Manager -->
 	</head>
-	<body>
-		<slot />
+	<body class="bg-primary/2">
+		<!-- Google Tag Manager (noscript) -->
+		<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-M3S4JH7" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+		<!-- End Google Tag Manager (noscript) -->
+		<a href="#main-content" class="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[100] focus:bg-primary focus:text-white focus:px-4 focus:py-2 focus:rounded focus:font-semibold">
+			Aller au contenu principal
+		</a>
+
+		<header class="sticky top-0 z-50 bg-white/95 backdrop-blur-sm border-b border-gray-100">
+			<div class="container-content flex justify-between items-center py-3">
+				<a href={slug ? `/${slug}` : '/'} class="shrink-0">
+					<img src={logo.src} alt="RITMODiag - Diagnostics immobiliers" width="150" height="40" />
+				</a>
+				<nav class="flex items-center gap-2" aria-label="Navigation principale">
+					<a href={simulateurHref} class="hidden sm:inline-flex bg-primary px-4 py-2.5 text-sm rounded-lg font-semibold text-white hover:bg-primary/85 transition-colors">
+						Estimez votre DPE
+					</a>
+					<a href={telHref} class="inline-flex items-center gap-2 bg-dark text-white px-4 py-2.5 rounded-lg font-semibold hover:bg-dark/90 transition-colors text-sm" aria-label={`Appeler le ${telephone}`}>
+						<PhoneIcon class="size-4" />
+						<span class="hidden md:inline">{telephone}</span>
+					</a>
+				</nav>
+			</div>
+		</header>
+
+		<main id="main-content">
+			<slot />
+		</main>
+
+		<!-- Sticky CTA mobile -->
+		<div class:list={["fixed bottom-0 inset-x-0 z-40 sm:hidden bg-white border-t border-gray-200 px-4 py-3 safe-area-bottom", hideMobileCta && "hidden"]}>
+			<div class="flex gap-2">
+				<a href={simulateurHref} class="flex-1 bg-primary text-white text-center py-3 rounded-lg font-semibold text-sm hover:bg-primary/85 transition-colors">
+					Estimez votre DPE
+				</a>
+				<a href={telHref} class="flex items-center justify-center bg-dark text-white px-4 py-3 rounded-lg hover:bg-dark/90 transition-colors" aria-label={`Appeler le ${telephone}`}>
+					<PhoneIcon />
+				</a>
+			</div>
+		</div>
+
+		<footer class:list={["bg-white py-12 mt-16 sm:pb-12", hideMobileCta ? "pb-12" : "pb-28"]}>
+			<div class="container-content">
+				<div class="flex flex-col md:flex-row justify-between gap-8">
+					<div class="max-w-md">
+						<img src={logo.src} alt="RITMODiag" width="150" height="40" class="mb-4" />
+						<p class="text-gray-500 text-sm leading-relaxed">RITMODiag, votre partenaire de confiance pour tous vos diagnostics immobiliers, DPE et audits énergétiques en Normandie. Certifiés, réactifs et à votre écoute.</p>
+					</div>
+					<div class="flex flex-col gap-2 text-sm">
+						<span class="font-semibold text-dark mb-1">Certifications & assurance</span>
+						<p class="text-gray-500">Certifié par <span class="font-semibold text-dark">Bureau Veritas</span></p>
+						<p class="text-gray-500">RC Pro assurée par <span class="font-semibold text-dark">Klarity</span></p>
+					</div>
+					<div class="flex flex-col gap-2 text-sm">
+						<span class="font-semibold text-dark mb-1">Informations légales</span>
+						<a href="/mentions-legales" class="text-gray-500 hover:text-dark transition-colors">Mentions légales</a>
+						<a href="/politique-de-confidentialite" class="text-gray-500 hover:text-dark transition-colors">Politique de confidentialité</a>
+						<button type="button" data-cc="show-preferencesModal" class="text-gray-500 hover:text-dark transition-colors text-left cursor-pointer">Gestion des cookies</button>
+					</div>
+				</div>
+				<div class="border-t border-gray-200 mt-8 pt-6 text-gray-400 text-xs">
+					<p>&copy; {new Date().getFullYear()} RITMODiag — Tous droits réservés</p>
+				</div>
+			</div>
+		</footer>
+		<script>
+			import * as CookieConsent from 'vanilla-cookieconsent';
+
+			function updateGoogleConsent() {
+				const analyticsAccepted = CookieConsent.acceptedCategory('analytics');
+				const adsAccepted = CookieConsent.acceptedCategory('ads');
+
+				gtag('consent', 'update', {
+					'analytics_storage': analyticsAccepted ? 'granted' : 'denied',
+					'ad_storage': adsAccepted ? 'granted' : 'denied',
+					'ad_user_data': adsAccepted ? 'granted' : 'denied',
+					'ad_personalization': adsAccepted ? 'granted' : 'denied',
+				});
+			}
+
+			CookieConsent.run({
+				guiOptions: {
+					consentModal: {
+						layout: 'bar inline',
+						position: 'bottom',
+						equalWeightButtons: false,
+					},
+					preferencesModal: {
+						layout: 'box',
+						equalWeightButtons: true,
+					},
+				},
+
+				categories: {
+					necessary: {
+						enabled: true,
+						readOnly: true,
+					},
+					analytics: {
+						autoClear: {
+							cookies: [
+								{ name: /^_ga/ },
+								{ name: '_gid' },
+							],
+						},
+					},
+					ads: {
+						autoClear: {
+							cookies: [
+								{ name: '_gcl_au' },
+								{ name: /^_gcl/ },
+								{ name: /^_gac/ },
+							],
+						},
+					},
+				},
+
+				onConsent: () => {
+					updateGoogleConsent();
+				},
+
+				onChange: () => {
+					updateGoogleConsent();
+				},
+
+				language: {
+					default: 'fr',
+					translations: {
+						fr: {
+							consentModal: {
+								title: 'Gestion des cookies',
+								description: 'Nous utilisons des cookies pour améliorer votre expérience, mesurer l\'audience de notre site et optimiser nos campagnes publicitaires. Vous pouvez choisir les cookies que vous acceptez.',
+								acceptAllBtn: 'Tout accepter',
+								acceptNecessaryBtn: 'Tout refuser',
+								showPreferencesBtn: 'Personnaliser',
+							},
+							preferencesModal: {
+								title: 'Préférences de cookies',
+								acceptAllBtn: 'Tout accepter',
+								acceptNecessaryBtn: 'Tout refuser',
+								savePreferencesBtn: 'Enregistrer mes préférences',
+								closeIconLabel: 'Fermer',
+								sections: [
+									{
+										title: 'Utilisation des cookies',
+										description: 'Nous utilisons des cookies pour assurer le bon fonctionnement du site, analyser le trafic et diffuser des publicités pertinentes. Vous pouvez gérer vos préférences ci-dessous.',
+									},
+									{
+										title: 'Cookies strictement nécessaires',
+										description: 'Ces cookies sont indispensables au fonctionnement du site et ne peuvent pas être désactivés.',
+										linkedCategory: 'necessary',
+									},
+									{
+										title: 'Cookies analytiques',
+										description: 'Ces cookies nous permettent de mesurer l\'audience du site et d\'améliorer nos services (Google Analytics).',
+										linkedCategory: 'analytics',
+									},
+									{
+										title: 'Cookies publicitaires',
+										description: 'Ces cookies sont utilisés pour mesurer l\'efficacité de nos campagnes Google Ads et vous proposer des annonces personnalisées (conversion et remarketing).',
+										linkedCategory: 'ads',
+									},
+									{
+										title: 'Plus d\'informations',
+										description: 'Pour toute question relative à notre politique en matière de cookies, vous pouvez <a href="/politique-de-confidentialite">consulter notre politique de confidentialité</a> ou nous contacter à <a href="mailto:contact@ritmodiag.com">contact@ritmodiag.com</a>.',
+									},
+								],
+							},
+						},
+					},
+				},
+			});
+		</script>
 	</body>
 </html>
+
+<style>
+	.safe-area-bottom {
+		padding-bottom: max(0.75rem, env(safe-area-inset-bottom));
+	}
+</style>

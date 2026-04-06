@@ -1,0 +1,55 @@
+---
+interface Props {
+  ville?: string
+}
+
+const { ville } = Astro.props
+
+const questions = [
+  {
+    question: ville ? `Quels sont les diagnostics obligatoires pour vendre un bien à ${ville} ?` : 'Quels sont les diagnostics obligatoires pour vendre un bien immobilier ?',
+    reponse: ville
+      ? `Pour vendre un bien immobilier à ${ville}, vous devez fournir un DPE (Diagnostic de Performance Énergétique), un diagnostic amiante (si le permis de construire date d'avant juillet 1997), un diagnostic plomb (si le logement date d'avant 1949), un état de l'installation électrique et gaz (si elles ont plus de 15 ans), un ERP (État des Risques et Pollutions) et un diagnostic termites si la zone est concernée.`
+      : `Pour vendre un bien immobilier, vous devez fournir un DPE (Diagnostic de Performance Énergétique), un diagnostic amiante (si le permis de construire date d'avant juillet 1997), un diagnostic plomb (si le logement date d'avant 1949), un état de l'installation électrique et gaz (si elles ont plus de 15 ans), un ERP (État des Risques et Pollutions) et un diagnostic termites si la zone est concernée.`
+  },
+  {
+    question: "Combien de temps est valable un DPE ?",
+    reponse: "Un DPE est valable 10 ans. Attention toutefois, les DPE réalisés entre le 1er janvier 2018 et le 30 juin 2021 ne sont valables que jusqu'au 31 décembre 2024. Nous vous conseillons de vérifier la date de validité de votre DPE avant toute transaction."
+  },
+  {
+    question: "Quel est le délai pour obtenir un rendez-vous ?",
+    reponse: "Chez RITMODiag, nous nous engageons à vous proposer un rendez-vous sous 48 heures. En cas d'urgence, nous faisons notre maximum pour intervenir dans la journée. Les rapports sont ensuite livrés sous 3 jours ouvrés."
+  },
+  {
+    question: "Combien coûte un DPE ?",
+    reponse: "Le prix d'un DPE varie en fonction de la superficie et du type de bien (appartement ou maison). Chez RITMODiag, nous proposons des tarifs compétitifs et transparents. Utilisez notre simulateur en ligne pour obtenir un devis gratuit et immédiat."
+  },
+  {
+    question: "Qu'est-ce qu'un audit énergétique et est-il obligatoire ?",
+    reponse: "L'audit énergétique est un bilan approfondi de la performance énergétique de votre logement. Il est obligatoire depuis avril 2023 pour la vente de maisons individuelles et d'immeubles en monopropriété classés F ou G au DPE. Il propose des scénarios de travaux de rénovation chiffrés."
+  },
+  {
+    question: "Vos diagnostiqueurs sont-ils certifiés ?",
+    reponse: "Oui, tous nos diagnostiqueurs sont certifiés par des organismes accrédités par le COFRAC et disposent d'une assurance responsabilité civile professionnelle. Nos certifications sont régulièrement renouvelées pour garantir un service conforme aux dernières réglementations."
+  }
+]
+---
+
+<section class="py-12 lg:py-16">
+  <div class="container-content max-w-3xl mx-auto">
+    <h2 class="text-2xl font-bold text-center mb-10">Questions fréquentes</h2>
+    <div class="flex flex-col divide-y divide-gray-200">
+      {questions.map((item) => (
+        <details class="group py-5">
+          <summary class="flex cursor-pointer items-center justify-between gap-4 font-semibold text-dark text-sm sm:text-base">
+            <span>{item.question}</span>
+            <svg class="size-5 shrink-0 text-gray-400 transition-transform duration-300 group-open:rotate-45" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+              <path d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z" />
+            </svg>
+          </summary>
+          <p class="mt-3 text-gray-500 leading-relaxed text-sm">{item.reponse}</p>
+        </details>
+      ))}
+    </div>
+  </div>
+</section>

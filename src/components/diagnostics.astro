@@ -1,0 +1,48 @@
+---
+import iconDPE from '../assets/img/DPE.svg'
+import iconAmiante from '../assets/img/Amiante.svg'
+import iconPlomb from '../assets/img/Plomb.svg'
+import iconElectricite from '../assets/img/Électricité.svg'
+import iconGaz from '../assets/img/Gaz.svg'
+import iconERP from '../assets/img/ERP.svg'
+import iconCopro from '../assets/img/Copro.svg'
+import iconParasitaire from '../assets/img/etat-parasitaire.svg'
+
+interface Props {
+  ville?: string
+}
+
+const { ville } = Astro.props
+
+const diagnostics = [
+  { titre: "DPE", description: "Diagnostic de Performance Énergétique obligatoire pour toute vente ou location.", icon: iconDPE },
+  { titre: "Amiante", description: "Repérage des matériaux contenant de l'amiante avant vente ou travaux.", icon: iconAmiante },
+  { titre: "Plomb (CREP)", description: "Constat de Risque d'Exposition au Plomb pour les logements construits avant 1949.", icon: iconPlomb },
+  { titre: "Électricité", description: "Vérification de la conformité de l'installation électrique de plus de 15 ans.", icon: iconElectricite },
+  { titre: "Gaz", description: "Contrôle de l'installation intérieure de gaz de plus de 15 ans.", icon: iconGaz },
+  { titre: "ERP", description: "État des Risques et Pollutions : risques naturels, miniers, technologiques et sismiques.", icon: iconERP },
+  { titre: "Surface", description: "Mesurage de la superficie privative des lots en copropriété.", icon: iconCopro },
+  { titre: "État Parasitaire", description: "Recherche de la présence de termites, insectes xylophages et champignons lignivores.", icon: iconParasitaire },
+  { titre: "Audit Énergétique", description: "Analyse approfondie des performances énergétiques et scénarios de travaux de rénovation.", icon: iconDPE },
+]
+---
+
+<section class="py-12 lg:py-16">
+  <div class="container-content">
+    <div class="text-center mb-10 flex flex-col gap-4 items-center">
+      <h2 class="font-semibold text-2xl">{ville ? `Nos diagnostics immobiliers à ${ville}` : 'Nos diagnostics immobiliers'}</h2>
+      <p class="max-w-2xl text-gray-500 text-base lg:text-lg">Découvrez l'ensemble des diagnostics immobiliers que nous réalisons pour sécuriser votre projet de vente, location ou rénovation.</p>
+    </div>
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
+      {diagnostics.map((diag) => (
+        <div class="flex gap-4 p-4 sm:p-5 rounded-xl hover:bg-secondary/60 transition-colors">
+          <img src={diag.icon.src} alt="" class="size-12 sm:size-14 shrink-0 rounded-full" aria-hidden="true" />
+          <div>
+            <p class="font-bold">{diag.titre}</p>
+            <p class="text-gray-400 text-xs mt-1 leading-relaxed">{diag.description}</p>
+          </div>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>

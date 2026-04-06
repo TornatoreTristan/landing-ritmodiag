@@ -1,0 +1,99 @@
+---
+interface Avis {
+  auteur: string
+  note: number
+  texte: string
+  photo: string
+}
+
+interface Props {
+  avis: Avis[]
+}
+
+const { avis } = Astro.props
+---
+
+<div
+  class="carousel-avis absolute bottom-5 left-0 right-0 z-10"
+  aria-label="Avis clients Google"
+  aria-roledescription="carrousel"
+  role="region"
+>
+  <div class="carousel-avis__track grid m-3 md:m-4">
+    {avis.map((item, index) => (
+      <div
+        class:list={[
+          "carousel-avis__slide",
+          "col-start-1 row-start-1 flex flex-col justify-center gap-4 bg-white/90 backdrop-blur-sm rounded-2xl p-6 md:p-8 text-dark shadow-lg transition-opacity duration-700 ease-in-out",
+          index === 0 ? "opacity-100" : "opacity-0"
+        ]}
+        role="group"
+        aria-roledescription="diapositive"
+        aria-label={`Avis ${index + 1} sur ${avis.length}`}
+        data-slide-index={index}
+      >
+        <div class="flex items-center gap-4">
+          <div class="shrink-0">
+            <img src={item.photo} alt="" class="size-10 rounded-full object-cover" loading="lazy" />
+          </div>
+          <div>
+            <span class="font-bold text-sm">{item.auteur}</span>
+            <div class="flex mt-1" aria-label={`${item.note} étoiles sur 5`} role="img">
+              {Array.from({ length: 5 }).map((_, i) => (
+                <svg
+                  class:list={["size-4", i < item.note ? "text-yellow-400" : "text-gray-300"]}
+                  viewBox="0 0 20 20"
+                  fill="currentColor"
+                  aria-hidden="true"
+                >
+                  <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                </svg>
+              ))}
+            </div>
+          </div>
+        </div>
+        <p class="text-gray-600 text-sm leading-relaxed line-clamp-4">{item.texte}</p>
+      </div>
+    ))}
+  </div>
+</div>
+
+<style>
+  .carousel-avis__slide {
+    pointer-events: none;
+  }
+  .carousel-avis__slide.opacity-100 {
+    pointer-events: auto;
+  }
+</style>
+
+<script>
+  function initCarousel() {
+    const container = document.querySelector('.carousel-avis');
+    if (!container) return;
+
+    const slides = container.querySelectorAll('.carousel-avis__slide');
+    if (slides.length <= 1) return;
+
+    let current = 0;
+    let paused = false;
+
+    // Pause on hover and focus (WCAG 2.2.2)
+    container.addEventListener('mouseenter', () => { paused = true; });
+    container.addEventListener('mouseleave', () => { paused = false; });
+    container.addEventListener('focusin', () => { paused = true; });
+    container.addEventListener('focusout', () => { paused = false; });
+
+    setInterval(() => {
+      if (paused) return;
+      const next = (current + 1) % slides.length;
+      slides[current].classList.remove('opacity-100');
+      slides[current].classList.add('opacity-0');
+      slides[next].classList.remove('opacity-0');
+      slides[next].classList.add('opacity-100');
+      current = next;
+    }, 5000);
+  }
+
+  document.addEventListener('DOMContentLoaded', initCarousel);
+</script>

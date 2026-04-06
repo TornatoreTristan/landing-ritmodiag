@@ -1,0 +1,97 @@
+---
+import { Image } from 'astro:assets'
+
+interface Membre {
+  nom: string
+  role: string
+  photo: string
+  certifs?: string
+  presentation?: string
+}
+
+interface Props {
+  equipe: Membre[]
+  ville?: string
+  mode?: 'team' | 'solo'
+}
+
+const { equipe, ville, mode = 'team' } = Astro.props
+
+const images = import.meta.glob<{ default: ImageMetadata }>('../assets/img/equipe/*.{jpg,jpeg,png,webp}', { eager: true })
+
+const solo = mode === 'solo' ? equipe[0] : null
+const soloImg = solo ? images[`../assets/img/equipe/${solo.photo}`] : null
+---
+
+{mode === 'solo' && solo ? (
+  <section class="py-12 lg:py-16 bg-secondary">
+    <div class="container-content max-w-4xl mx-auto">
+      <div class="text-center mb-8 flex flex-col gap-4 items-center">
+        <h2 class="font-semibold text-2xl">{ville ? `Votre diagnostiqueur sur ${ville}` : 'Votre diagnostiqueur certifié'}</h2>
+      </div>
+      <div class="flex flex-col md:flex-row gap-8 items-center">
+        <div class="w-full md:w-80 shrink-0">
+          <div class="overflow-hidden rounded-lg">
+            <div class="relative bg-gray-200 aspect-[20/17]">
+              {soloImg && (
+                <Image src={soloImg.default} alt={`${solo.nom}, ${solo.role}`} class="w-full h-full object-cover" />
+              )}
+              <span class="absolute bottom-0 left-0 inline-flex items-center gap-1 bg-white text-dark text-xs font-semibold px-3 py-1.5 sm:px-4 sm:py-2">
+                <svg class="size-4" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M8.11328 2.62968C8.67927 2.38711 9.32073 2.38711 9.88672 2.62968L13.7959 4.30546C14.0712 4.4237 14.2498 4.6943 14.25 4.99394V8.93437C14.2499 10.3875 13.5477 11.7509 12.3652 12.5955L9.87207 14.3767C9.35052 14.7493 8.64948 14.7493 8.12793 14.3767L5.63477 12.5955C4.45226 11.7509 3.75009 10.3875 3.75 8.93437V4.99394C3.75019 4.6943 3.92879 4.4237 4.2041 4.30546L8.11328 2.62968ZM11.875 5.96854C11.4438 5.62368 10.8138 5.69371 10.4688 6.12479L8.16797 9.00175L7.45703 8.29276C7.06654 7.9024 6.43346 7.9024 6.04297 8.29276C5.65249 8.68325 5.65257 9.31629 6.04297 9.70683L7.14746 10.8123C7.77963 11.4445 8.82139 11.3864 9.37988 10.6883L12.0312 7.37479C12.3761 6.94354 12.3062 6.31351 11.875 5.96854Z" fill="currentColor"/></svg>
+                Certifié
+              </span>
+            </div>
+            <div class="bg-dark px-3 py-2.5 sm:px-4 sm:py-3">
+              <p class="font-bold text-white text-sm sm:text-base">{solo.nom}</p>
+              <p class="text-white/60 text-xs">{solo.role}</p>
+            </div>
+          </div>
+        </div>
+        <div class="flex flex-col gap-4">
+          {solo.presentation && (
+            <p class="text-gray-700 text-base lg:text-lg leading-relaxed">{solo.presentation}</p>
+          )}
+          <p class="text-gray-500 text-sm leading-relaxed">Diagnostiqueur immobilier certifié et formé en continu sur les nouvelles réglementations. Un accompagnement de qualité et des résultats clairs, expliqués avec pédagogie.</p>
+          <div class="mt-2">
+            <a href="/caen/simulateur" class="inline-flex bg-primary text-white px-6 py-3.5 rounded-lg font-semibold hover:bg-primary/85 transition-colors text-sm sm:text-base">Prendre un RDV pour vos diagnostics</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+) : (
+  <section class="py-12 lg:py-16 bg-secondary">
+    <div class="container-content max-w-4xl mx-auto">
+      <div class="text-center mb-8 flex flex-col gap-4 items-center">
+        <h2 class="font-semibold text-2xl">{ville ? `Notre équipe de diagnostiqueurs sur ${ville}` : 'Notre équipe de diagnostiqueurs certifiés'}</h2>
+        <p class="max-w-2xl text-gray-700 text-base lg:text-lg leading-relaxed">Tous nos diagnostiqueurs immobiliers sont certifiés et formés en continu sur les nouvelles réglementations. Nous mettons un point d'honneur à accompagner nos clients dans un service de qualité et à être pédagogues dans l'explication des résultats.</p>
+      </div>
+      <div class="grid grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
+        {equipe.map((membre) => {
+          const imgPath = `../assets/img/equipe/${membre.photo}`
+          const img = images[imgPath]
+          return (
+            <div class="overflow-hidden rounded-lg">
+              <div class="relative bg-gray-200 aspect-[20/17]">
+                {img && (
+                  <Image src={img.default} alt={`${membre.nom}, ${membre.role}`} class="w-full h-full object-cover" />
+                )}
+                <span class="absolute bottom-0 left-0 inline-flex items-center gap-1 bg-white text-dark text-xs font-semibold px-3 py-1.5 sm:px-4 sm:py-2">
+                  <svg class="size-4" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M8.11328 2.62968C8.67927 2.38711 9.32073 2.38711 9.88672 2.62968L13.7959 4.30546C14.0712 4.4237 14.2498 4.6943 14.25 4.99394V8.93437C14.2499 10.3875 13.5477 11.7509 12.3652 12.5955L9.87207 14.3767C9.35052 14.7493 8.64948 14.7493 8.12793 14.3767L5.63477 12.5955C4.45226 11.7509 3.75009 10.3875 3.75 8.93437V4.99394C3.75019 4.6943 3.92879 4.4237 4.2041 4.30546L8.11328 2.62968ZM11.875 5.96854C11.4438 5.62368 10.8138 5.69371 10.4688 6.12479L8.16797 9.00175L7.45703 8.29276C7.06654 7.9024 6.43346 7.9024 6.04297 8.29276C5.65249 8.68325 5.65257 9.31629 6.04297 9.70683L7.14746 10.8123C7.77963 11.4445 8.82139 11.3864 9.37988 10.6883L12.0312 7.37479C12.3761 6.94354 12.3062 6.31351 11.875 5.96854Z" fill="currentColor"/></svg>
+                  Certifié
+                </span>
+              </div>
+              <div class="bg-dark px-3 py-2.5 sm:px-4 sm:py-3">
+                <p class="font-bold text-white text-sm sm:text-base">{membre.nom}</p>
+                <p class="text-white/60 text-xs">{membre.role}</p>
+              </div>
+            </div>
+          )
+        })}
+      </div>
+      <div class="flex justify-center mt-10">
+        <a href="/caen/simulateur" class="bg-primary text-white px-6 py-3.5 rounded-lg font-semibold hover:bg-primary/85 transition-colors text-sm sm:text-base">Prendre un RDV pour vos diagnostics</a>
+      </div>
+    </div>
+  </section>
+)}

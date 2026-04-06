@@ -1,0 +1,97 @@
+---
+interface Avis {
+  auteur: string
+  note: number
+  texte: string
+  photo: string
+}
+
+interface Props {
+  ville: string
+  avis: Avis[]
+  slug: string
+  telephone?: string
+  departements?: string
+}
+
+const { ville, avis, slug, telephone = '02 31 15 64 88', departements = 'Calvados, Manche et Orne' } = Astro.props
+const telHref = `tel:${telephone.replace(/\s/g, '')}`
+import { Image } from 'astro:assets';
+import imageHeader from '../assets/img/caen-diagnostics-immobilier-dpe.jpg'
+import GoogleAvis from './google-avis.astro';
+import PhoneIcon from './phone-icon.astro';
+import CarouselAvis from './carousel-avis.astro';
+import AvisMobile from './avis-mobile.astro';
+import quadrillage from '../assets/img/Quadrillage.svg';
+import ornementRouge from '../assets/img/Ornement Rouge.svg';
+import ornementJaune from '../assets/img/Ornement Jaune.svg';
+---
+
+<section class="pt-8 pb-12 lg:pt-0 lg:pb-0 overflow-x-clip">
+  <div class="container-content flex flex-col lg:flex-row lg:items-center gap-8 lg:gap-12 lg:h-[calc(100vh-60px)]">
+    <!-- Contenu texte -->
+    <div class="flex flex-col gap-4 lg:flex-1 lg:max-w-xl xl:max-w-2xl">
+      <p class="text-gray-400 border-b border-gray-200 pb-2 text-sm">Intervention sur tout le {departements}</p>
+      <h1 class="text-2xl sm:text-3xl lg:text-4xl font-bold leading-tight">
+        <span class="text-primary">DPE et diagnostics immobiliers</span> fiables de votre bien par des experts qualifiés et reconnus sur {ville} et ses alentours
+      </h1>
+      <p class="text-base lg:text-lg text-gray-500">
+        RITMODiag vous guide dans la réalisation de vos diagnostics, DPE, Audits que ce soit pour la vente, la location ou la rénovation de votre bien immobilier.
+      </p>
+
+      <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 mt-2">
+        <a href={`/${slug}/simulateur`} class="bg-primary text-white px-6 py-3.5 rounded-lg font-semibold hover:bg-primary/85 transition-colors text-center text-sm sm:text-base">
+          Estimez le prix de votre DPE
+        </a>
+        <a href={telHref} class="flex items-center justify-center gap-2 bg-dark text-white px-6 py-3.5 rounded-lg font-semibold hover:bg-dark/90 transition-colors text-sm sm:text-base">
+          <PhoneIcon class="size-5 shrink-0" />
+          {telephone}
+        </a>
+      </div>
+
+      <ul class="flex flex-col gap-2.5 mt-4" role="list">
+        <li class="flex items-center gap-2.5 font-semibold text-sm sm:text-base">
+          <span class="text-primary shrink-0" aria-hidden="true">
+            <svg xmlns="http://www.w3.org/2000/svg" class="size-5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" /></svg>
+          </span>
+          RDV en moins de 48 heures
+        </li>
+        <li class="flex items-center gap-2.5 font-semibold text-sm sm:text-base">
+          <span class="text-primary shrink-0" aria-hidden="true">
+            <svg xmlns="http://www.w3.org/2000/svg" class="size-5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" /></svg>
+          </span>
+          Diagnostics livrés en 3 jours ouvrés
+        </li>
+        <li class="flex items-center gap-2.5 font-semibold text-sm sm:text-base">
+          <span class="text-primary shrink-0" aria-hidden="true">
+            <svg xmlns="http://www.w3.org/2000/svg" class="size-5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" /></svg>
+          </span>
+          Des rapports clairs, lisibles et expliqués
+        </li>
+        <li class="flex items-center gap-2.5 font-semibold text-sm sm:text-base">
+          <span class="text-primary shrink-0" aria-hidden="true">
+            <svg xmlns="http://www.w3.org/2000/svg" class="size-5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" /></svg>
+          </span>
+          Diagnostiqueurs certifiés et expérimentés
+        </li>
+      </ul>
+
+      <GoogleAvis />
+    </div>
+
+    <!-- Image + carousel desktop -->
+    <div class="hidden sm:block relative w-full lg:flex-1 lg:self-stretch lg:py-6">
+      <div class="overflow-hidden rounded-2xl h-full relative">
+        <Image src={imageHeader} alt={`Diagnostics immobiliers et DPE à ${ville}`} class="block w-full h-full object-cover" widths={[768, 1024]} sizes="(max-width: 1023px) 100vw, 50vw" loading="eager" />
+        <img src={quadrillage.src} alt="" class="absolute -top-12.5 left-67 w-48 lg:w-120 rotate-90 origin-top-left z-20 pointer-events-none" aria-hidden="true" />
+        <!-- Ornement jaune : sur la photo, en haut à droite -->
+        <img src={ornementJaune.src} alt="" class="absolute z-23 top-0 -left-70 w-64 lg:w-130 pointer-events-none" aria-hidden="true" />
+        <!-- Ornement rouge : en bas à droite, derrière le carousel -->
+        <img src={ornementRouge.src} alt="" class="absolute bottom-0 left-70 w-64 lg:w-150 pointer-events-none rotate-90" aria-hidden="true" />
+        <CarouselAvis avis={avis} />
+      </div>
+    </div>
+
+    <AvisMobile avis={avis} />
+  </div>
+</section>

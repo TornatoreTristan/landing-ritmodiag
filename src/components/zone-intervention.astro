@@ -1,0 +1,70 @@
+---
+interface Props {
+  agence?: {
+    ville: string
+    adresse: string
+    code_postal: string
+    description: string
+  }
+  franchises?: string[]
+}
+
+const { agence, franchises } = Astro.props
+
+const defaultAgence = {
+  ville: "Ifs",
+  adresse: "500 boulevard Charles Cros",
+  code_postal: "14123",
+  description: "Nous intervenons dans tout le Calvados et ses alentours."
+}
+
+const defaultFranchises = [
+  "Saint-Lô",
+  "Vire",
+  "Cherbourg",
+  "Le Havre",
+  "Angers",
+  "Limoges",
+  "Strasbourg",
+  "Vierzon"
+]
+
+const agenceData = agence ?? defaultAgence
+const franchisesData = franchises ?? defaultFranchises
+---
+
+<section class="py-12 lg:py-16 bg-secondary">
+  <div class="container-content">
+    <div class="max-w-4xl mx-auto">
+      <h2 class="text-2xl font-bold text-center mb-10">Notre zone d'intervention</h2>
+
+      <div class="flex flex-col md:flex-row gap-4 sm:gap-6 md:gap-8">
+        <div class="flex-1 bg-white rounded-2xl p-6 sm:p-8">
+          <div class="flex items-center gap-3 mb-4">
+            <div class="bg-primary/10 rounded-lg p-2">
+              <svg xmlns="http://www.w3.org/2000/svg" class="size-6 text-primary" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+            </div>
+            <h3 class="font-bold text-lg">Agence principale</h3>
+          </div>
+          <p class="font-semibold text-dark">{agenceData.ville}</p>
+          <p class="text-gray-500 text-sm mt-1">{agenceData.adresse}, {agenceData.code_postal} {agenceData.ville}</p>
+          <p class="text-gray-500 text-sm mt-3">{agenceData.description}</p>
+        </div>
+
+        <div class="flex-1 bg-white rounded-2xl p-6 sm:p-8">
+          <div class="flex items-center gap-3 mb-4">
+            <div class="bg-primary/10 rounded-lg p-2">
+              <svg xmlns="http://www.w3.org/2000/svg" class="size-6 text-primary" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+            </div>
+            <h3 class="font-bold text-lg">Agences franchisées</h3>
+          </div>
+          <div class="flex flex-wrap gap-2">
+            {franchisesData.map((ville) => (
+              <span class="bg-dark/5 text-dark text-sm font-medium px-3 py-1.5 rounded-lg">{ville}</span>
+            ))}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

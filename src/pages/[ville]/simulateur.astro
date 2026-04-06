@@ -1,0 +1,40 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import villes from '../../data/villes.json';
+
+export async function getStaticPaths() {
+  return villes.map((f) => ({
+    params: { ville: f.slug },
+    props: { data: f },
+  }));
+}
+
+const { data } = Astro.props;
+---
+
+<Layout title={`Simulateur DPE - ${data.city_name} | RITMODiag`} description={`Estimez le prix de votre DPE à ${data.city_name} avec notre simulateur en ligne.`} ville={data.city_name} slug={data.slug} hideMobileCta>
+  <style>body { background: white !important; }</style>
+  <script is:inline>
+    window.addEventListener('message', (e) => {
+      if (e.data?.type === 'ritmo_embed_event') {
+        window.dataLayer = window.dataLayer || []
+        window.dataLayer.push(e.data)
+      }
+    })
+  </script>
+  {data.iframe_simulateur ? (
+    <iframe
+      src={data.iframe_simulateur}
+      class="w-full border-0 bg-white"
+      style="height: calc(100dvh - 60px);"
+      title={`Simulateur DPE ${data.city_name}`}
+    />
+  ) : (
+    <div class="flex flex-col items-center justify-center py-24 text-center">
+      <p class="text-gray-500 text-lg">Le simulateur n'est pas encore disponible pour {data.city_name}.</p>
+      <a href={`tel:${data.telephone.replace(/\s/g, '')}`} class="inline-flex items-center gap-2 bg-primary text-white px-6 py-3.5 rounded-lg font-semibold hover:bg-primary/85 transition-colors mt-6">
+        Contactez-nous au {data.telephone}
+      </a>
+    </div>
+  )}
+</Layout>

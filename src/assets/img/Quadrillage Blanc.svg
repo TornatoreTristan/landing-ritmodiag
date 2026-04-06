@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="Calque_1" data-name="Calque 1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 1457.25 911.67">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: none;
+        stroke: url(#Dégradé_sans_nom_3);
+      }
+    </style>
+    <linearGradient id="Dégradé_sans_nom_3" data-name="Dégradé sans nom 3" x1="375.71" y1="1100.51" x2="831.58" y2="1968.01" gradientTransform="translate(0 2212.1) scale(1 -1)" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#fdfffe"/>
+      <stop offset=".76" stop-color="#fdfffe" stop-opacity="0"/>
+    </linearGradient>
+  </defs>
+  <path class="cls-1" d="M1315.04,850.53V83.15M630.28,850.53V83.15M972.66,850.53V83.15M287.91,850.53V83.15M1143.85,850.53V83.15M459.1,850.53V83.15M801.47,850.53V83.15M1229.44,850.53V83.15M544.69,850.53V83.15M887.07,850.53V83.15M202.31,850.53V83.15M1058.26,850.53V83.15M373.5,850.53V83.15M715.88,850.53V83.15M114.04,168.24h1201.53M114.04,510.72h1201.53M113.51,681.96h1201.53M114.04,339.48h1201.53M114.04,767.58h1201.53M114.04,82.62h1201.53M114.04,425.1h1201.53M114.04,596.34h1201.53M114.04,253.86h1201.53"/>
+</svg>

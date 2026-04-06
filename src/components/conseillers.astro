@@ -1,0 +1,65 @@
+---
+import { Image } from 'astro:assets'
+import PhoneIcon from './phone-icon.astro'
+
+interface Conseiller {
+  nom: string
+  role: string
+  photo: string
+  email: string
+  telephone: string
+}
+
+interface Props {
+  conseillers: Conseiller[]
+  telephone?: string
+}
+
+const { conseillers, telephone = '02 31 15 64 88' } = Astro.props
+const telHref = `tel:${telephone.replace(/\s/g, '')}`
+const images = import.meta.glob<{ default: ImageMetadata }>('../assets/img/equipe/*.{jpg,jpeg,png,webp}', { eager: true })
+---
+
+<section class="py-12 lg:py-16">
+  <div class="container-content max-w-3xl mx-auto">
+    <div class="text-center mb-10 flex flex-col gap-4 items-center">
+      <h2 class="font-semibold text-2xl">Vos conseillers à votre écoute</h2>
+      <p class="max-w-xl text-gray-500 text-base lg:text-lg leading-relaxed">Notre équipe conseil est là pour vous guider. Le saviez-vous ? Tous les conseillers chez RITMODiag ont suivi la formation diagnostiqueur immobilier et ont obtenu leurs certifications ! Alors n'hésitez pas à leur poser des questions et à partager avec eux votre projet pour obtenir la meilleure réponse.</p>
+    </div>
+    <div class="grid grid-cols-1 sm:grid-cols-2 gap-8 max-w-lg sm:max-w-none mx-auto">
+      {conseillers.map((conseiller) => {
+        const imgPath = `../assets/img/equipe/${conseiller.photo}`
+        const img = images[imgPath]
+        return (
+          <div class="flex flex-col items-center gap-3 text-center">
+            <div class="size-24 rounded-full overflow-hidden bg-gray-200">
+              {img && (
+                <Image src={img.default} alt={conseiller.nom} class="w-full h-full object-cover" />
+              )}
+            </div>
+            <div>
+              <p class="font-bold text-dark">{conseiller.nom}</p>
+              <p class="text-gray-500 text-sm">{conseiller.role}</p>
+              <div class="flex flex-col gap-1.5 mt-3">
+                <a href={`tel:${conseiller.telephone.replace(/\s/g, '')}`} class="inline-flex items-center justify-center gap-1.5 text-sm text-gray-500 hover:text-dark transition-colors">
+                  <PhoneIcon class="size-3.5 shrink-0" />
+                  {conseiller.telephone}
+                </a>
+                <a href={`mailto:${conseiller.email}`} class="inline-flex items-center justify-center gap-1.5 text-sm text-gray-500 hover:text-dark transition-colors break-all">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="size-3.5 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
+                  {conseiller.email}
+                </a>
+              </div>
+            </div>
+          </div>
+        )
+      })}
+    </div>
+    <div class="flex justify-center mt-10">
+      <a href={telHref} class="flex items-center gap-2 bg-dark text-white px-6 py-3.5 rounded-lg font-semibold hover:bg-dark/90 transition-colors text-sm sm:text-base">
+        <PhoneIcon class="size-5 shrink-0" />
+        Contactez un conseiller
+      </a>
+    </div>
+  </div>
+</section>
