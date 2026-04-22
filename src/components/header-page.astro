@@ -1,4 +1,13 @@
 ---
+import { Image, type ImageMetadata } from 'astro:assets';
+import GoogleAvis from './google-avis.astro';
+import PhoneIcon from './phone-icon.astro';
+import CarouselAvis from './carousel-avis.astro';
+import AvisMobile from './avis-mobile.astro';
+import quadrillage from '../assets/img/Quadrillage.svg';
+import ornementRouge from '../assets/img/Ornement Rouge.svg';
+import ornementJaune from '../assets/img/Ornement Jaune.svg';
+
 interface Avis {
   auteur: string
   note: number
@@ -12,19 +21,11 @@ interface Props {
   slug: string
   telephone?: string
   departements?: string
+  headerImage: ImageMetadata
 }
 
-const { ville, avis, slug, telephone = '02 31 15 64 88', departements = 'Calvados, Manche et Orne' } = Astro.props
+const { ville, avis, slug, telephone = '02 31 15 64 88', departements = 'Calvados, Manche et Orne', headerImage } = Astro.props
 const telHref = `tel:${telephone.replace(/\s/g, '')}`
-import { Image } from 'astro:assets';
-import imageHeader from '../assets/img/caen-diagnostics-immobilier-dpe.jpg'
-import GoogleAvis from './google-avis.astro';
-import PhoneIcon from './phone-icon.astro';
-import CarouselAvis from './carousel-avis.astro';
-import AvisMobile from './avis-mobile.astro';
-import quadrillage from '../assets/img/Quadrillage.svg';
-import ornementRouge from '../assets/img/Ornement Rouge.svg';
-import ornementJaune from '../assets/img/Ornement Jaune.svg';
 ---
 
 <section class="pt-8 pb-12 lg:pt-0 lg:pb-0 overflow-x-clip">
@@ -82,7 +83,7 @@ import ornementJaune from '../assets/img/Ornement Jaune.svg';
     <!-- Image + carousel desktop -->
     <div class="hidden sm:block relative w-full lg:flex-1 lg:self-stretch lg:py-6">
       <div class="overflow-hidden rounded-2xl h-full relative">
-        <Image src={imageHeader} alt={`Diagnostics immobiliers et DPE à ${ville}`} class="block w-full h-full object-cover" widths={[768, 1024]} sizes="(max-width: 1023px) 100vw, 50vw" loading="eager" />
+        <Image src={headerImage} alt={`Diagnostics immobiliers et DPE à ${ville}`} class="block w-full h-full object-cover" widths={[768, 1024]} sizes="(max-width: 1023px) 100vw, 50vw" loading="eager" />
         <img src={quadrillage.src} alt="" class="absolute -top-12.5 left-67 w-48 lg:w-120 rotate-90 origin-top-left z-20 pointer-events-none" aria-hidden="true" />
         <!-- Ornement jaune : sur la photo, en haut à droite -->
         <img src={ornementJaune.src} alt="" class="absolute z-23 top-0 -left-70 w-64 lg:w-130 pointer-events-none" aria-hidden="true" />

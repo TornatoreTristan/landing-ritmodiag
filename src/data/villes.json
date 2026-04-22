@@ -2,6 +2,7 @@
   {
     "slug": "caen",
     "city_name": "Caen",
+    "header_image": "caen-diagnostics-immobilier-dpe.jpg",
     "id_crm": "",
     "iframe_simulateur": "https://backbone.ritmodiag.com/embed/wizard/53bb7b6d30a17fdb67cb7683a19d482b85d81036263ccb30473aeeeda7afbc72",
     "telephone": "02 31 15 64 88",
@@ -164,6 +165,7 @@
   {
     "slug": "angers",
     "city_name": "Angers",
+    "header_image": "ritmodiag-angers-dpe.jpg",
     "id_crm": "",
     "iframe_simulateur": "https://backbone.ritmodiag.com/embed/wizard/53bb7b6d30a17fdb67cb7683a19d482b85d81036263ccb30473aeeeda7afbc72",
     "telephone": "06 73 62 03 84",
@@ -193,6 +195,129 @@
         "nom": "Mathieu HESLOT",
         "role": "Gérant & Diagnostiqueur Immobilier",
         "photo": "Mathieu-heslot-diagnostiqueur-immobilier-dpe-angers.png"
+      }
+    ],
+    "avis": [
+      {
+        "auteur": "Manon Coulange",
+        "note": 5,
+        "texte": "Très contente du service de Ritmodiag.",
+        "photo": "https://i.pravatar.cc/80?img=1"
+      },
+      {
+        "auteur": "Valérie Barre",
+        "note": 5,
+        "texte": "Diagnostics effectués par Nassim vendredi après-midi, documents reçus le jour même. Parfait. Ponctuel, efficace et sympathique. En tant que mandataire immo pour iad, j'ai plusieurs fois fait appel à Ritmodiag, toujours très bien.",
+        "photo": "https://i.pravatar.cc/80?img=5"
+      },
+      {
+        "auteur": "Sylvain Boutrais",
+        "note": 5,
+        "texte": "Rdv fixé 2 jours après la demande. Technicien arrivé en avance comme prévenu au moment du rdv.",
+        "photo": "https://i.pravatar.cc/80?img=11"
+      },
+      {
+        "auteur": "Thierry Lebel",
+        "note": 5,
+        "texte": "Ets réactive ponctuelle et sérieuse.",
+        "photo": "https://i.pravatar.cc/80?img=12"
+      },
+      {
+        "auteur": "Dihaye Di",
+        "note": 5,
+        "texte": "Un grand merci à Alexandre Gonçalves pour son intervention rapide, efficace et professionnelle dans une ambiance très détendue. Les administratifs ne sont pas en reste : tarifs, délais et relationnel au top !",
+        "photo": "https://i.pravatar.cc/80?img=15"
+      },
+      {
+        "auteur": "Mitsuko Koko",
+        "note": 5,
+        "texte": "Accueil et personnes très agréables et chaleureuses, intervention rapide et efficace tout était parfait, merci encore !",
+        "photo": "https://i.pravatar.cc/80?img=9"
+      },
+      {
+        "auteur": "Lolita Abr",
+        "note": 5,
+        "texte": "Super équipe on se sent accompagné, Estelle est très agréable au téléphone et le pôle conseil est toujours a l'écoute, je recommande vivement cette entreprise.",
+        "photo": "https://i.pravatar.cc/80?img=23"
+      },
+      {
+        "auteur": "Sigrid Sarens",
+        "note": 5,
+        "texte": "Diagnostiqueur très professionnel, ponctuel et rigoureux. Les explications sont claires, le rapport est complet et transmis rapidement. Un vrai partenaire de confiance que je recommande sans hésitation. Je recommande sans réserve !",
+        "photo": "https://i.pravatar.cc/80?img=25"
+      },
+      {
+        "auteur": "Philippe Macé",
+        "note": 5,
+        "texte": "Damien, le diagnostiqueur est vraiment très sérieux. Il a passé pratiquement 3/4 d'heure pour un appartement de 70 m2 en passant tout en revue. Et de surcroît il est très gentil. Je recommande sans hésitation.",
+        "photo": "https://i.pravatar.cc/80?img=14"
+      },
+      {
+        "auteur": "Annie Berthelot",
+        "note": 5,
+        "texte": "Très bonne expérience avec RitmoDiag. Excellente réactivité et prestation de très bonne qualité à prix compétitif. J'ai particulièrement apprécié la gentillesse et le serieux de Nassim qui a réalisé le diagnostic.",
+        "photo": "https://i.pravatar.cc/80?img=32"
+      },
+      {
+        "auteur": "Chloé Bremont",
+        "note": 5,
+        "texte": "Un professionnel exemplaire ! Le diagnostiqueur a été ponctuel, très clair dans ses explications et particulièrement rigoureux dans son travail. Le diagnostic énergétique a été réalisé avec sérieux et précision, tout en restant accessible grâce à ses explications pédagogiques.",
+        "photo": "https://i.pravatar.cc/80?img=44"
+      },
+      {
+        "auteur": "Sébastien",
+        "note": 5,
+        "texte": "Alexandre Goncalves a été très pro. On voit bien que c'est une personne qui vient du bâtiment, il connaît son sujet. Tout est plus facile avec une personne compétente. Le rapport a été reçu très rapidement.",
+        "photo": "https://i.pravatar.cc/80?img=53"
+      },
+      {
+        "auteur": "Aurélie Guccione",
+        "note": 5,
+        "texte": "Nassim je vous remercie pour votre professionnalisme et vos conseils. Et je remercie Ritmodiag pour leur réactivité à répondre aux demandes urgentes. Je recommande fortement.",
+        "photo": "https://i.pravatar.cc/80?img=47"
+      },
+      {
+        "auteur": "Manuela Castel",
+        "note": 5,
+        "texte": "DPE fait ce jour par Damien Laumaillee. Personne très professionnel, ponctuel, je recommande +++++ Merci à vous !",
+        "photo": "https://i.pravatar.cc/80?img=28"
+      }
+    ]
+  },
+  {
+    "slug": "le-havre",
+    "city_name": "Le Havre",
+    "header_image": "dpe-ritmodiag-lehavre.jpeg",
+    "id_crm": "",
+    "iframe_simulateur": "https://backbone.ritmodiag.com/embed/wizard/53bb7b6d30a17fdb67cb7683a19d482b85d81036263ccb30473aeeeda7afbc72",
+    "telephone": "02 32 79 97 48",
+    "email_contact": "lehavre@ritmodiag.com",
+    "departements": "Seine-Maritime",
+    "agence": {
+      "ville": "Le Havre",
+      "adresse": "Le Havre",
+      "code_postal": "76600",
+      "description": "Nous intervenons dans tout Le Havre et ses alentours."
+    },
+    "franchises": [
+      "Caen",
+      "Saint-Lô",
+      "Vire",
+      "Cherbourg",
+      "Angers",
+      "Limoges",
+      "Strasbourg",
+      "Vierzon"
+    ],
+    "mode": "solo",
+    "seo_titre": "DPE et Diagnostics Immobiliers au Havre (76) - RITMODiag",
+    "seo_desc": "Votre diagnostic immobilier certifié au Havre. Devis en ligne immédiat et intervention sous 24h pour votre DPE.",
+    "sales_team": [],
+    "technical_team": [
+      {
+        "nom": "Dov SASPORTAS",
+        "role": "Gérant & Diagnostiqueur Immobilier",
+        "photo": "ritmodiag-lehavre-dov-sasportas-dpe.png"
       }
     ],
     "avis": [
