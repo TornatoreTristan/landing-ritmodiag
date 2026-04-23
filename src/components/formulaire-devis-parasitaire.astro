@@ -77,7 +77,7 @@ const telHref = `tel:${telephone.replace(/\s/g, '')}`
                 type="tel"
                 id="tel"
                 name="telephone"
-                pattern="[0-9 +()-]{7,20}"
+                pattern="[0-9 +()\-]{7,20}"
                 autocomplete="tel"
                 placeholder="06 12 34 56 78"
                 class="w-full border border-gray-200 rounded-lg px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary/40 focus:border-primary"
@@ -157,7 +157,7 @@ const telHref = `tel:${telephone.replace(/\s/g, '')}`
 </section>
 
 <script>
-  const N8N_WEBHOOK = 'https://n8n.spines.fr/webhook-test/e7c7a55f-e665-4690-9282-d1796e42502c';
+  const N8N_WEBHOOK = 'https://n8n.spines.fr/webhook/e7c7a55f-e665-4690-9282-d1796e42502c';
 
   const form = document.getElementById('devis-form') as HTMLFormElement | null;
   const wrapper = document.getElementById('form-wrapper');
