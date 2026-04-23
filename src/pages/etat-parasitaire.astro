@@ -1,0 +1,414 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { Image } from 'astro:assets';
+import GoogleAvis from '../components/google-avis.astro';
+import PhoneIcon from '../components/phone-icon.astro';
+import Reassurance from '../components/reassurance.astro';
+import ZoneIntervention from '../components/zone-intervention.astro';
+import Conseillers from '../components/conseillers.astro';
+import FormulaireDevis from '../components/formulaire-devis-parasitaire.astro';
+import iconParasitaire from '../assets/img/etat-parasitaire.svg';
+import villes from '../data/villes.json';
+
+const data = villes.find((v) => v.slug === 'caen')!;
+
+const checkSvg = `<svg xmlns="http://www.w3.org/2000/svg" class="size-5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" /></svg>`;
+
+const faqItems = [
+  {
+    question: "Quelle est la différence entre un diagnostic termites et un état parasitaire ?",
+    reponse: "Le diagnostic termites est un document réglementaire qui recherche uniquement la présence de termites dans un bien situé en zone arrêtée par le préfet. L'état parasitaire est un diagnostic plus complet : il couvre les termites mais aussi les autres insectes à larves xylophages (capricornes, lyctus, vrillettes) ainsi que les champignons lignivores dont la redoutable mérule. C'est pourquoi les notaires normands le préfèrent au seul diagnostic termites pour les biens anciens ou humides."
+  },
+  {
+    question: "Quelle est la durée de validité d'un état parasitaire ?",
+    reponse: "Un état parasitaire est valable 6 mois à compter de la date de réalisation. Au-delà, il doit être renouvelé avant toute transaction immobilière. Ce délai court est lié à la progression rapide des organismes parasitaires, notamment la mérule, qui peut se développer significativement en quelques semaines dans un environnement humide."
+  },
+  {
+    question: "Mon bien est récent, ai-je besoin d'un état parasitaire ?",
+    reponse: "En théorie, les biens récents sont moins exposés car les matériaux modernes et les normes de construction limitent les risques. Cependant, en Normandie, la forte pluviométrie et le taux d'humidité élevé peuvent affecter même des constructions de moins de 20 ans si des défauts d'étanchéité ou de ventilation existent. Par ailleurs, si votre notaire ou l'acquéreur le demande, il reste nécessaire. Mieux vaut lever toute ambiguïté avant la signature."
+  },
+  {
+    question: "Que se passe-t-il si de la mérule est détectée dans mon bien ?",
+    reponse: "Si notre diagnostiqueur détecte la présence de mérule, il en informe la mairie dans un délai légal (article L. 133-1 du Code de la construction). Le rapport précise les zones contaminées et les préconisations de traitement. La vente peut se poursuivre mais l'acquéreur doit en être informé. Un traitement curatif par une entreprise spécialisée sera nécessaire. RITMODiag peut vous orienter vers des partenaires certifiés pour la phase de traitement."
+  },
+  {
+    question: "Quelles parties du bien sont inspectées lors d'un état parasitaire ?",
+    reponse: "Notre diagnostiqueur inspecte l'ensemble des éléments en bois accessibles : charpente, planchers, poutres et solives, menuiseries (fenêtres, portes), escaliers, caves, combles, vides sanitaires et soubassement. L'inspection combine examen visuel, sondage mécanique au poinçon et mesure d'humidité à l'hygromètre. Les zones inaccessibles sont signalées dans le rapport avec une mention spécifique."
+  },
+  {
+    question: "Quel est le délai pour obtenir un état parasitaire avec RITMODiag ?",
+    reponse: "RITMODiag s'engage à intervenir sous 48 heures après signature de votre devis. Le rapport complet vous est remis sous 3 jours ouvrés après l'intervention. En cas d'urgence liée à une vente imminente, contactez-nous directement au 02 31 15 64 88 : nous faisons notre maximum pour accélérer le traitement de votre dossier."
+  }
+];
+
+const faqSchema = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": faqItems.map((item) => ({
+    "@type": "Question",
+    "name": item.question,
+    "acceptedAnswer": {
+      "@type": "Answer",
+      "text": item.reponse
+    }
+  }))
+};
+---
+
+<Layout
+  title="État Parasitaire en Normandie — Diagnostic Mérule & Bois | RITMODiag"
+  description="RITMODiag réalise votre état parasitaire en Normandie sous 48h. Détection mérule, insectes xylophages, champignons lignivores. Rapport sous 3 jours. Devis gratuit en ligne."
+  ctaText="Obtenez un devis gratuit"
+  ctaHref="#devis"
+>
+  <script type="application/ld+json" set:html={JSON.stringify(faqSchema)} />
+
+  <!-- ===== 1. HERO ===== -->
+  <section class="pt-8 pb-12 lg:pt-0 lg:pb-0">
+    <div class="container-content flex flex-col lg:flex-row lg:items-center gap-8 lg:gap-12 lg:h-[calc(100vh-60px)]">
+      <!-- Contenu texte -->
+      <div class="flex flex-col gap-4 lg:flex-1 lg:max-w-xl xl:max-w-2xl">
+        <p class="text-gray-400 border-b border-gray-200 pb-2 text-sm">Diagnostic immobilier spécialisé</p>
+        <h1 class="text-2xl sm:text-3xl lg:text-4xl font-bold leading-tight">
+          État parasitaire : <span class="text-primary">protégez votre vente</span> contre la mérule et les insectes xylophages
+        </h1>
+        <p class="text-base lg:text-lg text-gray-500">
+          RITMODiag réalise votre état parasitaire en Normandie. Un diagnostic complet pour détecter champignons lignivores, mérule et insectes xylophages avant que votre transaction ne soit bloquée.
+        </p>
+
+        <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 mt-2">
+          <a
+            href="#devis"
+            class="bg-primary text-white px-6 py-3.5 rounded-lg font-semibold hover:bg-primary/85 transition-colors text-center text-sm sm:text-base"
+            aria-label="Obtenir un devis gratuit pour votre état parasitaire"
+          >
+            Obtenir un devis gratuit
+          </a>
+          <a
+            href="tel:0231156488"
+            class="flex items-center justify-center gap-2 bg-dark text-white px-6 py-3.5 rounded-lg font-semibold hover:bg-dark/90 transition-colors text-sm sm:text-base"
+            aria-label="Appeler RITMODiag au 02 31 15 64 88"
+          >
+            <PhoneIcon class="size-5 shrink-0" />
+            02 31 15 64 88
+          </a>
+        </div>
+
+        <ul class="flex flex-col gap-2.5 mt-4" role="list">
+          <li class="flex items-center gap-2.5 font-semibold text-sm sm:text-base">
+            <span class="text-primary shrink-0" aria-hidden="true">
+              <Fragment set:html={checkSvg} />
+            </span>
+            Inspection visuelle, sondage au poinçon, mesure d'humidité
+          </li>
+          <li class="flex items-center gap-2.5 font-semibold text-sm sm:text-base">
+            <span class="text-primary shrink-0" aria-hidden="true">
+              <Fragment set:html={checkSvg} />
+            </span>
+            Rapport livré sous 3 jours ouvrés
+          </li>
+          <li class="flex items-center gap-2.5 font-semibold text-sm sm:text-base">
+            <span class="text-primary shrink-0" aria-hidden="true">
+              <Fragment set:html={checkSvg} />
+            </span>
+            Diagnostiqueurs certifiés Bureau Veritas
+          </li>
+          <li class="flex items-center gap-2.5 font-semibold text-sm sm:text-base">
+            <span class="text-primary shrink-0" aria-hidden="true">
+              <Fragment set:html={checkSvg} />
+            </span>
+            Recommandé par les notaires en zones à risque
+          </li>
+        </ul>
+
+        <GoogleAvis />
+      </div>
+
+      <!-- Visuel côté droit -->
+      <div class="hidden sm:flex relative w-full lg:flex-1 lg:self-stretch lg:py-6">
+        <div class="w-full h-full bg-secondary rounded-2xl flex items-center justify-center overflow-hidden">
+          <Image
+            src={iconParasitaire}
+            alt="État parasitaire — diagnostic mérule et insectes xylophages"
+            class="w-48 sm:w-64 lg:w-80 xl:w-96 object-contain"
+            loading="eager"
+          />
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 2. DÉFINITION ===== -->
+  <section class="py-12 lg:py-16">
+    <div class="container-content">
+      <div class="max-w-3xl mx-auto">
+        <span class="inline-block bg-dark/5 text-dark px-4 py-2 rounded-lg font-semibold text-sm">Au-delà des termites : un diagnostic complet du bois</span>
+        <h2 class="text-2xl sm:text-3xl font-bold mt-6 leading-tight">
+          Qu'est-ce que l'état parasitaire d'un bien immobilier ?
+        </h2>
+        <div class="mt-6 flex flex-col gap-6 text-gray-500 leading-relaxed">
+          <p>
+            L'état parasitaire est un diagnostic spécialisé qui identifie la présence de trois familles d'organismes destructeurs du bois dans un bien immobilier. Contrairement au diagnostic termites — limité à une seule espèce dans des zones géographiques définies — l'état parasitaire offre une vision complète de la santé des éléments en bois de votre bien.
+          </p>
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+            <div class="bg-secondary rounded-xl p-5">
+              <p class="font-bold text-dark">Champignons lignivores</p>
+              <p class="text-sm mt-2 leading-relaxed">Dont la mérule (<em>Serpula lacrymans</em>), le champignon le plus destructeur. Il se développe dans les bois humides et peut traverser les murs.</p>
+            </div>
+            <div class="bg-secondary rounded-xl p-5">
+              <p class="font-bold text-dark">Insectes xylophages</p>
+              <p class="text-sm mt-2 leading-relaxed">Capricornes des maisons, lyctus, vrillettes : leurs larves creusent des galeries dans le bois, fragilisant charpentes et planchers sur des années.</p>
+            </div>
+            <div class="bg-secondary rounded-xl p-5">
+              <p class="font-bold text-dark">Termites</p>
+              <p class="text-sm mt-2 leading-relaxed">Insectes sociaux dévastateurs, leur présence est signalée en mairie. Inclus dans l'état parasitaire, couvrant ainsi le diagnostic termites obligatoire.</p>
+            </div>
+          </div>
+          <p>
+            En Normandie, la forte humidité du climat favorise particulièrement le développement de la mérule. Un état parasitaire est donc recommandé — voire exigé par les notaires — pour tout bien ancien ou présentant des signes d'humidité, bien avant qu'une vente soit engagée.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 3. STATISTIQUES ===== -->
+  <section class="py-12 lg:py-16 bg-secondary">
+    <div class="container-content">
+      <div class="max-w-4xl mx-auto">
+        <h2 class="text-2xl sm:text-3xl font-bold text-center leading-tight">
+          La mérule progresse : les chiffres qui doivent alerter les propriétaires normands
+        </h2>
+
+        <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 mt-10">
+          <div class="bg-white rounded-2xl p-5 sm:p-6 text-center">
+            <p class="text-3xl sm:text-4xl font-bold text-primary">3 312</p>
+            <p class="text-sm text-gray-500 mt-2 leading-snug">cas de mérule recensés en France en 2024-2025</p>
+          </div>
+          <div class="bg-white rounded-2xl p-5 sm:p-6 text-center">
+            <p class="text-3xl sm:text-4xl font-bold text-primary">+20,4%</p>
+            <p class="text-sm text-gray-500 mt-2 leading-snug">d'augmentation annuelle des cas signalés</p>
+          </div>
+          <div class="bg-white rounded-2xl p-5 sm:p-6 text-center">
+            <p class="text-3xl sm:text-4xl font-bold text-primary">93/95</p>
+            <p class="text-sm text-gray-500 mt-2 leading-snug">départements français désormais touchés</p>
+          </div>
+          <div class="bg-white rounded-2xl p-5 sm:p-6 text-center">
+            <p class="text-3xl sm:text-4xl font-bold text-primary">438</p>
+            <p class="text-sm text-gray-500 mt-2 leading-snug">cas en Normandie, soit 13,2% du total national</p>
+          </div>
+        </div>
+
+        <!-- Bloc Normandie -->
+        <div class="bg-dark rounded-2xl px-6 py-8 sm:px-10 sm:py-10 mt-8">
+          <h3 class="text-white font-bold text-lg sm:text-xl mb-6 text-center">Progression par département normand</h3>
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-6">
+            <div class="text-center">
+              <p class="text-primary text-3xl font-bold">+48%</p>
+              <p class="text-white font-semibold mt-1">Calvados</p>
+              <p class="text-white/60 text-sm mt-1">hausse annuelle des cas</p>
+            </div>
+            <div class="text-center">
+              <p class="text-primary text-3xl font-bold">+30%</p>
+              <p class="text-white font-semibold mt-1">Eure</p>
+              <p class="text-white/60 text-sm mt-1">hausse annuelle des cas</p>
+            </div>
+            <div class="text-center">
+              <p class="text-primary text-3xl font-bold">+87%</p>
+              <p class="text-white font-semibold mt-1">Orne</p>
+              <p class="text-white/60 text-sm mt-1">hausse annuelle des cas</p>
+            </div>
+          </div>
+        </div>
+
+        <p class="text-xs text-gray-400 text-center mt-4">Source : XyloDiag / Diagactu, rapport national 2024-2025</p>
+
+        <div class="flex justify-center mt-8">
+          <a
+            href="#devis"
+            class="bg-primary text-white px-6 py-3.5 rounded-lg font-semibold hover:bg-primary/85 transition-colors text-sm sm:text-base"
+            aria-label="Obtenir un devis pour protéger votre vente"
+          >
+            Je veux protéger ma vente →
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 4. PROCESSUS ===== -->
+  <section class="py-12 lg:py-16">
+    <div class="container-content">
+      <div class="max-w-3xl mx-auto">
+        <div class="text-center mb-10 flex flex-col gap-4 items-center">
+          <h2 class="text-2xl sm:text-3xl font-bold leading-tight">Comment se déroule un état parasitaire ?</h2>
+          <p class="text-gray-500 text-base lg:text-lg leading-relaxed max-w-xl">
+            Une intervention méthodique en 3 étapes, réalisée par un diagnostiqueur certifié
+          </p>
+        </div>
+
+        <div class="flex flex-col gap-4">
+          <div class="bg-secondary rounded-2xl p-6 sm:p-8 flex gap-5">
+            <div class="shrink-0 size-10 rounded-full bg-primary/15 flex items-center justify-center font-bold text-primary text-lg" aria-hidden="true">1</div>
+            <div>
+              <p class="font-bold text-dark text-base sm:text-lg">Inspection visuelle</p>
+              <p class="text-gray-500 text-sm mt-2 leading-relaxed">
+                Examen minutieux de l'ensemble des éléments en bois accessibles : charpente, planchers, poutres et solives, menuiseries, escaliers, caves, combles et vides sanitaires. Cette première étape permet de repérer taches, décolorations, effritement ou présence de filaments caractéristiques.
+              </p>
+              <p class="text-xs text-gray-400 mt-3 font-medium">Durée : 30 à 90 minutes selon la superficie du bien</p>
+            </div>
+          </div>
+
+          <div class="bg-secondary rounded-2xl p-6 sm:p-8 flex gap-5">
+            <div class="shrink-0 size-10 rounded-full bg-primary/15 flex items-center justify-center font-bold text-primary text-lg" aria-hidden="true">2</div>
+            <div>
+              <p class="font-bold text-dark text-base sm:text-lg">Sondage mécanique au poinçon et mesure d'humidité à l'humidimètre</p>
+              <p class="text-gray-500 text-sm mt-2 leading-relaxed">
+                Le diagnostiqueur sonde mécaniquement les bois suspects à l'aide d'un poinçon. Un bois ramolli, creusé ou qui s'effrite révèle la présence de galeries ou une dégradation avancée due aux larves d'insectes ou aux champignons. L'humidimètre permet ensuite de mesurer le taux d'humidité des matériaux — un taux supérieur à 20% favorise le développement des champignons lignivores, notamment la mérule.
+              </p>
+            </div>
+          </div>
+
+          <div class="bg-secondary rounded-2xl p-6 sm:p-8 flex gap-5">
+            <div class="shrink-0 size-10 rounded-full bg-primary/15 flex items-center justify-center font-bold text-primary text-lg" aria-hidden="true">3</div>
+            <div>
+              <p class="font-bold text-dark text-base sm:text-lg">Prélèvement des zones suspectes</p>
+              <p class="text-gray-500 text-sm mt-2 leading-relaxed">
+                Lorsque des zones suspectes sont identifiées, le diagnostiqueur effectue des prélèvements pour analyse. Ces échantillons permettent d'identifier précisément la nature des organismes présents (type de champignon, espèce d'insecte) et de formuler des préconisations de traitement adaptées.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div class="mt-6 border border-gray-200 rounded-xl px-6 py-4 flex items-center gap-3">
+          <span class="text-primary shrink-0" aria-hidden="true">
+            <Fragment set:html={checkSvg} />
+          </span>
+          <p class="text-sm text-gray-500">Le rapport complet est remis sous <strong class="text-dark">3 jours ouvrés</strong> après l'intervention.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 5. OBLIGATION LÉGALE ===== -->
+  <section class="py-12 lg:py-16 bg-white">
+    <div class="container-content">
+      <div class="max-w-3xl mx-auto">
+        <h2 class="text-2xl sm:text-3xl font-bold leading-tight">
+          L'état parasitaire est-il obligatoire ?
+        </h2>
+        <p class="text-gray-500 mt-4 leading-relaxed">
+          L'état parasitaire n'est pas systématiquement obligatoire au niveau national, mais trois situations le rendent incontournable en pratique.
+        </p>
+
+        <div class="flex flex-col gap-6 mt-8">
+          <div class="flex gap-4">
+            <div class="shrink-0 size-8 rounded-full bg-primary/15 flex items-center justify-center font-bold text-primary text-sm" aria-hidden="true">1</div>
+            <div>
+              <p class="font-semibold text-dark">Arrêtés préfectoraux de zones à risque termites</p>
+              <p class="text-gray-500 text-sm mt-2 leading-relaxed">
+                Dans les communes classées en zone à risque par arrêté préfectoral, un état parasitaire incluant la recherche de termites est obligatoire pour toute vente. En Normandie, plusieurs communes du Calvados et de l'Orne sont concernées.
+              </p>
+            </div>
+          </div>
+
+          <div class="flex gap-4">
+            <div class="shrink-0 size-8 rounded-full bg-primary/15 flex items-center justify-center font-bold text-primary text-sm" aria-hidden="true">2</div>
+            <div>
+              <p class="font-semibold text-dark">Exigence des notaires</p>
+              <p class="text-gray-500 text-sm mt-2 leading-relaxed">
+                Même hors zone réglementée, la quasi-totalité des notaires normands recommandent ou exigent un état parasitaire pour les biens anciens (construits avant 1945) ou présentant un risque d'humidité. Sans ce document, certains acheteurs peuvent refuser de signer ou exiger une remise sur le prix.
+              </p>
+            </div>
+          </div>
+
+          <div class="flex gap-4">
+            <div class="shrink-0 size-8 rounded-full bg-primary/15 flex items-center justify-center font-bold text-primary text-sm" aria-hidden="true">3</div>
+            <div>
+              <p class="font-semibold text-dark">Protection contre le vice caché (loi Alur)</p>
+              <p class="text-gray-500 text-sm mt-2 leading-relaxed">
+                En cas de découverte de mérule ou d'infestation après la vente, le vendeur peut être poursuivi pour vice caché. Un état parasitaire réalisé avant la vente prouve votre bonne foi et vous protège juridiquement. La loi Alur impose d'ailleurs au vendeur d'informer l'acheteur de tout sinistre mérule connu.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Encadré d'alerte -->
+        <div class="mt-8 bg-amber-50 border border-amber-200 rounded-xl px-6 py-5">
+          <div class="flex gap-3">
+            <svg xmlns="http://www.w3.org/2000/svg" class="size-5 shrink-0 text-amber-600 mt-0.5" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+              <path fill-rule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clip-rule="evenodd" />
+            </svg>
+            <p class="text-sm text-amber-800 leading-relaxed">
+              <strong>En Normandie, la quasi-totalité des notaires demandent désormais un état parasitaire pour les biens anciens ou présentant un risque d'humidité.</strong> Ne pas le faire peut bloquer ou retarder votre vente.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 6. CTA MID-PAGE ===== -->
+  <section class="py-12 lg:py-16 bg-secondary">
+    <div class="container-content max-w-5xl">
+      <div class="bg-dark rounded-2xl px-6 py-10 sm:px-10 sm:py-14">
+        <h2 class="text-xl sm:text-2xl font-bold text-white text-center leading-snug">
+          Vérifiez l'état parasitaire de votre bien<br class="hidden sm:block" />
+          avant votre mise en vente
+        </h2>
+        <p class="text-white/60 text-sm sm:text-base text-center mt-4 leading-relaxed max-w-xl mx-auto">
+          Nos diagnostiqueurs certifiés interviennent sous 48h en Normandie. Rapport complet remis sous 3 jours ouvrés.
+        </p>
+        <div class="flex flex-col sm:flex-row items-center justify-center gap-3 mt-8">
+          <a
+            href="#devis"
+            class="w-full sm:w-auto bg-primary text-white px-6 py-3.5 rounded-lg font-semibold hover:bg-primary/85 transition-colors text-center text-sm sm:text-base"
+            aria-label="Obtenir un devis gratuit pour votre état parasitaire"
+          >
+            Obtenir un devis gratuit
+          </a>
+          <a
+            href="tel:0231156488"
+            class="w-full sm:w-auto flex items-center justify-center gap-2 bg-white/10 text-white px-6 py-3.5 rounded-lg font-semibold hover:bg-white/20 transition-colors text-sm sm:text-base"
+            aria-label="Appeler RITMODiag au 02 31 15 64 88"
+          >
+            <PhoneIcon class="size-5 shrink-0" />
+            02 31 15 64 88
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 7. REASSURANCE ===== -->
+  <Reassurance telephone={data.telephone} />
+
+  <!-- ===== 8. ZONE INTERVENTION ===== -->
+  <ZoneIntervention />
+
+  <!-- ===== 9. CONSEILLERS ===== -->
+  <Conseillers conseillers={data.sales_team} telephone={data.telephone} />
+
+  <!-- ===== 10. FAQ ===== -->
+  <section class="py-12 lg:py-16">
+    <div class="container-content max-w-3xl mx-auto">
+      <h2 class="text-2xl font-bold text-center mb-10">Questions fréquentes sur l'état parasitaire</h2>
+      <div class="flex flex-col divide-y divide-gray-200">
+        {faqItems.map((item) => (
+          <details class="group py-5">
+            <summary class="flex cursor-pointer items-center justify-between gap-4 font-semibold text-dark text-sm sm:text-base">
+              <span>{item.question}</span>
+              <svg class="size-5 shrink-0 text-gray-400 transition-transform duration-300 group-open:rotate-45" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                <path d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z" />
+              </svg>
+            </summary>
+            <p class="mt-3 text-gray-500 leading-relaxed text-sm">{item.reponse}</p>
+          </details>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 11. FORMULAIRE DEVIS ===== -->
+  <FormulaireDevis telephone={data.telephone} />
+</Layout>

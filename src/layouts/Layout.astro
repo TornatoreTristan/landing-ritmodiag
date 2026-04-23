@@ -18,11 +18,15 @@ interface Props {
 	telephone?: string
 	agence?: Agence
 	hideMobileCta?: boolean
+	ctaText?: string
+	ctaHref?: string
 }
 
 const defaultAgence = { ville: 'Ifs', adresse: '500 boulevard Charles Cros', code_postal: '14123' }
-const { title, description, ville, slug, telephone = '02 31 15 64 88', agence = defaultAgence, hideMobileCta } = Astro.props
+const { title, description, ville, slug, telephone = '02 31 15 64 88', agence = defaultAgence, hideMobileCta, ctaText, ctaHref } = Astro.props
 const simulateurHref = slug ? `/${slug}/simulateur` : '/caen/simulateur'
+const headerCtaText = ctaText || 'Estimez votre DPE'
+const headerCtaHref = ctaHref || simulateurHref
 const telHref = `tel:${telephone.replace(/\s/g, '')}`
 const metaDescription = description || "RITMODiag, votre partenaire de confiance pour vos diagnostics immobiliers, DPE et audits énergétiques en Normandie. Certifiés, réactifs et à votre écoute."
 const canonicalURL = new URL(Astro.url.pathname, Astro.site || 'https://ritmodiag.com')
@@ -127,8 +131,8 @@ const ogImage = new URL('/og-image.jpg', Astro.site || 'https://ritmodiag.com').
 					<img src={logo.src} alt="RITMODiag - Diagnostics immobiliers" width="150" height="40" />
 				</a>
 				<nav class="flex items-center gap-2" aria-label="Navigation principale">
-					<a href={simulateurHref} class="hidden sm:inline-flex bg-primary px-4 py-2.5 text-sm rounded-lg font-semibold text-white hover:bg-primary/85 transition-colors">
-						Estimez votre DPE
+					<a href={headerCtaHref} class="hidden sm:inline-flex bg-primary px-4 py-2.5 text-sm rounded-lg font-semibold text-white hover:bg-primary/85 transition-colors">
+						{headerCtaText}
 					</a>
 					<a href={telHref} class="inline-flex items-center gap-2 bg-dark text-white px-4 py-2.5 rounded-lg font-semibold hover:bg-dark/90 transition-colors text-sm" aria-label={`Appeler le ${telephone}`}>
 						<PhoneIcon class="size-4" />
@@ -145,8 +149,8 @@ const ogImage = new URL('/og-image.jpg', Astro.site || 'https://ritmodiag.com').
 		<!-- Sticky CTA mobile -->
 		<div class:list={["fixed bottom-0 inset-x-0 z-40 sm:hidden bg-white border-t border-gray-200 px-4 py-3 safe-area-bottom", hideMobileCta && "hidden"]}>
 			<div class="flex gap-2">
-				<a href={simulateurHref} class="flex-1 bg-primary text-white text-center py-3 rounded-lg font-semibold text-sm hover:bg-primary/85 transition-colors">
-					Estimez votre DPE
+				<a href={headerCtaHref} class="flex-1 bg-primary text-white text-center py-3 rounded-lg font-semibold text-sm hover:bg-primary/85 transition-colors">
+					{headerCtaText}
 				</a>
 				<a href={telHref} class="flex items-center justify-center bg-dark text-white px-4 py-3 rounded-lg hover:bg-dark/90 transition-colors" aria-label={`Appeler le ${telephone}`}>
 					<PhoneIcon />
