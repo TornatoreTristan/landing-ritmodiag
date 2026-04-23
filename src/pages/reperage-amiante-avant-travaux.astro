@@ -1,0 +1,437 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { Image } from 'astro:assets';
+import GoogleAvis from '../components/google-avis.astro';
+import PhoneIcon from '../components/phone-icon.astro';
+import Reassurance from '../components/reassurance.astro';
+import ZoneIntervention from '../components/zone-intervention.astro';
+import Conseillers from '../components/conseillers.astro';
+import FormulaireDevisAmiante from '../components/formulaire-devis-amiante.astro';
+import imgAmiante from '../assets/img/reperage-amiante-avant-travaux.JPG';
+import quadrillage from '../assets/img/Quadrillage.svg';
+import ornementRouge from '../assets/img/Ornement Rouge.svg';
+import ornementJaune from '../assets/img/Ornement Jaune.svg';
+import villes from '../data/villes.json';
+
+const data = villes.find((v) => v.slug === 'caen')!;
+
+const checkSvg = `<svg xmlns="http://www.w3.org/2000/svg" class="size-5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" /></svg>`;
+
+const faqItems = [
+  {
+    question: "Quelle est la différence entre le diagnostic amiante vente et le repérage amiante avant travaux ?",
+    reponse: "Le diagnostic amiante des parties privatives (DAP) est réalisé lors de la vente d'un bien construit avant 1997. Il identifie les matériaux amiantés mais n'est pas suffisant pour démarrer des travaux. Le repérage amiante avant travaux (RAAT) est un document réglementaire de travail, bien plus exhaustif, qui couvre toutes les zones du bâtiment susceptibles d'être touchées par le chantier."
+  },
+  {
+    question: "Mon bâtiment a un diagnostic amiante récent. Dois-je quand même commander un repérage avant travaux ?",
+    reponse: "Oui, dans la très grande majorité des cas. Le diagnostic amiante vente ne couvre pas l'ensemble du bâtiment avec la profondeur requise par la réglementation travaux. Le RAAT doit cibler spécifiquement les zones où les travaux sont prévus et peut inclure des sondages destructifs."
+  },
+  {
+    question: "Qui doit payer le repérage amiante avant travaux ?",
+    reponse: "C'est la responsabilité du donneur d'ordre (maître d'ouvrage). Qu'il soit un particulier faisant rénover sa maison, un syndic de copropriété, une entreprise ou une collectivité, c'est lui qui doit commander et financer le repérage."
+  },
+  {
+    question: "Combien de temps faut-il pour obtenir le rapport ?",
+    reponse: "RITMODiag s'engage à remettre le rapport complet sous 5 jours ouvrés après l'intervention sur site. En cas de prélèvements envoyés en laboratoire, le délai peut être légèrement allongé. Pour une urgence de chantier, contactez-nous directement au 02 31 15 64 88."
+  },
+  {
+    question: "Le repérage couvre-t-il tout le bâtiment ?",
+    reponse: "Non, le repérage avant travaux est défini par le programme de travaux. L'opérateur inspecte les zones directement concernées par le chantier, plus les zones connexes susceptibles d'être touchées."
+  },
+  {
+    question: "Vos opérateurs sont-ils bien certifiés pour le repérage avant travaux ?",
+    reponse: "Oui. Conformément au décret n°2011-629, nos opérateurs de repérage amiante sont certifiés de niveau 2 par un organisme accrédité par le COFRAC. Cette certification est obligatoire pour établir un rapport réglementaire avant travaux."
+  }
+];
+
+const faqSchema = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": faqItems.map((item) => ({
+    "@type": "Question",
+    "name": item.question,
+    "acceptedAnswer": {
+      "@type": "Answer",
+      "text": item.reponse
+    }
+  }))
+};
+---
+
+<Layout
+  title="Repérage Amiante Avant Travaux en Normandie | RITMODiag"
+  description="RITMODiag réalise votre repérage amiante avant travaux en Normandie. Opérateurs certifiés COFRAC niveau 2, rapport sous 5 jours ouvrés. Devis gratuit en ligne."
+  ctaText="Obtenez un devis gratuit"
+  ctaHref="#devis"
+>
+  <script type="application/ld+json" set:html={JSON.stringify(faqSchema)} />
+
+  <!-- ===== 1. HERO ===== -->
+  <section class="pt-8 pb-12 lg:pt-0 lg:pb-0 overflow-x-clip">
+    <div class="container-content flex flex-col lg:flex-row lg:items-center gap-8 lg:gap-12 lg:h-[calc(100vh-60px)]">
+      <!-- Contenu texte -->
+      <div class="flex flex-col gap-4 lg:flex-1 lg:max-w-xl xl:max-w-2xl">
+        <p class="text-gray-400 border-b border-gray-200 pb-2 text-sm">Diagnostic amiante avant travaux</p>
+        <h1 class="text-2xl sm:text-3xl lg:text-4xl font-bold leading-tight">
+          Repérage amiante avant travaux : <span class="text-primary">sécurisez votre chantier</span> et votre responsabilité
+        </h1>
+        <p class="text-base lg:text-lg text-gray-500">
+          RITMODiag réalise votre repérage amiante avant travaux en Normandie. Un rapport certifié pour protéger vos ouvriers et répondre à vos obligations réglementaires.
+        </p>
+
+        <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 mt-2">
+          <a
+            href="#devis"
+            class="bg-primary text-white px-6 py-3.5 rounded-lg font-semibold hover:bg-primary/85 transition-colors text-center text-sm sm:text-base"
+            aria-label="Obtenir un devis gratuit pour votre repérage amiante avant travaux"
+          >
+            Obtenir un devis gratuit
+          </a>
+          <a
+            href="tel:0231156488"
+            class="flex items-center justify-center gap-2 bg-dark text-white px-6 py-3.5 rounded-lg font-semibold hover:bg-dark/90 transition-colors text-sm sm:text-base"
+            aria-label="Appeler RITMODiag au 02 31 15 64 88"
+          >
+            <PhoneIcon class="size-5 shrink-0" />
+            02 31 15 64 88
+          </a>
+        </div>
+
+        <ul class="flex flex-col gap-2.5 mt-4" role="list">
+          <li class="flex items-center gap-2.5 font-semibold text-sm sm:text-base">
+            <span class="text-primary shrink-0" aria-hidden="true">
+              <Fragment set:html={checkSvg} />
+            </span>
+            Opérateurs certifiés niveau 2 COFRAC
+          </li>
+          <li class="flex items-center gap-2.5 font-semibold text-sm sm:text-base">
+            <span class="text-primary shrink-0" aria-hidden="true">
+              <Fragment set:html={checkSvg} />
+            </span>
+            Rapport sous 5 jours ouvrés
+          </li>
+          <li class="flex items-center gap-2.5 font-semibold text-sm sm:text-base">
+            <span class="text-primary shrink-0" aria-hidden="true">
+              <Fragment set:html={checkSvg} />
+            </span>
+            Valable SS3 et SS4
+          </li>
+          <li class="flex items-center gap-2.5 font-semibold text-sm sm:text-base">
+            <span class="text-primary shrink-0" aria-hidden="true">
+              <Fragment set:html={checkSvg} />
+            </span>
+            Recommandé par les maîtres d'ouvrage et architectes
+          </li>
+        </ul>
+
+        <GoogleAvis />
+      </div>
+
+      <!-- Visuel côté droit -->
+      <div class="hidden sm:block relative w-full lg:flex-1 lg:self-stretch lg:py-6">
+        <div class="overflow-hidden rounded-2xl h-full relative">
+          <Image
+            src={imgAmiante}
+            alt="Opérateur RITMODiag réalisant un repérage amiante avant travaux"
+            class="block w-full h-full object-cover"
+            loading="eager"
+          />
+          <img src={quadrillage.src} alt="" class="absolute -top-12.5 left-67 w-48 lg:w-120 rotate-90 origin-top-left z-20 pointer-events-none" aria-hidden="true" />
+          <img src={ornementJaune.src} alt="" class="absolute z-23 top-0 -left-70 w-64 lg:w-130 pointer-events-none" aria-hidden="true" />
+          <img src={ornementRouge.src} alt="" class="absolute bottom-0 left-70 w-64 lg:w-150 pointer-events-none rotate-90" aria-hidden="true" />
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 2. DÉFINITION ===== -->
+  <section class="py-12 lg:py-16">
+    <div class="container-content">
+      <div class="max-w-3xl mx-auto">
+        <span class="inline-block bg-dark/5 text-dark px-4 py-2 rounded-lg font-semibold text-sm">Distinct du diagnostic amiante vente</span>
+        <h2 class="text-2xl sm:text-3xl font-bold mt-6 leading-tight">
+          Qu'est-ce que le repérage amiante avant travaux ?
+        </h2>
+        <div class="mt-6 flex flex-col gap-6 text-gray-500 leading-relaxed">
+          <p>
+            Le repérage amiante avant travaux (RAAT) est un document réglementaire obligatoire avant tout chantier sur un bâtiment dont le permis de construire est antérieur au 1er juillet 1997. Ce diagnostic est distinct du diagnostic amiante des parties privatives (DAP) réalisé lors d'une vente immobilière. Il vise à identifier et localiser tous les matériaux contenant de l'amiante (MCA) susceptibles d'être affectés par les travaux envisagés.
+          </p>
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+            <div class="bg-secondary rounded-xl p-5">
+              <p class="font-bold text-dark">SS3 — Travaux non encadrés</p>
+              <p class="text-sm mt-2 leading-relaxed">Concerne les chantiers où les travailleurs ne sont pas formés au risque amiante. Le risque de libération de fibres est considéré comme faible. Le donneur d'ordre remet le rapport de repérage à l'entreprise intervenante.</p>
+            </div>
+            <div class="bg-secondary rounded-xl p-5">
+              <p class="font-bold text-dark">SS4 — Travaux encadrés</p>
+              <p class="text-sm mt-2 leading-relaxed">Concerne les chantiers à risque plus élevé : démolition, désamiantage, travaux sur des matériaux friables. Le rapport est plus détaillé et peut inclure des prélèvements et analyses en laboratoire.</p>
+            </div>
+            <div class="bg-secondary rounded-xl p-5">
+              <p class="font-bold text-dark">Responsabilité du maître d'ouvrage</p>
+              <p class="text-sm mt-2 leading-relaxed">Le donneur d'ordre (particulier, syndic, promoteur, entreprise) est légalement responsable de commander le repérage avant toute consultation d'entreprises de travaux.</p>
+            </div>
+          </div>
+          <!-- Encadré alerte amber -->
+          <div class="bg-amber-50 border border-amber-200 rounded-xl px-6 py-5">
+            <div class="flex gap-3">
+              <svg xmlns="http://www.w3.org/2000/svg" class="size-5 shrink-0 text-amber-600 mt-0.5" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                <path fill-rule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clip-rule="evenodd" />
+              </svg>
+              <p class="text-sm text-amber-800 leading-relaxed">
+                <strong>Sans rapport de repérage, le donneur d'ordre et le chef de chantier s'exposent à des sanctions pénales (article L. 4412-2 du code du travail).</strong>
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 3. CHIFFRES ===== -->
+  <section class="py-12 lg:py-16 bg-secondary">
+    <div class="container-content">
+      <div class="max-w-4xl mx-auto">
+        <h2 class="text-2xl sm:text-3xl font-bold text-center leading-tight">
+          L'amiante, encore très présent dans le bâti normand
+        </h2>
+
+        <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 mt-10">
+          <div class="bg-white rounded-2xl p-5 sm:p-6 text-center">
+            <p class="text-xl sm:text-2xl font-bold text-primary">3 000</p>
+            <p class="text-sm text-gray-500 mt-2 leading-snug">décès par an liés à l'amiante en France</p>
+          </div>
+          <div class="bg-white rounded-2xl p-5 sm:p-6 text-center">
+            <p class="text-xl sm:text-2xl font-bold text-primary">1er juil. 1997</p>
+            <p class="text-sm text-gray-500 mt-2 leading-snug">date butoir du permis de construire</p>
+          </div>
+          <div class="bg-white rounded-2xl p-5 sm:p-6 text-center">
+            <p class="text-xl sm:text-2xl font-bold text-primary">50 %</p>
+            <p class="text-sm text-gray-500 mt-2 leading-snug">des bâtiments avant 1997 contiennent de l'amiante</p>
+          </div>
+          <div class="bg-white rounded-2xl p-5 sm:p-6 text-center">
+            <p class="text-xl sm:text-2xl font-bold text-primary">15 ans</p>
+            <p class="text-sm text-gray-500 mt-2 leading-snug">délai de latence moyen avant apparition de la maladie</p>
+          </div>
+        </div>
+
+        <!-- Bloc sombre matériaux -->
+        <div class="bg-dark rounded-2xl px-6 py-8 sm:px-10 sm:py-10 mt-8">
+          <h3 class="text-white font-bold text-lg sm:text-xl mb-6 text-center">Les matériaux les plus souvent concernés en Normandie</h3>
+          <ul class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <li class="flex items-center gap-3 text-white/80 text-sm">
+              <span class="size-2 rounded-full bg-primary shrink-0" aria-hidden="true"></span>
+              Toitures en fibrociment
+            </li>
+            <li class="flex items-center gap-3 text-white/80 text-sm">
+              <span class="size-2 rounded-full bg-primary shrink-0" aria-hidden="true"></span>
+              Dalles de sol vinyle-amiante
+            </li>
+            <li class="flex items-center gap-3 text-white/80 text-sm">
+              <span class="size-2 rounded-full bg-primary shrink-0" aria-hidden="true"></span>
+              Calorifugeages
+            </li>
+            <li class="flex items-center gap-3 text-white/80 text-sm">
+              <span class="size-2 rounded-full bg-primary shrink-0" aria-hidden="true"></span>
+              Colles et enduits
+            </li>
+          </ul>
+        </div>
+
+        <p class="text-xs text-gray-400 text-center mt-4">Source : ANSES / InVS, données épidémiologiques amiante</p>
+
+        <div class="flex justify-center mt-8">
+          <a
+            href="#devis"
+            class="bg-primary text-white px-6 py-3.5 rounded-lg font-semibold hover:bg-primary/85 transition-colors text-sm sm:text-base"
+            aria-label="Commander un repérage amiante avant travaux"
+          >
+            Commander un repérage →
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 4. DÉROULEMENT ===== -->
+  <section class="py-12 lg:py-16">
+    <div class="container-content">
+      <div class="max-w-3xl mx-auto">
+        <div class="text-center mb-10 flex flex-col gap-4 items-center">
+          <h2 class="text-2xl sm:text-3xl font-bold leading-tight">Comment se déroule le repérage amiante avant travaux ?</h2>
+          <p class="text-gray-500 text-base lg:text-lg leading-relaxed max-w-xl">
+            Une intervention réglementaire en 4 étapes, réalisée par un opérateur certifié niveau 2
+          </p>
+        </div>
+
+        <div class="flex flex-col gap-4">
+          <div class="bg-secondary rounded-2xl p-6 sm:p-8 flex gap-5">
+            <div class="shrink-0 size-10 rounded-full bg-primary/15 flex items-center justify-center font-bold text-primary text-lg" aria-hidden="true">1</div>
+            <div>
+              <p class="font-bold text-dark text-base sm:text-lg">Réception du dossier</p>
+              <p class="text-gray-500 text-sm mt-2 leading-relaxed">
+                Le donneur d'ordre transmet les plans du bâtiment et la description des travaux prévus. Validation du devis sous 24h.
+              </p>
+            </div>
+          </div>
+
+          <div class="bg-secondary rounded-2xl p-6 sm:p-8 flex gap-5">
+            <div class="shrink-0 size-10 rounded-full bg-primary/15 flex items-center justify-center font-bold text-primary text-lg" aria-hidden="true">2</div>
+            <div>
+              <p class="font-bold text-dark text-base sm:text-lg">Visite de repérage sur site</p>
+              <p class="text-gray-500 text-sm mt-2 leading-relaxed">
+                L'opérateur certifié inspecte les zones concernées, réalise des sondages et prélèvements si nécessaire. Durée : 1 à 3h.
+              </p>
+            </div>
+          </div>
+
+          <div class="bg-secondary rounded-2xl p-6 sm:p-8 flex gap-5">
+            <div class="shrink-0 size-10 rounded-full bg-primary/15 flex items-center justify-center font-bold text-primary text-lg" aria-hidden="true">3</div>
+            <div>
+              <p class="font-bold text-dark text-base sm:text-lg">Analyse en laboratoire</p>
+              <p class="text-gray-500 text-sm mt-2 leading-relaxed">
+                Les échantillons sont envoyés à un laboratoire accrédité COFRAC pour analyse META. Délai variable selon le laboratoire.
+              </p>
+            </div>
+          </div>
+
+          <div class="bg-secondary rounded-2xl p-6 sm:p-8 flex gap-5">
+            <div class="shrink-0 size-10 rounded-full bg-primary/15 flex items-center justify-center font-bold text-primary text-lg" aria-hidden="true">4</div>
+            <div>
+              <p class="font-bold text-dark text-base sm:text-lg">Remise du rapport</p>
+              <p class="text-gray-500 text-sm mt-2 leading-relaxed">
+                Rapport complet avec liste des MCA et préconisations. Remis sous 5 jours ouvrés après intervention.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div class="mt-6 border border-gray-200 rounded-xl px-6 py-4 flex items-center gap-3">
+          <span class="text-primary shrink-0" aria-hidden="true">
+            <Fragment set:html={checkSvg} />
+          </span>
+          <p class="text-sm text-gray-500">Le rapport est remis sous <strong class="text-dark">5 jours ouvrés</strong>. En cas d'urgence, contactez-nous directement.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 5. CADRE LÉGAL ===== -->
+  <section class="py-12 lg:py-16 bg-white">
+    <div class="container-content">
+      <div class="max-w-3xl mx-auto">
+        <h2 class="text-2xl sm:text-3xl font-bold leading-tight">
+          Qui est concerné et dans quels cas ?
+        </h2>
+        <p class="text-gray-500 mt-4 leading-relaxed">
+          Instauré par le décret du 4 mai 2012 et encadré par le code du travail, le repérage amiante avant travaux s'impose à tous les donneurs d'ordre dès lors que le bâtiment est susceptible de contenir de l'amiante.
+        </p>
+
+        <div class="flex flex-col gap-6 mt-8">
+          <div class="flex gap-4">
+            <div class="shrink-0 size-8 rounded-full bg-primary/15 flex items-center justify-center font-bold text-primary text-sm" aria-hidden="true">1</div>
+            <div>
+              <p class="font-semibold text-dark">Tout bâtiment dont le permis de construire est antérieur au 1er juillet 1997</p>
+              <p class="text-gray-500 text-sm mt-2 leading-relaxed">
+                Maisons individuelles, immeubles collectifs, locaux industriels, établissements recevant du public (ERP) : tous sont concernés dès lors que le permis de construire est antérieur à cette date.
+              </p>
+            </div>
+          </div>
+
+          <div class="flex gap-4">
+            <div class="shrink-0 size-8 rounded-full bg-primary/15 flex items-center justify-center font-bold text-primary text-sm" aria-hidden="true">2</div>
+            <div>
+              <p class="font-semibold text-dark">Avant tout type de travaux</p>
+              <p class="text-gray-500 text-sm mt-2 leading-relaxed">
+                Rénovation, démolition, réhabilitation, opérations de maintenance susceptibles de perturber des matériaux : toute intervention sur le bâti est concernée.
+              </p>
+            </div>
+          </div>
+
+          <div class="flex gap-4">
+            <div class="shrink-0 size-8 rounded-full bg-primary/15 flex items-center justify-center font-bold text-primary text-sm" aria-hidden="true">3</div>
+            <div>
+              <p class="font-semibold text-dark">Le donneur d'ordre est responsable</p>
+              <p class="text-gray-500 text-sm mt-2 leading-relaxed">
+                Qu'il soit particulier, promoteur, syndic de copropriété ou entreprise, c'est le donneur d'ordre qui supporte la responsabilité légale de faire réaliser le repérage avant tout lancement de chantier.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Encadré d'alerte -->
+        <div class="mt-8 bg-amber-50 border border-amber-200 rounded-xl px-6 py-5">
+          <div class="flex gap-3">
+            <svg xmlns="http://www.w3.org/2000/svg" class="size-5 shrink-0 text-amber-600 mt-0.5" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+              <path fill-rule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clip-rule="evenodd" />
+            </svg>
+            <p class="text-sm text-amber-800 leading-relaxed">
+              <strong>En cas de sinistre sur le chantier, l'absence de rapport de repérage engage directement la responsabilité pénale du donneur d'ordre.</strong>
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 6. CTA MID-PAGE ===== -->
+  <section class="py-12 lg:py-16 bg-secondary">
+    <div class="container-content max-w-5xl">
+      <div class="bg-dark rounded-2xl px-6 py-10 sm:px-10 sm:py-14">
+        <h2 class="text-xl sm:text-2xl font-bold text-white text-center leading-snug">
+          Commandez votre repérage amiante avant travaux
+        </h2>
+        <p class="text-white/60 text-sm sm:text-base text-center mt-4 leading-relaxed max-w-xl mx-auto">
+          Opérateurs certifiés COFRAC. Rapport remis sous 5 jours ouvrés. Intervention en Normandie.
+        </p>
+        <div class="flex flex-col sm:flex-row items-center justify-center gap-3 mt-8">
+          <a
+            href="#devis"
+            class="w-full sm:w-auto bg-primary text-white px-6 py-3.5 rounded-lg font-semibold hover:bg-primary/85 transition-colors text-center text-sm sm:text-base"
+            aria-label="Obtenir un devis gratuit pour votre repérage amiante avant travaux"
+          >
+            Obtenir un devis gratuit
+          </a>
+          <a
+            href="tel:0231156488"
+            class="w-full sm:w-auto flex items-center justify-center gap-2 bg-white/10 text-white px-6 py-3.5 rounded-lg font-semibold hover:bg-white/20 transition-colors text-sm sm:text-base"
+            aria-label="Appeler RITMODiag au 02 31 15 64 88"
+          >
+            <PhoneIcon class="size-5 shrink-0" />
+            02 31 15 64 88
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 7. REASSURANCE ===== -->
+  <Reassurance telephone={data.telephone} />
+
+  <!-- ===== 8. ZONE INTERVENTION ===== -->
+  <ZoneIntervention />
+
+  <!-- ===== 9. CONSEILLERS ===== -->
+  <Conseillers conseillers={data.sales_team} telephone={data.telephone} />
+
+  <!-- ===== 10. FAQ ===== -->
+  <section class="py-12 lg:py-16">
+    <div class="container-content max-w-3xl mx-auto">
+      <h2 class="text-2xl font-bold text-center mb-10">Questions fréquentes sur le repérage amiante avant travaux</h2>
+      <div class="flex flex-col divide-y divide-gray-200">
+        {faqItems.map((item) => (
+          <details class="group py-5">
+            <summary class="flex cursor-pointer items-center justify-between gap-4 font-semibold text-dark text-sm sm:text-base">
+              <span>{item.question}</span>
+              <svg class="size-5 shrink-0 text-gray-400 transition-transform duration-300 group-open:rotate-45" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                <path d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z" />
+              </svg>
+            </summary>
+            <p class="mt-3 text-gray-500 leading-relaxed text-sm">{item.reponse}</p>
+          </details>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 11. FORMULAIRE DEVIS ===== -->
+  <FormulaireDevisAmiante telephone={data.telephone} />
+</Layout>

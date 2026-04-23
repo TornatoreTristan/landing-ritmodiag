@@ -1,0 +1,223 @@
+---
+interface Props {
+  telephone?: string
+}
+
+const { telephone = '02 31 15 64 88' } = Astro.props
+const telHref = `tel:${telephone.replace(/\s/g, '')}`
+---
+
+<section id="devis" class="py-12 lg:py-16 bg-secondary scroll-mt-20" data-phone={telephone}>
+  <div class="container-content max-w-3xl mx-auto">
+
+    <!-- En-tête -->
+    <div class="mb-8">
+      <span class="inline-block bg-dark/5 text-dark px-4 py-2 rounded-lg font-semibold text-sm">Devis gratuit sous 24h</span>
+      <h2 class="text-2xl sm:text-3xl font-bold mt-6 leading-tight">
+        Obtenez votre devis repérage amiante avant travaux
+      </h2>
+      <p class="text-gray-500 mt-3 text-base leading-relaxed">
+        Remplissez ce formulaire, notre équipe vous contacte sous 24h pour établir votre devis personnalisé.
+      </p>
+    </div>
+
+    <!-- Formulaire -->
+    <!-- Même liste Listmonk que etat-parasitaire — à remplacer par une liste dédiée quand elle sera créée -->
+    <div id="form-wrapper-amiante" class="bg-white rounded-2xl p-6 sm:p-8 shadow-sm">
+      <iframe name="listmonk-frame" class="hidden" aria-hidden="true" tabindex="-1"></iframe>
+      <form
+        id="devis-form-amiante"
+        action="https://mailing.spines.fr/subscription/form"
+        method="POST"
+        target="listmonk-frame"
+      >
+        <input type="hidden" name="l" value="7246c0ba-8eda-418f-9719-7709a2a0a640" />
+
+        <div class="flex flex-col gap-5">
+
+          <!-- Nom et Prénom -->
+          <div>
+            <label for="amiante-nom" class="text-sm font-semibold text-dark block mb-1.5">
+              Nom et Prénom <span aria-hidden="true" class="text-primary">*</span>
+            </label>
+            <input
+              type="text"
+              id="amiante-nom"
+              name="name"
+              required
+              minlength="2"
+              aria-required="true"
+              autocomplete="name"
+              placeholder="Marie Dupont"
+              class="w-full border border-gray-200 rounded-lg px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary/40 focus:border-primary"
+            />
+          </div>
+
+          <!-- Email + Téléphone -->
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
+            <div>
+              <label for="amiante-email" class="text-sm font-semibold text-dark block mb-1.5">
+                Email <span aria-hidden="true" class="text-primary">*</span>
+              </label>
+              <input
+                type="email"
+                id="amiante-email"
+                name="email"
+                required
+                aria-required="true"
+                autocomplete="email"
+                placeholder="marie@exemple.fr"
+                class="w-full border border-gray-200 rounded-lg px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary/40 focus:border-primary"
+              />
+            </div>
+            <div>
+              <label for="amiante-tel" class="text-sm font-semibold text-dark block mb-1.5">
+                Téléphone <span class="text-xs text-gray-400 font-normal">(optionnel)</span>
+              </label>
+              <input
+                type="tel"
+                id="amiante-tel"
+                name="telephone"
+                pattern="[0-9 +()\-]{7,20}"
+                autocomplete="tel"
+                placeholder="06 12 34 56 78"
+                class="w-full border border-gray-200 rounded-lg px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary/40 focus:border-primary"
+              />
+            </div>
+          </div>
+
+          <!-- Adresse du bien -->
+          <div>
+            <label for="amiante-adresse" class="text-sm font-semibold text-dark block mb-1.5">
+              Adresse du bien <span class="text-xs text-gray-400 font-normal">(optionnel)</span>
+            </label>
+            <input
+              type="text"
+              id="amiante-adresse"
+              name="adresse"
+              autocomplete="street-address"
+              placeholder="12 rue de la Paix, 14000 Caen"
+              class="w-full border border-gray-200 rounded-lg px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary/40 focus:border-primary"
+            />
+          </div>
+
+          <!-- Type de travaux prévus -->
+          <div>
+            <label for="amiante-type-travaux" class="text-sm font-semibold text-dark block mb-1.5">
+              Type de travaux prévus <span class="text-xs text-gray-400 font-normal">(optionnel)</span>
+            </label>
+            <input
+              type="text"
+              id="amiante-type-travaux"
+              name="type_travaux"
+              placeholder="Ex. : rénovation toiture, démolition cloisons, ravalement..."
+              class="w-full border border-gray-200 rounded-lg px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary/40 focus:border-primary"
+            />
+          </div>
+
+          <!-- Superficie -->
+          <div class="sm:w-1/2">
+            <label for="amiante-superficie" class="text-sm font-semibold text-dark block mb-1.5">
+              Superficie en m² <span class="text-xs text-gray-400 font-normal">(optionnel)</span>
+            </label>
+            <input
+              type="number"
+              id="amiante-superficie"
+              name="superficie"
+              min="1"
+              step="1"
+              placeholder="85"
+              class="w-full border border-gray-200 rounded-lg px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary/40 focus:border-primary"
+            />
+          </div>
+
+          <!-- Bouton submit -->
+          <div class="pt-2">
+            <button
+              type="submit"
+              class="bg-primary text-white w-full sm:w-auto px-8 py-3.5 rounded-lg font-semibold hover:bg-primary/85 transition-colors cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              Demander un devis gratuit
+            </button>
+          </div>
+
+        </div>
+      </form>
+    </div>
+
+    <!-- Message de succès -->
+    <div
+      id="form-success-amiante"
+      role="status"
+      aria-live="polite"
+      class="hidden bg-white rounded-2xl p-8 sm:p-12 shadow-sm text-center"
+    >
+      <div class="flex items-center justify-center size-14 rounded-full bg-primary/10 mx-auto mb-6">
+        <svg xmlns="http://www.w3.org/2000/svg" class="size-7 text-primary" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+          <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
+        </svg>
+      </div>
+      <h3 class="text-xl font-bold text-dark">Demande envoyée !</h3>
+      <p class="text-gray-500 mt-3 leading-relaxed">
+        Votre demande a bien été envoyée. Notre équipe vous contacte sous 24h.
+      </p>
+      <p class="text-gray-500 mt-4 text-sm">
+        Besoin d'une réponse immédiate ? Appelez-nous au
+        <a href={telHref} class="text-primary font-semibold hover:underline">{telephone}</a>
+      </p>
+    </div>
+
+  </div>
+</section>
+
+<script>
+  // Même webhook que etat-parasitaire : le routage se fait via le champ 'source'
+  const N8N_WEBHOOK = 'https://n8n.spines.fr/webhook/e7c7a55f-e665-4690-9282-d1796e42502c';
+
+  const form = document.getElementById('devis-form-amiante') as HTMLFormElement | null;
+  const wrapper = document.getElementById('form-wrapper-amiante');
+  const success = document.getElementById('form-success-amiante');
+  const iframe = document.querySelector('iframe[name="listmonk-frame"]') as HTMLIFrameElement | null;
+  const submitBtn = form?.querySelector('button[type="submit"]') as HTMLButtonElement | null;
+
+  // Capturer le gclid depuis l'URL (ajouté par Google Ads au clic)
+  const params = new URLSearchParams(window.location.search);
+  const gclid = params.get('gclid') || '';
+
+  form?.addEventListener('submit', () => {
+    if (submitBtn) {
+      submitBtn.disabled = true;
+      submitBtn.textContent = 'Envoi en cours\u2026';
+    }
+
+    // Envoi parallèle vers n8n
+    const formData = new FormData(form);
+    fetch(N8N_WEBHOOK, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        nom: formData.get('name') || '',
+        email: formData.get('email') || '',
+        telephone: formData.get('telephone') || '',
+        adresse: formData.get('adresse') || '',
+        type_travaux: formData.get('type_travaux') || '',
+        superficie: formData.get('superficie') || '',
+        gclid,
+        source: 'reperage-amiante-avant-travaux',
+        page_url: window.location.href,
+        submitted_at: new Date().toISOString()
+      })
+    }).catch(() => {}); // Fire-and-forget, ne bloque pas le flow Listmonk
+  });
+
+  iframe?.addEventListener('load', () => {
+    // Ignore le premier load (iframe vide au chargement de la page)
+    if (!submitBtn?.disabled) return;
+    if (wrapper) wrapper.classList.add('hidden');
+    if (success) success.classList.remove('hidden');
+
+    // Événement dataLayer pour conversions Google Ads / Facebook Ads
+    window.dataLayer = window.dataLayer || [];
+    window.dataLayer.push({ event: 'lead-amiante-travaux' });
+  });
+</script>
