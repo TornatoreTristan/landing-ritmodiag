@@ -1,0 +1,121 @@
+media:
+  - name: img
+    label: Images générales
+    input: src/assets/img
+    output: ""
+    extensions: [jpg, jpeg, png, webp, svg]
+  - name: equipe
+    label: Photos équipe
+    input: src/assets/img/equipe
+    output: ""
+    extensions: [jpg, jpeg, png, webp]
+
+content:
+  - name: villes
+    label: Villes (landings)
+    type: file
+    path: src/data/villes.json
+    format: json
+    list: true
+    view:
+      fields: [city_name, slug, departements, telephone]
+      primary: city_name
+      default:
+        sort: city_name
+        order: asc
+    fields:
+      - name: slug
+        label: Slug (URL)
+        type: string
+        required: true
+        pattern:
+          regex: "^[a-z0-9-]+$"
+          message: "Lettres minuscules, chiffres et tirets uniquement"
+      - name: city_name
+        label: Nom de la ville
+        type: string
+        required: true
+      - name: header_image
+        label: Image d'en-tête
+        type: image
+        options:
+          media: img
+      - name: id_crm
+        label: ID CRM
+        type: string
+      - name: iframe_simulateur
+        label: URL iframe simulateur
+        type: string
+      - name: telephone
+        label: Téléphone
+        type: string
+      - name: email_contact
+        label: Email de contact
+        type: string
+      - name: departements
+        label: Départements couverts
+        type: string
+      - name: mode
+        label: Mode d'affichage équipe
+        type: select
+        options:
+          values:
+            - { value: solo, label: "Solo (1 diagnostiqueur)" }
+            - { value: team, label: "Équipe" }
+          default: team
+      - name: seo_titre
+        label: Titre SEO
+        type: string
+      - name: seo_desc
+        label: Meta description SEO
+        type: text
+      - name: agence
+        label: Agence
+        type: object
+        fields:
+          - { name: ville, label: Ville, type: string }
+          - { name: adresse, label: Adresse, type: string }
+          - { name: code_postal, label: Code postal, type: string }
+          - { name: description, label: Description, type: text }
+      - name: franchises
+        label: Franchises liées
+        type: string
+        list: true
+      - name: sales_team
+        label: Équipe commerciale
+        type: object
+        list: true
+        fields:
+          - { name: nom, label: Nom, type: string }
+          - { name: role, label: Rôle, type: string }
+          - name: photo
+            label: Photo
+            type: image
+            options:
+              media: equipe
+          - { name: email, label: Email, type: string }
+          - { name: telephone, label: Téléphone, type: string }
+      - name: technical_team
+        label: Équipe technique
+        type: object
+        list: true
+        fields:
+          - { name: nom, label: Nom, type: string }
+          - { name: role, label: Rôle, type: string }
+          - name: photo
+            label: Photo
+            type: image
+            options:
+              media: equipe
+      - name: avis
+        label: Avis clients
+        type: object
+        list: true
+        fields:
+          - { name: auteur, label: Auteur, type: string }
+          - name: note
+            label: Note
+            type: number
+            options: { min: 1, max: 5, step: 1 }
+          - { name: texte, label: Texte de l'avis, type: text }
+          - { name: photo, label: URL photo (pravatar/avatar), type: string }
