@@ -2,12 +2,14 @@
   {
     "slug": "caen",
     "city_name": "Caen",
-    "header_image": "caen-diagnostics-immobilier-dpe.jpg",
-    "id_crm": "",
+    "header_image": "/caen-diagnostics-immobilier-dpe.jpg",
     "iframe_simulateur": "https://backbone.ritmodiag.com/embed/wizard/53bb7b6d30a17fdb67cb7683a19d482b85d81036263ccb30473aeeeda7afbc72",
     "telephone": "02 31 15 64 88",
     "email_contact": "contact@ritmodiag.com",
     "departements": "Calvados, Manche et Orne",
+    "mode": "team",
+    "seo_titre": "DPE et Diagnostics Immobiliers à Caen (14) - RITMODiag",
+    "seo_desc": "Votre diagnostic immobilier certifié à Caen. Devis en ligne immédiat et intervention sous 24h pour votre DPE.",
     "agence": {
       "ville": "Ifs",
       "adresse": "500 boulevard Charles Cros",
@@ -24,21 +26,18 @@
       "Strasbourg",
       "Vierzon"
     ],
-    "mode": "team",
-    "seo_titre": "DPE et Diagnostics Immobiliers à Caen (14) - RITMODiag",
-    "seo_desc": "Votre diagnostic immobilier certifié à Caen. Devis en ligne immédiat et intervention sous 24h pour votre DPE.",
     "sales_team": [
       {
         "nom": "Margot LADROUE",
         "role": "Conseillère",
-        "photo": "Margot-ladroue-diagnostiqueur-immobilier-ritmodiag.png",
+        "photo": "/Margot-ladroue-diagnostiqueur-immobilier-ritmodiag.png",
         "email": "margot.ladroue@ritmodiag.com",
         "telephone": "07 43 15 92 47"
       },
       {
         "nom": "Hugo BELLIARD",
         "role": "Conseiller",
-        "photo": "Hugo-belliard-diagnostiqueur-immobilier-ritmodiag.png",
+        "photo": "/Hugo-belliard-diagnostiqueur-immobilier-ritmodiag.png",
         "email": "hugo.belliard@ritmoaudit.com",
         "telephone": "07 69 33 41 00"
       }
@@ -47,32 +46,32 @@
       {
         "nom": "Antonin SBETTA",
         "role": "Gérant & Diagnostiqueur Immobilier",
-        "photo": "Antonin-SBETTA-diagnostiqueur-immobilier-ritmodiag.png"
+        "photo": "/Antonin-SBETTA-diagnostiqueur-immobilier-ritmodiag.png"
       },
       {
         "nom": "Mickaël CUESTA",
         "role": "Diagnostiqueur Immobilier",
-        "photo": "Mickael-CUESTA-diagnostiqueur-immobilier-ritmodiag.png"
+        "photo": "/Mickael-CUESTA-diagnostiqueur-immobilier-ritmodiag.png"
       },
       {
         "nom": "Nassim CHAARYA",
         "role": "Diagnostiqueur Immobilier",
-        "photo": "Nassim-CHAARYA-diagnostiqueur-immobilier-ritmodiag.png"
+        "photo": "/Nassim-CHAARYA-diagnostiqueur-immobilier-ritmodiag.png"
       },
       {
         "nom": "Damien LAUMAILLÉE",
         "role": "Diagnostiqueur Immobilier",
-        "photo": "Damien-Laumailleediagnostiqueur-immobilier-ritmodiag.png"
+        "photo": "/Damien-Laumailleediagnostiqueur-immobilier-ritmodiag.png"
       },
       {
         "nom": "Rachel GILLET",
         "role": "Diagnostiqueur Immobilier",
-        "photo": "Rachel-GILLET-diagnostiqueur-immobilier-ritmodiag.png"
+        "photo": "/Rachel-GILLET-diagnostiqueur-immobilier-ritmodiag.png"
       },
       {
         "nom": "Alexandre GONCALVES",
         "role": "Diagnostiqueur Immobilier",
-        "photo": "Alexandre-Congalves-diagnostiqueur-immobilier-ritmodiag.png"
+        "photo": "/Alexandre-Congalves-diagnostiqueur-immobilier-ritmodiag.png"
       }
     ],
     "avis": [
@@ -165,15 +164,16 @@
   {
     "slug": "angers",
     "city_name": "Angers",
-    "header_image": "ritmodiag-angers-dpe.jpg",
-    "id_crm": "",
+    "header_image": "/ritmodiag-angers-dpe.jpg",
     "iframe_simulateur": "https://backbone.ritmodiag.com/embed/wizard/53bb7b6d30a17fdb67cb7683a19d482b85d81036263ccb30473aeeeda7afbc72",
     "telephone": "06 73 62 03 84",
     "email_contact": "angers@ritmodiag.com",
     "departements": "Maine-et-Loire",
+    "mode": "solo",
+    "seo_titre": "DPE et Diagnostics Immobiliers à Angers (49) - RITMODiag",
+    "seo_desc": "Votre diagnostic immobilier certifié à Angers. Devis en ligne immédiat et intervention sous 24h pour votre DPE.",
     "agence": {
       "ville": "Angers",
-      "adresse": "",
       "code_postal": "49000",
       "description": "Nous intervenons dans tout Angers et ses alentours."
     },
@@ -186,15 +186,11 @@
       "Strasbourg",
       "Vierzon"
     ],
-    "mode": "solo",
-    "seo_titre": "DPE et Diagnostics Immobiliers à Angers (49) - RITMODiag",
-    "seo_desc": "Votre diagnostic immobilier certifié à Angers. Devis en ligne immédiat et intervention sous 24h pour votre DPE.",
-    "sales_team": [],
     "technical_team": [
       {
         "nom": "Mathieu HESLOT",
         "role": "Gérant & Diagnostiqueur Immobilier",
-        "photo": "Mathieu-heslot-diagnostiqueur-immobilier-dpe-angers.png"
+        "photo": "/Mathieu-heslot-diagnostiqueur-immobilier-dpe-angers.png"
       }
     ],
     "avis": [
@@ -251,12 +247,14 @@
   {
     "slug": "le-havre",
     "city_name": "Le Havre",
-    "header_image": "dpe-ritmodiag-lehavre.jpeg",
-    "id_crm": "",
+    "header_image": "/dpe-ritmodiag-lehavre.jpeg",
     "iframe_simulateur": "https://backbone.ritmodiag.com/embed/wizard/53bb7b6d30a17fdb67cb7683a19d482b85d81036263ccb30473aeeeda7afbc72",
     "telephone": "02 32 79 97 48",
     "email_contact": "lehavre@ritmodiag.com",
     "departements": "Seine-Maritime",
+    "mode": "solo",
+    "seo_titre": "DPE et Diagnostics Immobiliers au Havre (76) - RITMODiag",
+    "seo_desc": "Votre diagnostic immobilier certifié au Havre. Devis en ligne immédiat et intervention sous 24h pour votre DPE.",
     "agence": {
       "ville": "Le Havre",
       "adresse": "Le Havre",
@@ -273,15 +271,11 @@
       "Strasbourg",
       "Vierzon"
     ],
-    "mode": "solo",
-    "seo_titre": "DPE et Diagnostics Immobiliers au Havre (76) - RITMODiag",
-    "seo_desc": "Votre diagnostic immobilier certifié au Havre. Devis en ligne immédiat et intervention sous 24h pour votre DPE.",
-    "sales_team": [],
     "technical_team": [
       {
         "nom": "Dov SASPORTAS",
         "role": "Gérant & Diagnostiqueur Immobilier",
-        "photo": "ritmodiag-lehavre-dov-sasportas-dpe.png"
+        "photo": "/ritmodiag-lehavre-dov-sasportas-dpe.png"
       }
     ],
     "avis": [
@@ -394,5 +388,10 @@
         "photo": "https://i.pravatar.cc/80?img=38"
       }
     ]
+  },
+  {
+    "slug": "vierzon",
+    "city_name": "Vierzon",
+    "header_image": "/ritmodiag-vierzon.jpg"
   }
 ]
