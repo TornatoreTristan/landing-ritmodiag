@@ -15,9 +15,9 @@ import AvisMobile from '../components/avis-mobile.astro';
 import villes from '../data/villes.json';
 
 const data = villes[0];
-const allReviews = villes.flatMap((v) => v.avis).slice(0, 5);
-const allTechnicalTeam = villes.flatMap((v) => v.technical_team);
-const allSalesTeam = villes.flatMap((v) => v.sales_team);
+const allReviews = villes.flatMap((v) => v.avis ?? []).slice(0, 5);
+const allTechnicalTeam = villes.flatMap((v) => v.technical_team ?? []);
+const allSalesTeam = villes.flatMap((v) => v.sales_team ?? []);
 ---
 
 <Layout title="RITMODiag — Diagnostics Immobiliers, DPE et Audits Énergétiques" description="RITMODiag, votre partenaire de confiance pour vos diagnostics immobiliers, DPE et audits énergétiques. Certifiés, réactifs et à votre écoute. Devis en ligne immédiat.">

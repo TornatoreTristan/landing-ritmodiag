@@ -3,10 +3,15 @@ import Layout from '../../layouts/Layout.astro';
 import villes from '../../data/villes.json';
 
 export async function getStaticPaths() {
-  return villes.map((f) => ({
-    params: { ville: f.slug },
-    props: { data: f },
-  }));
+  return villes
+    .filter((f) =>
+      Array.isArray(f.technical_team) && f.technical_team.length > 0 &&
+      Array.isArray(f.avis) && f.avis.length > 0
+    )
+    .map((f) => ({
+      params: { ville: f.slug },
+      props: { data: f },
+    }));
 }
 
 const { data } = Astro.props;

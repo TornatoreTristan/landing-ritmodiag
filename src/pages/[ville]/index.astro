@@ -13,15 +13,20 @@ import villes from '../../data/villes.json';
 const headerImages = import.meta.glob<{ default: ImageMetadata }>('../../assets/img/*.{jpg,jpeg,png,webp}', { eager: true })
 
 export async function getStaticPaths() {
-  return villes.map((f) => ({
-    params: { ville: f.slug },
-    props: { data: f },
-  }));
+  return villes
+    .filter((f) =>
+      Array.isArray(f.technical_team) && f.technical_team.length > 0 &&
+      Array.isArray(f.avis) && f.avis.length > 0
+    )
+    .map((f) => ({
+      params: { ville: f.slug },
+      props: { data: f },
+    }));
 }
 
 const { data } = Astro.props;
 const telHref = `tel:${data.telephone.replace(/\s/g, '')}`
-const headerImage = headerImages[`../../assets/img/${data.header_image}`]?.default
+const headerImage = headerImages[`../../assets/img/${data.header_image.replace(/^\//, '')}`]?.default
 ---
 
 <Layout title={data.seo_titre} description={data.seo_desc} ville={data.city_name} slug={data.slug} telephone={data.telephone} agence={data.agence}>
@@ -51,7 +56,9 @@ const headerImage = headerImages[`../../assets/img/${data.header_image}`]?.defau
 
 	<ZoneIntervention agence={data.agence} franchises={data.franchises} />
 
-	<Conseillers conseillers={data.sales_team} telephone={data.telephone} />
+	{data.sales_team && data.sales_team.length > 0 && (
+		<Conseillers conseillers={data.sales_team} telephone={data.telephone} />
+	)}
 
 	<Faq ville={data.city_name} />
 </Layout>

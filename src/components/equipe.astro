@@ -20,7 +20,7 @@ const { equipe, ville, mode = 'team' } = Astro.props
 const images = import.meta.glob<{ default: ImageMetadata }>('../assets/img/equipe/*.{jpg,jpeg,png,webp}', { eager: true })
 
 const solo = mode === 'solo' ? equipe[0] : null
-const soloImg = solo ? images[`../assets/img/equipe/${solo.photo}`] : null
+const soloImg = solo ? images[`../assets/img/equipe/${solo.photo.replace(/^\//, '')}`] : null
 ---
 
 {mode === 'solo' && solo ? (
@@ -68,7 +68,7 @@ const soloImg = solo ? images[`../assets/img/equipe/${solo.photo}`] : null
       </div>
       <div class="grid grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
         {equipe.map((membre) => {
-          const imgPath = `../assets/img/equipe/${membre.photo}`
+          const imgPath = `../assets/img/equipe/${membre.photo.replace(/^\//, '')}`
           const img = images[imgPath]
           return (
             <div class="overflow-hidden rounded-lg">
