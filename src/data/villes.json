@@ -392,6 +392,18 @@
   {
     "slug": "vierzon",
     "city_name": "Vierzon",
-    "header_image": "/ritmodiag-vierzon.jpg"
+    "header_image": "/ritmodiag-vierzon.jpg",
+    "iframe_simulateur": "https://backbone.ritmodiag.com/embed/wizard/76483457bafdb227cfa13532617647fb0699405646516c3ba40a901508253639",
+    "telephone": "07 89 31 50 76",
+    "email_contact": "vierzon@ritmodiag.com",
+    "departements": "Cher",
+    "mode": "solo",
+    "seo_titre": "RITMODiag - Vierzon",
+    "agence": {
+      "ville": "Vierzon"
+    },
+    "franchises": [
+      "Caen"
+    ]
   }
 ]
