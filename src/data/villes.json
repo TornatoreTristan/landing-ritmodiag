@@ -403,7 +403,14 @@
       "ville": "Vierzon"
     },
     "franchises": [
-      "Caen"
+      "Caen",
+      "Le Havre",
+      "Angers",
+      "Vire",
+      "Avranches",
+      "Saint-Lô",
+      "Cherbourg",
+      "Strasbourg"
     ]
   }
 ]
