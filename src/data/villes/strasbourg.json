@@ -19,5 +19,13 @@
       "role": "Gérant & Diagnostiqueur Immobilier",
       "photo": "/Aziz.png"
     }
+  ],
+  "avis": [
+    {
+      "auteur": "Sylvain Boutrais",
+      "note": 5,
+      "texte": "Rdv fixé 2 jours après la demande. Technicien arrivé en avance comme prévenu au moment du rdv.",
+      "photo": "https://i.pravatar.cc/80?img=11"
+    }
   ]
 }
