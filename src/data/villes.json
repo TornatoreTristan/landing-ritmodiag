@@ -16,16 +16,6 @@
       "code_postal": "14123",
       "description": "Nous intervenons dans tout le Calvados et ses alentours."
     },
-    "franchises": [
-      "Saint-Lô",
-      "Vire",
-      "Cherbourg",
-      "Le Havre",
-      "Angers",
-      "Limoges",
-      "Strasbourg",
-      "Vierzon"
-    ],
     "sales_team": [
       {
         "nom": "Margot LADROUE",
@@ -177,15 +167,6 @@
       "code_postal": "49000",
       "description": "Nous intervenons dans tout Angers et ses alentours."
     },
-    "franchises": [
-      "Saint-Lô",
-      "Vire",
-      "Cherbourg",
-      "Le Havre",
-      "Limoges",
-      "Strasbourg",
-      "Vierzon"
-    ],
     "technical_team": [
       {
         "nom": "Mathieu HESLOT",
@@ -261,16 +242,6 @@
       "code_postal": "76600",
       "description": "Nous intervenons dans tout Le Havre et ses alentours."
     },
-    "franchises": [
-      "Caen",
-      "Saint-Lô",
-      "Vire",
-      "Cherbourg",
-      "Angers",
-      "Limoges",
-      "Strasbourg",
-      "Vierzon"
-    ],
     "technical_team": [
       {
         "nom": "Dov SASPORTAS",
@@ -402,16 +373,6 @@
     "agence": {
       "ville": "Vierzon"
     },
-    "franchises": [
-      "Caen",
-      "Le Havre",
-      "Angers",
-      "Vire",
-      "Avranches",
-      "Saint-Lô",
-      "Cherbourg",
-      "Strasbourg"
-    ],
     "technical_team": [
       {
         "nom": "Salih BATARAY",
@@ -445,16 +406,6 @@
     "agence": {
       "ville": "Vire"
     },
-    "franchises": [
-      "Caen",
-      "Le Havre",
-      "Angers",
-      "Avranches",
-      "Saint-Lô",
-      "Cherbourg",
-      "Strasbourg",
-      "Vierzon"
-    ],
     "technical_team": [
       {
         "nom": "Sullyvan LEROY",
@@ -489,16 +440,6 @@
     "agence": {
       "ville": "Saint-Lô"
     },
-    "franchises": [
-      "Caen",
-      "Le Havre",
-      "Angers",
-      "Avranches",
-      "Vire",
-      "Cherbourg",
-      "Strasbourg",
-      "Vierzon"
-    ],
     "technical_team": [
       {
         "nom": "Alexis TCHERNOBAEFF",

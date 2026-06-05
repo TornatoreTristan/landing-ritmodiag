@@ -9,6 +9,7 @@ import ZoneIntervention from '../../components/zone-intervention.astro'
 import Conseillers from '../../components/conseillers.astro'
 import PhoneIcon from '../../components/phone-icon.astro'
 import villes from '../../data/villes.json';
+import franchises from '../../data/franchises.json';
 
 const headerImages = import.meta.glob<{ default: ImageMetadata }>('../../assets/img/*.{jpg,jpeg,png,webp}', { eager: true })
 
@@ -26,7 +27,14 @@ export async function getStaticPaths() {
 
 const { data } = Astro.props;
 const telHref = `tel:${data.telephone.replace(/\s/g, '')}`
-const headerImage = headerImages[`../../assets/img/${data.header_image.replace(/^\//, '')}`]?.default
+const headerImage = data.header_image
+  ? headerImages[`../../assets/img/${data.header_image.replace(/^\//, '')}`]?.default
+  : undefined
+
+// Liste centralisée des franchises (src/data/franchises.json), on retire la ville courante
+const autresFranchises = franchises
+  .map((f) => f.nom)
+  .filter((nom) => nom !== data.city_name)
 ---
 
 <Layout title={data.seo_titre} description={data.seo_desc} ville={data.city_name} slug={data.slug} telephone={data.telephone} agence={data.agence}>
@@ -54,7 +62,7 @@ const headerImage = headerImages[`../../assets/img/${data.header_image.replace(/
 
 	<Reassurance telephone={data.telephone} />
 
-	<ZoneIntervention agence={data.agence} franchises={data.franchises} />
+	<ZoneIntervention agence={data.agence} franchises={autresFranchises} />
 
 	{data.sales_team && data.sales_team.length > 0 && (
 		<Conseillers conseillers={data.sales_team} telephone={data.telephone} />

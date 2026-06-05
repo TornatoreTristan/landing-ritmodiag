@@ -11,12 +11,33 @@ media:
     extensions: [jpg, jpeg, png, webp]
 
 content:
+  - name: franchises
+    label: Franchises (liste unique)
+    type: file
+    path: src/data/franchises.json
+    format: json
+    list:
+      collapsible:
+        summary: "{fields.nom}"
+    view:
+      fields: [nom]
+      primary: nom
+      default:
+        sort: nom
+        order: asc
+    fields:
+      - name: nom
+        label: Nom de la ville
+        type: string
+        required: true
   - name: villes
     label: Villes (landings)
     type: file
     path: src/data/villes.json
     format: json
-    list: true
+    list:
+      collapsible:
+        summary: "{fields.city_name}"
     view:
       fields: [city_name, slug, departements, telephone]
       primary: city_name
@@ -77,10 +98,6 @@ content:
           - { name: adresse, label: Adresse, type: string }
           - { name: code_postal, label: Code postal, type: string }
           - { name: description, label: Description, type: text }
-      - name: franchises
-        label: Franchises liées
-        type: string
-        list: true
       - name: sales_team
         label: Équipe commerciale
         type: object
