@@ -30,13 +30,15 @@ content:
         required: true
   - name: villes
     label: Villes (landings)
-    type: file
-    path: src/data/villes.json
+    type: collection
+    path: src/data/villes
     format: json
-    list: true
+    filename: "{fields.slug}.json"
     view:
       fields: [city_name, slug, departements, telephone]
       primary: city_name
+      search: [city_name, slug, departements]
+      sort: [city_name, slug]
       default:
         sort: city_name
         order: asc

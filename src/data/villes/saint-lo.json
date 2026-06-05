@@ -1,0 +1,34 @@
+{
+  "slug": "saint-lo",
+  "city_name": "Saint-Lô",
+  "header_image": "/Eglise Notre-Dame©Jim-Prod-CP.jpg",
+  "telephone": "06 18 57 07 32",
+  "email_contact": "saint-lo@ritmodiag.com",
+  "departements": "Manche",
+  "mode": "solo",
+  "seo_titre": "RITMODiag - Saint-Lô",
+  "agence": {
+    "ville": "Saint-Lô"
+  },
+  "technical_team": [
+    {
+      "nom": "Alexis TCHERNOBAEFF",
+      "role": "Gérant & Diagnostiqueur Immobilier",
+      "photo": "/Alexis.png"
+    }
+  ],
+  "avis": [
+    {
+      "auteur": "Sylvain Boutrais",
+      "note": 5,
+      "texte": "Rdv fixé 2 jours après la demande. Technicien arrivé en avance comme prévenu au moment du rdv.",
+      "photo": "https://i.pravatar.cc/80?img=11"
+    },
+    {
+      "auteur": "Mitsuko Koko",
+      "note": 5,
+      "texte": "Accueil et personnes très agréables et chaleureuses, intervention rapide et efficace tout était parfait, merci encore !",
+      "photo": "https://i.pravatar.cc/80?img=9"
+    }
+  ]
+}

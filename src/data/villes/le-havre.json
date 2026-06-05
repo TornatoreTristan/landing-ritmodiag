@@ -1,0 +1,135 @@
+{
+  "slug": "le-havre",
+  "city_name": "Le Havre",
+  "header_image": "/dpe-ritmodiag-lehavre.jpeg",
+  "iframe_simulateur": "https://backbone.ritmodiag.com/embed/wizard/53bb7b6d30a17fdb67cb7683a19d482b85d81036263ccb30473aeeeda7afbc72",
+  "telephone": "02 32 79 97 48",
+  "email_contact": "lehavre@ritmodiag.com",
+  "departements": "Seine-Maritime",
+  "mode": "solo",
+  "seo_titre": "DPE et Diagnostics Immobiliers au Havre (76) - RITMODiag",
+  "seo_desc": "Votre diagnostic immobilier certifié au Havre. Devis en ligne immédiat et intervention sous 24h pour votre DPE.",
+  "agence": {
+    "ville": "Le Havre",
+    "adresse": "Le Havre",
+    "code_postal": "76600",
+    "description": "Nous intervenons dans tout Le Havre et ses alentours."
+  },
+  "technical_team": [
+    {
+      "nom": "Dov SASPORTAS",
+      "role": "Gérant & Diagnostiqueur Immobilier",
+      "photo": "/ritmodiag-lehavre-dov-sasportas-dpe.png"
+    }
+  ],
+  "avis": [
+    {
+      "auteur": "Amandine Durecu",
+      "note": 5,
+      "texte": "Intervention très rapide et prestation réalisée avec sérieux et professionnalisme. Le diagnostiqueur a été ponctuel, efficace et clair dans ses explications. Je suis entièrement satisfait du service et je recommande sans hésitation.",
+      "photo": "https://i.pravatar.cc/80?img=1"
+    },
+    {
+      "auteur": "Annie Bénard",
+      "note": 5,
+      "texte": "Monsieur SASPORTAS est venu ce jour pour un diagnostic de mon appartement. Il m'a expliqué chaque phase de ses actions avec une grande gentillesse et compétence. Très professionnel il a vérifié deux fois les mesures dans toutes les pièces.",
+      "photo": "https://i.pravatar.cc/80?img=5"
+    },
+    {
+      "auteur": "Camille Tuboeuf",
+      "note": 5,
+      "texte": "Nous avons fait appel à Ritmodiag pour un DPE complet effectué par Dov Sasportas. Nous sommes très satisfaits de sa prestation, son professionnalisme et sa gentillesse étaient au rdv. Nous recommandons vivement.",
+      "photo": "https://i.pravatar.cc/80?img=9"
+    },
+    {
+      "auteur": "Sigrid Sarens",
+      "note": 5,
+      "texte": "Mr Sasportas, diagnostiqueur très professionnel, ponctuel et rigoureux. Les explications sont claires, le rapport est complet et transmis rapidement. Un vrai partenaire de confiance que je recommande sans hésitation.",
+      "photo": "https://i.pravatar.cc/80?img=25"
+    },
+    {
+      "auteur": "Christelle Louvel",
+      "note": 5,
+      "texte": "Technicien très sympathique et très professionnel. Prends le temps de vous expliquer et de vous donner des conseils. Merci pour votre professionnalisme. Je recommande fortement.",
+      "photo": "https://i.pravatar.cc/80?img=16"
+    },
+    {
+      "auteur": "Beatrice Jaouen",
+      "note": 5,
+      "texte": "Ayant besoin d'effectuer un DPE en vue d'une location, je me suis lancée dans une recherche sur internet afin de trouver un prestataire. Perdue parmi les nombreuses propositions, j'ai choisi de faire confiance à Ritmo-Diag compte tenu des avis très positifs et je ne regrette pas.",
+      "photo": "https://i.pravatar.cc/80?img=32"
+    },
+    {
+      "auteur": "bridorsyl76",
+      "note": 5,
+      "texte": "Très bonne intervention pour un diagnostic effectué avec soin et des explications sur leur façon de procéder et des résultats. Très disponible pour les personnes curieuses et intéressées. Très professionnel, je recommande.",
+      "photo": "https://i.pravatar.cc/80?img=14"
+    },
+    {
+      "auteur": "Djo",
+      "note": 5,
+      "texte": "Très bon professionnel. Étant curieux de nature, toutes les étapes du DPE m'ont été détaillées ; j'en ai appris beaucoup. De plus, les tarifs sont très intéressants comparés à la concurrence.",
+      "photo": "https://i.pravatar.cc/80?img=53"
+    },
+    {
+      "auteur": "Vincent Benard",
+      "note": 5,
+      "texte": "Vous pouvez les choisir les yeux fermés. Très pro, ponctuel, soucis du détail etc... La personne est resté 3 heures pour prendre chaque détail pour mon DPE.",
+      "photo": "https://i.pravatar.cc/80?img=15"
+    },
+    {
+      "auteur": "Christine Brulin",
+      "note": 5,
+      "texte": "Professionnel très compétent et respectueux, agréable... Prend le temps de donner des explications. Je conseillerais ses services à mes connaissances, si besoin.",
+      "photo": "https://i.pravatar.cc/80?img=23"
+    },
+    {
+      "auteur": "Christelle Marty",
+      "note": 5,
+      "texte": "Lors du diagnostic de l'appartement de mes parents, Mr Dov Sasportas a été très bien, diag fait par un vrai pro. Je recommande vivement, merci.",
+      "photo": "https://i.pravatar.cc/80?img=44"
+    },
+    {
+      "auteur": "Sandrine Grospas",
+      "note": 5,
+      "texte": "Personne avec beaucoup de professionnalisme et qui a pris le temps d'expliquer l'intérêt des différents diagnostics. Je recommande vivement.",
+      "photo": "https://i.pravatar.cc/80?img=28"
+    },
+    {
+      "auteur": "Sas Cud",
+      "note": 5,
+      "texte": "Excellent diagnostic ! Très professionnel, réactif et surtout d'une grande sympathie. Le diagnostic a été réalisé avec sérieux et dans des délais très rapides, ce qui est vraiment appréciable. Explications claires, travail soigné.",
+      "photo": "https://i.pravatar.cc/80?img=47"
+    },
+    {
+      "auteur": "KELEVRA",
+      "note": 5,
+      "texte": "Je ne savais pas vraiment à qui faire appel pour mon diagnostic Immo, je me suis donc orienté vers Google et je ne regrette absolument pas, très professionnel, explique bien, j'ai même appris des choses sur ma propre maison ! Je recommande.",
+      "photo": "https://i.pravatar.cc/80?img=12"
+    },
+    {
+      "auteur": "Léa Lecorney",
+      "note": 5,
+      "texte": "J'ai fait appel à cette entreprise pour réaliser un diagnostic DPE et je suis entièrement satisfaite de la prestation. M. Sasportas a été ponctuel, très sérieux et a pris le temps d'expliquer chaque étape de l'évaluation.",
+      "photo": "https://i.pravatar.cc/80?img=20"
+    },
+    {
+      "auteur": "Stéphanie Leroux",
+      "note": 5,
+      "texte": "Je recommande, à l'écoute, professionnels et rdv rapide, restitution des diagnostics par mail le soir même. Malgré une contrainte à son agenda, le rdv a été maintenu pour ne pas me pénaliser dans ma vente immobilière. Merci.",
+      "photo": "https://i.pravatar.cc/80?img=36"
+    },
+    {
+      "auteur": "Siméon Christelle",
+      "note": 5,
+      "texte": "Diagnostiqueur à l'heure, très sympathique, et très professionnel. Merci pour vos conseils et pour vos explications au top. Je recommande vivement.",
+      "photo": "https://i.pravatar.cc/80?img=26"
+    },
+    {
+      "auteur": "Dawn Hallidy",
+      "note": 5,
+      "texte": "Très efficace et sympathique. Il a pris le temps de tout m'expliquer en détail, ce qui a été très utile !",
+      "photo": "https://i.pravatar.cc/80?img=38"
+    }
+  ]
+}

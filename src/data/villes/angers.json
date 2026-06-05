@@ -1,0 +1,74 @@
+{
+  "slug": "angers",
+  "city_name": "Angers",
+  "header_image": "/ritmodiag-angers-dpe.jpg",
+  "iframe_simulateur": "https://backbone.ritmodiag.com/embed/wizard/53bb7b6d30a17fdb67cb7683a19d482b85d81036263ccb30473aeeeda7afbc72",
+  "telephone": "06 73 62 03 84",
+  "email_contact": "angers@ritmodiag.com",
+  "departements": "Maine-et-Loire",
+  "mode": "solo",
+  "seo_titre": "DPE et Diagnostics Immobiliers à Angers (49) - RITMODiag",
+  "seo_desc": "Votre diagnostic immobilier certifié à Angers. Devis en ligne immédiat et intervention sous 24h pour votre DPE.",
+  "agence": {
+    "ville": "Angers",
+    "code_postal": "49000",
+    "description": "Nous intervenons dans tout Angers et ses alentours."
+  },
+  "technical_team": [
+    {
+      "nom": "Mathieu HESLOT",
+      "role": "Gérant & Diagnostiqueur Immobilier",
+      "photo": "/Mathieu-heslot-diagnostiqueur-immobilier-dpe-angers.png"
+    }
+  ],
+  "avis": [
+    {
+      "auteur": "Caroline",
+      "note": 5,
+      "texte": "J’ai fait appel à RITMODiag Angers pour un DPE ainsi qu’un diagnostic électricité, et je suis très satisfaite. Prise de rendez-vous rapide, intervention efficace et surtout de très bons conseils tout au long du diagnostic. Le diagnostiqueur est professionnel, clair dans ses explications et le rapport a été transmis rapidement. Je recommande vivement RITMODiag Angers pour vos diagnostics immobiliers sur Angers et alentours !",
+      "photo": "https://i.pravatar.cc/80?img=1"
+    },
+    {
+      "auteur": "Zaz",
+      "note": 5,
+      "texte": "Travail très professionnel effectué par le diagnostiqueur immobiliers les explication a la fin du diagnostic étais clair et précise . Personne que je recommande pour des diagnostics a domicile",
+      "photo": "https://i.pravatar.cc/80?img=5"
+    },
+    {
+      "auteur": "Kévin DURAND",
+      "note": 5,
+      "texte": "Diagnostic réalisé sur une maison de bourg (et en campagne) qui date de la moitié du 19e siècle avec les particularités qu’elle comprend. Mathieu est revenu une deuxième fois sans changer son tarif afin que le diagnostic soit exemplaire, et je confirme ! Au top",
+      "photo": "https://i.pravatar.cc/80?img=11"
+    },
+    {
+      "auteur": "Thierry Lebel",
+      "note": 5,
+      "texte": "Ets réactive ponctuelle et sérieuse.",
+      "photo": "https://i.pravatar.cc/80?img=12"
+    },
+    {
+      "auteur": "Maevane M",
+      "note": 5,
+      "texte": "Très bonne expérience du début à la fin. Prise de rendez-vous rapide, intervention à l’heure et travail réalisé avec sérieux. Le diagnostiqueur a pris le temps de tout vérifier en détail et surtout de m’expliquer les points importants au fur et à mesure, avec des explications simples et compréhensibles. Je recommande !!!",
+      "photo": "https://i.pravatar.cc/80?img=15"
+    },
+    {
+      "auteur": "Vandross",
+      "note": 5,
+      "texte": "DPE réalisé sérieusement et promptement. Agent pro et courtois, ses explications et besoins en termes de documentation étaient clairs. Coût d'intervention compétitif.",
+      "photo": "https://i.pravatar.cc/80?img=9"
+    },
+    {
+      "auteur": "Manon Coulange",
+      "note": 5,
+      "texte": "Service rapide, équipe professionnelle et à l’écoute. Je recommande Ritmodiag !",
+      "photo": "https://i.pravatar.cc/80?img=23"
+    },
+    {
+      "auteur": "Marie VIAENE",
+      "note": 5,
+      "texte": "beaucoup de professionnalisme, respectueux des lieux, rapidité de délivrance et tarif compétitif. Je recommande sans réserve !",
+      "photo": "https://i.pravatar.cc/80?img=25"
+    }
+  ]
+}
