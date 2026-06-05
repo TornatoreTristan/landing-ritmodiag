@@ -16,9 +16,7 @@ content:
     type: file
     path: src/data/franchises.json
     format: json
-    list:
-      collapsible:
-        summary: "{fields.nom}"
+    list: true
     view:
       fields: [nom]
       primary: nom
@@ -35,9 +33,7 @@ content:
     type: file
     path: src/data/villes.json
     format: json
-    list:
-      collapsible:
-        summary: "{fields.city_name}"
+    list: true
     view:
       fields: [city_name, slug, departements, telephone]
       primary: city_name
