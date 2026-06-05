@@ -1,0 +1,23 @@
+{
+  "slug": "strasbourg",
+  "city_name": "Strasbourg",
+  "header_image": "/Strasbourg-Cathedral-Two-Spires-©-French-Moments.jpg",
+  "telephone": "07 44 99 83 88",
+  "email_contact": "strasbourg@ritmodiag.com",
+  "departements": "Bas-Rhin",
+  "mode": "solo",
+  "seo_titre": "DPE et Diagnostics Immobiliers à Strasbourg (67) - RITMODiag",
+  "seo_desc": "Votre diagnostic immobilier certifié à Strasbourg. Devis en ligne immédiat et intervention sous 24h pour votre DPE.",
+  "agence": {
+    "ville": "Strasbourg",
+    "code_postal": "67000",
+    "description": "Nous intervenons dans tout Strasbourg et ses alentours."
+  },
+  "technical_team": [
+    {
+      "nom": "Aziz EL MORABITI",
+      "role": "Gérant & Diagnostiqueur Immobilier",
+      "photo": "/Aziz.png"
+    }
+  ]
+}
