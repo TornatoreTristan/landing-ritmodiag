@@ -25,7 +25,7 @@ interface Props {
 const defaultAgence = { ville: 'Ifs', adresse: '500 boulevard Charles Cros', code_postal: '14123' }
 const { title, description, ville, slug, telephone = '02 31 15 64 88', agence = defaultAgence, hideMobileCta, ctaText, ctaHref } = Astro.props
 const simulateurHref = slug ? `/${slug}/simulateur` : '/caen/simulateur'
-const headerCtaText = ctaText || 'Estimez votre DPE'
+const headerCtaText = ctaText || 'Estimez le prix de votre DPE'
 const headerCtaHref = ctaHref || simulateurHref
 const telHref = `tel:${telephone.replace(/\s/g, '')}`
 const metaDescription = description || "RITMODiag, votre partenaire de confiance pour vos diagnostics immobiliers, DPE et audits énergétiques en Normandie. Certifiés, réactifs et à votre écoute."
