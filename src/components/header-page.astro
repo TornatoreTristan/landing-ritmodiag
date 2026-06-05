@@ -84,7 +84,7 @@ const telHref = `tel:${telephone.replace(/\s/g, '')}`
     {headerImage && (
       <div class="hidden sm:block relative w-full lg:flex-1 lg:self-stretch lg:py-6">
         <div class="overflow-hidden rounded-2xl h-full relative">
-          <Image src={headerImage} alt={`Diagnostics immobiliers et DPE à ${ville}`} class="block w-full h-full object-cover" widths={[768, 1024]} sizes="(max-width: 1023px) 100vw, 50vw" loading="eager" />
+          <Image src={headerImage} alt={`Diagnostics immobiliers et DPE à ${ville}`} class="block w-full h-full object-cover" widths={[768, 1024]} sizes="(max-width: 1023px) 100vw, 50vw" quality={75} loading="eager" fetchpriority="high" />
           <img src={quadrillage.src} alt="" class="absolute -top-12.5 left-67 w-48 lg:w-120 rotate-90 origin-top-left z-20 pointer-events-none" aria-hidden="true" />
           <!-- Ornement jaune : sur la photo, en haut à droite -->
           <img src={ornementJaune.src} alt="" class="absolute z-23 top-0 -left-70 w-64 lg:w-130 pointer-events-none" aria-hidden="true" />

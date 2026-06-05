@@ -34,7 +34,7 @@ const images = import.meta.glob<{ default: ImageMetadata }>('../assets/img/equip
           <div class="flex flex-col items-center gap-3 text-center">
             <div class="size-24 rounded-full overflow-hidden bg-gray-200">
               {img && (
-                <Image src={img.default} alt={conseiller.nom} class="w-full h-full object-cover" />
+                <Image src={img.default} alt={conseiller.nom} width={96} height={96} densities={[2]} quality={70} class="w-full h-full object-cover" />
               )}
             </div>
             <div>
