@@ -1,0 +1,30 @@
+{
+  "slug": "morlaix",
+  "city_name": "Morlaix",
+  "telephone": "06 04 48 29 76",
+  "email_contact": "morlaix@ritmodiag.com",
+  "departements": "Finistère",
+  "mode": "solo",
+  "seo_titre": "DPE et Diagnostics Immobiliers à Morlaix (29) - RITMODiag",
+  "seo_desc": "Votre diagnostic immobilier certifié fiable à Strasbourg. Devis en ligne immédiat et intervention sous 24h pour votre DPE.",
+  "agence": {
+    "ville": "Morlaix",
+    "code_postal": "29300",
+    "description": "Nous intervenons dans tout Morlaix et ses alentours."
+  },
+  "technical_team": [
+    {
+      "nom": "Louis MARC",
+      "role": "Gérant & Diagnostiqueur Immobilier",
+      "photo": "/Louis MARC RITMO.png"
+    }
+  ],
+  "avis": [
+    {
+      "auteur": "Sylvain Boutrais",
+      "note": 5,
+      "texte": "Rdv fixé 2 jours après la demande. Technicien arrivé en avance comme prévenu au moment du rdv.",
+      "photo": "https://i.pravatar.cc/80?img=11"
+    }
+  ]
+}
