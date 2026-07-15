@@ -12,10 +12,13 @@ interface Membre {
 interface Props {
   equipe: Membre[]
   ville?: string
+  slug?: string
   mode?: 'team' | 'solo'
 }
 
-const { equipe, ville, mode = 'team' } = Astro.props
+const { equipe, ville, slug, mode = 'team' } = Astro.props
+
+const simulateurHref = slug ? `/${slug}/simulateur` : '/caen/simulateur'
 
 const images = import.meta.glob<{ default: ImageMetadata }>('../assets/img/equipe/*.{jpg,jpeg,png,webp}', { eager: true })
 
@@ -53,7 +56,7 @@ const soloImg = solo ? images[`../assets/img/equipe/${solo.photo.replace(/^\//, 
           )}
           <p class="text-gray-500 text-sm leading-relaxed">Diagnostiqueur immobilier certifié et formé en continu sur les nouvelles réglementations. Un accompagnement de qualité et des résultats clairs, expliqués avec pédagogie.</p>
           <div class="mt-2">
-            <a href="/caen/simulateur" class="inline-flex bg-primary text-white px-6 py-3.5 rounded-lg font-semibold hover:bg-primary/85 transition-colors text-sm sm:text-base">Prendre un RDV pour vos diagnostics</a>
+            <a href={simulateurHref} class="inline-flex bg-primary text-white px-6 py-3.5 rounded-lg font-semibold hover:bg-primary/85 transition-colors text-sm sm:text-base">Prendre un RDV pour vos diagnostics</a>
           </div>
         </div>
       </div>
@@ -90,7 +93,7 @@ const soloImg = solo ? images[`../assets/img/equipe/${solo.photo.replace(/^\//, 
         })}
       </div>
       <div class="flex justify-center mt-10">
-        <a href="/caen/simulateur" class="bg-primary text-white px-6 py-3.5 rounded-lg font-semibold hover:bg-primary/85 transition-colors text-sm sm:text-base">Prendre un RDV pour vos diagnostics</a>
+        <a href={simulateurHref} class="bg-primary text-white px-6 py-3.5 rounded-lg font-semibold hover:bg-primary/85 transition-colors text-sm sm:text-base">Prendre un RDV pour vos diagnostics</a>
       </div>
     </div>
   </section>
