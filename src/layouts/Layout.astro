@@ -3,6 +3,7 @@ import '../styles/global.css';
 import 'vanilla-cookieconsent/dist/cookieconsent.css';
 import logo from '../assets/logo-ritmodiag-diagnostics-immobiliers-dpe.svg'
 import PhoneIcon from '../components/phone-icon.astro'
+import VerificateurDiagnostics from '../components/verificateur-diagnostics.astro'
 
 interface Agence {
 	ville: string
@@ -160,6 +161,9 @@ const ogImage = new URL('/og-image.jpg', Astro.site || 'https://ritmodiag.com').
 		<main id="main-content">
 			<slot />
 		</main>
+
+		<!-- Vérificateur de diagnostics obligatoires (masqué sur les pages tunnel type simulateur) -->
+		{!hideMobileCta && <VerificateurDiagnostics telephone={telephone} slug={slug} />}
 
 		<!-- Sticky CTA mobile -->
 		<div class:list={["fixed bottom-0 inset-x-0 z-40 sm:hidden bg-white border-t border-gray-200 px-4 py-3 safe-area-bottom", hideMobileCta && "hidden"]}>

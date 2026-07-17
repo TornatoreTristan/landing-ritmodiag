@@ -1,0 +1,587 @@
+---
+import { getImage } from 'astro:assets'
+import iconDPE from '../assets/img/DPE.svg'
+import iconAmiante from '../assets/img/Amiante.svg'
+import iconPlomb from '../assets/img/Plomb.svg'
+import iconElectricite from '../assets/img/Électricité.svg'
+import iconGaz from '../assets/img/Gaz.svg'
+import iconERP from '../assets/img/ERP.svg'
+import iconCopro from '../assets/img/Copro.svg'
+import iconParasitaire from '../assets/img/etat-parasitaire.svg'
+import photoMargot from '../assets/img/equipe/Margot-ladroue-diagnostiqueur-immobilier-ritmodiag.png'
+import photoHugo from '../assets/img/equipe/Hugo-belliard-diagnostiqueur-immobilier-ritmodiag.png'
+import photoAntonin from '../assets/img/equipe/Antonin-SBETTA-diagnostiqueur-immobilier-ritmodiag.png'
+import photoNassim from '../assets/img/equipe/Nassim-CHAARYA-diagnostiqueur-immobilier-ritmodiag.png'
+
+interface Props {
+  telephone?: string
+  slug?: string
+}
+
+const { telephone = '02 31 15 64 88', slug } = Astro.props
+const telHref = `tel:${telephone.replace(/\s/g, '')}`
+const simulateurHref = slug ? `/${slug}/simulateur` : '/caen/simulateur'
+
+// Pile d'avatars de l'équipe (crop carré géré en CSS via object-cover)
+const teamPhotos = [photoMargot, photoHugo, photoAntonin, photoNassim]
+const avatars = await Promise.all(
+  teamPhotos.map((src) => getImage({ src, width: 96, quality: 70, format: 'webp' }))
+)
+
+// Config sérialisée pour le script client (icônes traitées par Astro → URLs hashées)
+const config = {
+  telephone,
+  telHref,
+  simulateurHref,
+  // Réutilise la liste Listmonk état-parasitaire en attendant une liste dédiée (cf. formulaire-devis-amiante)
+  listmonkList: '7246c0ba-8eda-418f-9719-7709a2a0a640',
+  // Webhook n8n de production (scénario dédié "verificateur-diagnostics")
+  n8nWebhook: 'https://n8n.spines.fr/webhook/21af1e08-78ae-4f13-a6d1-9b1007ce6247',
+  icons: {
+    dpe: iconDPE.src,
+    erp: iconERP.src,
+    plomb: iconPlomb.src,
+    amiante: iconAmiante.src,
+    electricite: iconElectricite.src,
+    gaz: iconGaz.src,
+    surface: iconCopro.src,
+    termites: iconParasitaire.src,
+    audit: iconDPE.src,
+  },
+}
+---
+
+<script type="application/json" id="verif-config" set:html={JSON.stringify(config)} />
+
+<!-- Widget : carte minimisée qui se déploie au survol (masquée jusqu'au choix cookies) -->
+<div id="verif-teaser" class="hidden fixed bottom-20 right-4 sm:bottom-6 sm:right-6 z-40 w-80 max-w-[calc(100vw-2rem)]">
+  <div class="verif-teaser-in group relative bg-white rounded-3xl shadow-xl shadow-dark/10 border border-gray-100 p-4">
+    <button type="button" id="verif-teaser-open" class="block w-full text-left cursor-pointer">
+      <!-- Équipe + statut (toujours visible) -->
+      <div class="flex items-center gap-2 mb-3">
+        <div class="flex -space-x-2.5">
+          {avatars.map((a) => (
+            <img src={a.src} width="36" height="36" alt="" aria-hidden="true" class="size-9 rounded-full object-cover ring-2 ring-white bg-gray-100" />
+          ))}
+        </div>
+        <span class="flex items-center gap-1.5 text-xs font-semibold text-green-600">
+          <span class="relative flex size-2 shrink-0">
+            <span class="verif-ping absolute inline-flex h-full w-full rounded-full bg-green-500 opacity-75"></span>
+            <span class="relative inline-flex size-2 rounded-full bg-green-500"></span>
+          </span>
+          En ligne
+        </span>
+      </div>
+      <!-- Textes (déployés au survol) -->
+      <div class="grid grid-rows-[0fr] opacity-0 group-hover:grid-rows-[1fr] group-hover:opacity-100 transition-all duration-300 ease-out">
+        <div class="overflow-hidden">
+          <p class="text-base font-bold text-dark leading-snug">Quels sont les diagnostics obligatoires pour votre bien&nbsp;?</p>
+          <p class="text-sm text-gray-500 mt-1.5 leading-snug pb-3">Simulez les diagnostics obligatoires gratuitement en 1 minute.</p>
+        </div>
+      </div>
+      <!-- CTA (toujours visible) -->
+      <span class="flex items-center justify-center gap-2 bg-dark text-white py-3.5 px-4 rounded-full font-semibold text-[13px] hover:bg-dark/90 transition-colors">
+        <svg xmlns="http://www.w3.org/2000/svg" class="size-4.5 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+        Vérifier mes diagnostics obligatoires
+      </span>
+    </button>
+  </div>
+</div>
+
+
+<!-- Panneau -->
+<div id="verif-overlay" class="hidden fixed inset-0 z-[60]" role="dialog" aria-modal="true" aria-labelledby="verif-title">
+  <div id="verif-backdrop" class="absolute inset-0 bg-dark/50 backdrop-blur-sm opacity-0 transition-opacity duration-200"></div>
+
+  <div
+    id="verif-panel"
+    class="absolute inset-x-0 bottom-0 sm:inset-y-0 sm:right-0 sm:left-auto w-full sm:max-w-md bg-white shadow-2xl flex flex-col max-h-[92dvh] sm:max-h-none sm:h-full rounded-t-3xl sm:rounded-none translate-y-full sm:translate-y-0 sm:translate-x-full transition-transform duration-300 ease-out"
+  >
+    <!-- En-tête -->
+    <div class="shrink-0 flex items-center justify-between px-5 py-4 border-b border-gray-100">
+      <div class="flex items-center gap-2 min-w-0">
+        <button
+          type="button"
+          id="verif-back"
+          class="hidden shrink-0 -ml-1 p-1.5 rounded-lg text-gray-400 hover:text-dark hover:bg-gray-100 transition-colors cursor-pointer"
+          aria-label="Question précédente"
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" class="size-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+        </button>
+        <h2 id="verif-title" class="font-bold text-dark truncate">Vos diagnostics obligatoires</h2>
+      </div>
+      <button
+        type="button"
+        id="verif-close"
+        class="shrink-0 p-1.5 rounded-lg text-gray-400 hover:text-dark hover:bg-gray-100 transition-colors cursor-pointer"
+        aria-label="Fermer"
+      >
+        <svg xmlns="http://www.w3.org/2000/svg" class="size-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6L6 18M6 6l12 12"/></svg>
+      </button>
+    </div>
+
+    <!-- Barre de progression -->
+    <div id="verif-progress" class="shrink-0 h-1 bg-gray-100">
+      <div id="verif-progress-bar" class="h-full bg-primary transition-all duration-300" style="width: 0%"></div>
+    </div>
+
+    <!-- Corps défilant -->
+    <div id="verif-body" class="grow overflow-y-auto px-5 py-6">
+
+      <!-- Écran questions -->
+      <div id="verif-questions">
+        <p class="text-gray-500 text-sm mb-6">Répondez à 4 questions pour connaître la liste exacte des diagnostics à réaliser pour votre bien.</p>
+        <div id="verif-question-slot">
+          <h3 id="verif-question-label" class="text-lg font-bold text-dark mb-1"></h3>
+          <p id="verif-question-step" class="text-xs text-gray-400 mb-5"></p>
+          <div id="verif-options" class="flex flex-col gap-3"></div>
+        </div>
+      </div>
+
+      <!-- Écran résultat -->
+      <div id="verif-result" class="hidden">
+        <div class="flex items-center gap-2 mb-1">
+          <span class="inline-flex items-center justify-center size-8 rounded-full bg-primary/10 text-primary shrink-0">
+            <svg xmlns="http://www.w3.org/2000/svg" class="size-4.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>
+          </span>
+          <h3 class="text-lg font-bold text-dark">Diagnostics à prévoir</h3>
+        </div>
+        <p id="verif-result-sub" class="text-gray-500 text-sm mb-5"></p>
+
+        <ul id="verif-result-list" class="flex flex-col gap-2.5"></ul>
+
+        <p class="text-[11px] text-gray-400 leading-relaxed mt-4">
+          Estimation indicative selon la réglementation en vigueur. La liste définitive est confirmée par nos diagnostiqueurs certifiés selon les spécificités de votre bien.
+        </p>
+
+        <!-- CTA -->
+        <div class="flex flex-col gap-2.5 mt-6">
+          <a
+            id="verif-cta-simulateur"
+            href={simulateurHref}
+            class="flex items-center justify-center gap-2 bg-primary text-white text-center py-3.5 rounded-lg font-semibold hover:bg-primary/85 transition-colors"
+          >
+            Estimer le prix de mes diagnostics
+          </a>
+          <div class="grid grid-cols-2 gap-2.5">
+            <button
+              type="button"
+              id="verif-show-form"
+              class="flex items-center justify-center gap-2 bg-secondary text-dark py-3 rounded-lg font-semibold hover:bg-secondary/70 transition-colors cursor-pointer text-sm"
+            >
+              Être rappelé
+            </button>
+            <a
+              href={telHref}
+              class="flex items-center justify-center gap-2 bg-dark text-white py-3 rounded-lg font-semibold hover:bg-dark/90 transition-colors text-sm"
+              aria-label={`Appeler le ${telephone}`}
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" class="size-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+              Appeler
+            </a>
+          </div>
+        </div>
+
+        <!-- Formulaire de rappel (replié) -->
+        <div id="verif-form-wrapper" class="hidden mt-6 pt-6 border-t border-gray-100">
+          <h4 class="font-bold text-dark mb-1">Être rappelé gratuitement</h4>
+          <p class="text-gray-500 text-sm mb-4">Laissez vos coordonnées, un conseiller vous rappelle sous 24h avec votre devis.</p>
+
+          <iframe name="verif-listmonk-frame" class="hidden" aria-hidden="true" tabindex="-1"></iframe>
+          <form
+            id="verif-form"
+            action="https://mailing.spines.fr/subscription/form"
+            method="POST"
+            target="verif-listmonk-frame"
+            class="flex flex-col gap-3.5"
+          >
+            <input type="hidden" name="l" value={config.listmonkList} />
+            <div>
+              <label for="verif-nom" class="text-sm font-semibold text-dark block mb-1.5">Nom et prénom <span aria-hidden="true" class="text-primary">*</span></label>
+              <input type="text" id="verif-nom" name="name" required minlength="2" autocomplete="name" placeholder="Marie Dupont" class="w-full border border-gray-200 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary/40 focus:border-primary" />
+            </div>
+            <div>
+              <label for="verif-tel" class="text-sm font-semibold text-dark block mb-1.5">Téléphone <span aria-hidden="true" class="text-primary">*</span></label>
+              <input type="tel" id="verif-tel" name="telephone" required pattern="[0-9 +()\-]{7,20}" autocomplete="tel" placeholder="06 12 34 56 78" class="w-full border border-gray-200 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary/40 focus:border-primary" />
+            </div>
+            <div>
+              <label for="verif-email" class="text-sm font-semibold text-dark block mb-1.5">Email <span aria-hidden="true" class="text-primary">*</span></label>
+              <input type="email" id="verif-email" name="email" required autocomplete="email" placeholder="marie@exemple.fr" class="w-full border border-gray-200 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary/40 focus:border-primary" />
+            </div>
+            <!-- Champs cachés remplis par le quiz -->
+            <input type="hidden" name="projet" id="verif-hidden-projet" />
+            <input type="hidden" name="type_bien" id="verif-hidden-bien" />
+            <input type="hidden" name="annee_construction" id="verif-hidden-annee" />
+            <input type="hidden" name="electricite" id="verif-hidden-electricite" />
+            <input type="hidden" name="gaz" id="verif-hidden-gaz" />
+            <input type="hidden" name="diagnostics" id="verif-hidden-diagnostics" />
+            <button type="submit" class="bg-primary text-white py-3.5 rounded-lg font-semibold hover:bg-primary/85 transition-colors cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed mt-1">
+              Je souhaite être rappelé
+            </button>
+          </form>
+        </div>
+
+        <!-- Succès -->
+        <div id="verif-success" role="status" aria-live="polite" class="hidden mt-6 pt-6 border-t border-gray-100 text-center">
+          <div class="flex items-center justify-center size-12 rounded-full bg-primary/10 mx-auto mb-4">
+            <svg xmlns="http://www.w3.org/2000/svg" class="size-6 text-primary" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>
+          </div>
+          <h4 class="font-bold text-dark">Demande envoyée !</h4>
+          <p class="text-gray-500 text-sm mt-2">Un conseiller vous rappelle sous 24h. Besoin d'une réponse immédiate ? Appelez le <a href={telHref} class="text-primary font-semibold hover:underline">{telephone}</a></p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<script>
+  interface VerifConfig {
+    telephone: string
+    telHref: string
+    simulateurHref: string
+    listmonkList: string
+    n8nWebhook: string
+    icons: Record<string, string>
+  }
+
+  const configEl = document.getElementById('verif-config')
+  if (configEl) {
+    const config: VerifConfig = JSON.parse(configEl.textContent || '{}')
+
+    // --- Définition du quiz ---
+    const questions = [
+      {
+        key: 'projet',
+        label: 'Quel est votre projet ?',
+        options: [
+          { value: 'vente', labelText: 'Vendre le bien' },
+          { value: 'location', labelText: 'Mettre en location' },
+        ],
+      },
+      {
+        key: 'bien',
+        label: 'Quel type de bien ?',
+        options: [
+          { value: 'maison', labelText: 'Une maison' },
+          { value: 'appartement', labelText: 'Un appartement (copropriété)' },
+        ],
+      },
+      {
+        key: 'annee',
+        label: 'Année de construction ?',
+        options: [
+          { value: 'avant1949', labelText: 'Avant 1949' },
+          { value: '1949-1997', labelText: 'Entre 1949 et 1997' },
+          { value: 'apres1997', labelText: 'Après 1997' },
+        ],
+      },
+      {
+        key: 'electricite',
+        label: 'Installation électrique de plus de 15 ans ?',
+        options: [
+          { value: 'oui', labelText: 'Oui' },
+          { value: 'non', labelText: 'Non' },
+          { value: 'inconnu', labelText: 'Je ne sais pas' },
+        ],
+      },
+      {
+        key: 'gaz',
+        label: 'Installation de gaz de plus de 15 ans ?',
+        options: [
+          { value: 'oui', labelText: 'Oui' },
+          { value: 'non', labelText: 'Non (ou pas de gaz)' },
+          { value: 'inconnu', labelText: 'Je ne sais pas' },
+        ],
+      },
+    ]
+
+    type Answers = Record<string, string>
+
+    // --- Logique diagnostics (réglementation FR) ---
+    function computeDiagnostics(a: Answers) {
+      const list: { key: string; titre: string; sub: string; status: 'obligatoire' | 'probable' | 'selon' }[] = []
+
+      list.push({ key: 'dpe', titre: 'DPE', sub: 'Diagnostic de Performance Énergétique', status: 'obligatoire' })
+      list.push({ key: 'erp', titre: 'État des Risques et Pollutions', sub: 'ERP — risques naturels et technologiques', status: 'obligatoire' })
+
+      if (a.annee === 'avant1949') {
+        list.push({ key: 'plomb', titre: 'Plomb (CREP)', sub: 'Logement construit avant 1949', status: 'obligatoire' })
+      }
+      if (a.annee === 'avant1949' || a.annee === '1949-1997') {
+        list.push({ key: 'amiante', titre: 'Amiante', sub: 'Permis de construire avant juillet 1997', status: 'obligatoire' })
+      }
+
+      if (a.electricite === 'oui') {
+        list.push({ key: 'electricite', titre: 'Électricité', sub: 'Installation de plus de 15 ans', status: 'obligatoire' })
+      } else if (a.electricite === 'inconnu') {
+        list.push({ key: 'electricite', titre: 'Électricité', sub: 'Probable si installation de plus de 15 ans', status: 'probable' })
+      }
+
+      if (a.gaz === 'oui') {
+        list.push({ key: 'gaz', titre: 'Gaz', sub: 'Installation de plus de 15 ans', status: 'obligatoire' })
+      } else if (a.gaz === 'inconnu') {
+        list.push({ key: 'gaz', titre: 'Gaz', sub: 'Probable si installation de plus de 15 ans', status: 'probable' })
+      }
+
+      if (a.bien === 'appartement') {
+        const carrez = a.projet === 'location'
+          ? { titre: 'Surface habitable (Loi Boutin)', sub: 'Location d’un lot en copropriété' }
+          : { titre: 'Surface privative (Loi Carrez)', sub: 'Vente d’un lot en copropriété' }
+        list.push({ key: 'surface', titre: carrez.titre, sub: carrez.sub, status: 'obligatoire' })
+      }
+
+      list.push({ key: 'termites', titre: 'État parasitaire (termites)', sub: 'Selon votre commune (arrêté préfectoral)', status: 'selon' })
+
+      if (a.projet === 'vente' && a.bien === 'maison') {
+        list.push({ key: 'audit', titre: 'Audit énergétique', sub: 'Obligatoire si le bien est classé E, F ou G', status: 'selon' })
+      }
+
+      return list
+    }
+
+    // --- Éléments DOM ---
+    const overlay = document.getElementById('verif-overlay')!
+    const backdrop = document.getElementById('verif-backdrop')!
+    const panel = document.getElementById('verif-panel')!
+    const closeBtn = document.getElementById('verif-close')!
+    const backBtn = document.getElementById('verif-back')!
+    const progressBar = document.getElementById('verif-progress-bar')!
+    const questionsScreen = document.getElementById('verif-questions')!
+    const resultScreen = document.getElementById('verif-result')!
+    const questionLabel = document.getElementById('verif-question-label')!
+    const questionStep = document.getElementById('verif-question-step')!
+    const optionsSlot = document.getElementById('verif-options')!
+    const resultSub = document.getElementById('verif-result-sub')!
+    const resultList = document.getElementById('verif-result-list')!
+    const showFormBtn = document.getElementById('verif-show-form')!
+    const formWrapper = document.getElementById('verif-form-wrapper')!
+    const form = document.getElementById('verif-form') as HTMLFormElement
+    const formIframe = document.querySelector('iframe[name="verif-listmonk-frame"]') as HTMLIFrameElement
+    const successBox = document.getElementById('verif-success')!
+    const body = document.getElementById('verif-body')!
+    const teaser = document.getElementById('verif-teaser')
+    const teaserOpen = document.getElementById('verif-teaser-open')
+
+    const gclid = new URLSearchParams(window.location.search).get('gclid') || ''
+
+    let currentStep = 0
+    let answers: Answers = {}
+    let lastDiagnostics: ReturnType<typeof computeDiagnostics> = []
+
+    function pushDataLayer(event: string, extra: Record<string, unknown> = {}) {
+      ;(window as any).dataLayer = (window as any).dataLayer || []
+      ;(window as any).dataLayer.push({ event, ...extra })
+    }
+
+    function renderQuestion() {
+      const q = questions[currentStep]
+      questionLabel.textContent = q.label
+      questionStep.textContent = `Question ${currentStep + 1} sur ${questions.length}`
+      backBtn.classList.toggle('hidden', currentStep === 0)
+      progressBar.style.width = `${(currentStep / questions.length) * 100}%`
+
+      optionsSlot.innerHTML = ''
+      for (const opt of q.options) {
+        const btn = document.createElement('button')
+        btn.type = 'button'
+        const selected = answers[q.key] === opt.value
+        btn.className = `w-full text-left px-4 py-3.5 rounded-xl border-2 font-semibold text-sm transition-colors cursor-pointer ${selected ? 'border-primary bg-primary/5 text-primary' : 'border-gray-200 text-dark hover:border-primary/50 hover:bg-secondary/40'}`
+        btn.textContent = opt.labelText
+        btn.addEventListener('click', () => {
+          answers[q.key] = opt.value
+          if (currentStep < questions.length - 1) {
+            currentStep++
+            renderQuestion()
+          } else {
+            showResult()
+          }
+        })
+        optionsSlot.appendChild(btn)
+      }
+    }
+
+    const statusBadge: Record<string, string> = {
+      obligatoire: '<span class="shrink-0 text-[10px] font-bold uppercase tracking-wide bg-primary/10 text-primary px-2 py-0.5 rounded-full">Obligatoire</span>',
+      probable: '<span class="shrink-0 text-[10px] font-bold uppercase tracking-wide bg-amber-100 text-amber-700 px-2 py-0.5 rounded-full">Probable</span>',
+      selon: '<span class="shrink-0 text-[10px] font-bold uppercase tracking-wide bg-gray-100 text-gray-500 px-2 py-0.5 rounded-full">À vérifier</span>',
+    }
+
+    function showResult() {
+      lastDiagnostics = computeDiagnostics(answers)
+      const nbObligatoires = lastDiagnostics.filter((d) => d.status === 'obligatoire').length
+      resultSub.textContent = `${nbObligatoires} diagnostic${nbObligatoires > 1 ? 's' : ''} obligatoire${nbObligatoires > 1 ? 's' : ''} identifié${nbObligatoires > 1 ? 's' : ''} pour votre projet.`
+
+      resultList.innerHTML = ''
+      for (const d of lastDiagnostics) {
+        const li = document.createElement('li')
+        li.className = 'flex items-center gap-3 p-3 rounded-xl bg-secondary/50'
+        li.innerHTML = `
+          <img src="${config.icons[d.key] || ''}" alt="" class="size-10 shrink-0 rounded-full" aria-hidden="true" />
+          <div class="min-w-0 grow">
+            <p class="font-bold text-sm text-dark">${d.titre}</p>
+            <p class="text-gray-400 text-xs mt-0.5">${d.sub}</p>
+          </div>
+          ${statusBadge[d.status] || ''}`
+        resultList.appendChild(li)
+      }
+
+      progressBar.style.width = '100%'
+      backBtn.classList.remove('hidden')
+      questionsScreen.classList.add('hidden')
+      resultScreen.classList.remove('hidden')
+      body.scrollTop = 0
+
+      pushDataLayer('verificateur_complete', {
+        verif_projet: answers.projet,
+        verif_bien: answers.bien,
+        verif_annee: answers.annee,
+        verif_nb_diagnostics: nbObligatoires,
+      })
+    }
+
+    function showQuestionsScreen() {
+      resultScreen.classList.add('hidden')
+      questionsScreen.classList.remove('hidden')
+      renderQuestion()
+      body.scrollTop = 0
+    }
+
+    // --- Ouverture / fermeture ---
+    let lastFocused: HTMLElement | null = null
+
+    function open() {
+      lastFocused = document.activeElement as HTMLElement
+      overlay.classList.remove('hidden')
+      document.body.style.overflow = 'hidden'
+      // Force reflow puis anime
+      requestAnimationFrame(() => {
+        backdrop.classList.remove('opacity-0')
+        panel.classList.remove('translate-y-full', 'sm:translate-x-full')
+      })
+      closeBtn.focus()
+      pushDataLayer('verificateur_open')
+    }
+
+    teaserOpen?.addEventListener('click', open)
+
+    // Affiche la carte une fois le bandeau cookies traité (sinon elle passe sous le bandeau)
+    function revealTeaser() {
+      teaser?.classList.remove('hidden')
+    }
+    if (document.cookie.includes('cc_cookie')) {
+      revealTeaser()
+    } else {
+      let tries = 0
+      const poll = window.setInterval(() => {
+        if (document.cookie.includes('cc_cookie') || ++tries > 24) {
+          window.clearInterval(poll)
+          revealTeaser()
+        }
+      }, 500)
+    }
+
+    function close() {
+      backdrop.classList.add('opacity-0')
+      panel.classList.add('translate-y-full', 'sm:translate-x-full')
+      window.setTimeout(() => {
+        overlay.classList.add('hidden')
+        document.body.style.overflow = ''
+      }, 300)
+      lastFocused?.focus()
+    }
+
+    closeBtn.addEventListener('click', close)
+    backdrop.addEventListener('click', close)
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && !overlay.classList.contains('hidden')) close()
+    })
+
+    backBtn.addEventListener('click', () => {
+      if (!resultScreen.classList.contains('hidden')) {
+        showQuestionsScreen()
+      } else if (currentStep > 0) {
+        currentStep--
+        renderQuestion()
+      }
+    })
+
+    // --- Formulaire de rappel ---
+    showFormBtn.addEventListener('click', () => {
+      formWrapper.classList.remove('hidden')
+      ;(document.getElementById('verif-hidden-projet') as HTMLInputElement).value = answers.projet || ''
+      ;(document.getElementById('verif-hidden-bien') as HTMLInputElement).value = answers.bien || ''
+      ;(document.getElementById('verif-hidden-annee') as HTMLInputElement).value = answers.annee || ''
+      ;(document.getElementById('verif-hidden-electricite') as HTMLInputElement).value = answers.electricite || ''
+      ;(document.getElementById('verif-hidden-gaz') as HTMLInputElement).value = answers.gaz || ''
+      ;(document.getElementById('verif-hidden-diagnostics') as HTMLInputElement).value =
+        lastDiagnostics.filter((d) => d.status !== 'selon').map((d) => d.titre).join(', ')
+      formWrapper.scrollIntoView({ behavior: 'smooth', block: 'nearest' })
+    })
+
+    const submitBtn = form.querySelector('button[type="submit"]') as HTMLButtonElement
+    form.addEventListener('submit', () => {
+      submitBtn.disabled = true
+      submitBtn.textContent = 'Envoi en cours…'
+
+      const fd = new FormData(form)
+      // Envoi parallèle vers n8n (fire-and-forget), routé par 'source'
+      fetch(config.n8nWebhook, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          nom: fd.get('name') || '',
+          email: fd.get('email') || '',
+          telephone: fd.get('telephone') || '',
+          projet: fd.get('projet') || '',
+          type_bien: fd.get('type_bien') || '',
+          annee_construction: fd.get('annee_construction') || '',
+          electricite: fd.get('electricite') || '',
+          gaz: fd.get('gaz') || '',
+          diagnostics: fd.get('diagnostics') || '',
+          gclid,
+          source: 'verificateur-diagnostics',
+          page_url: window.location.href,
+          submitted_at: new Date().toISOString(),
+        }),
+      }).catch(() => {})
+    })
+
+    formIframe.addEventListener('load', () => {
+      if (!submitBtn.disabled) return // ignore le load initial de l'iframe vide
+      form.classList.add('hidden')
+      successBox.classList.remove('hidden')
+      successBox.scrollIntoView({ behavior: 'smooth', block: 'nearest' })
+      pushDataLayer('verificateur_lead')
+    })
+
+    // Init
+    renderQuestion()
+  }
+</script>
+
+<style>
+  /* Pastille de notification (ping permanent, subtil) */
+  .verif-ping {
+    animation: verif-ping 1.8s cubic-bezier(0, 0, 0.2, 1) infinite;
+  }
+  @keyframes verif-ping {
+    75%, 100% { transform: scale(2); opacity: 0; }
+  }
+
+  /* Entrée de la carte */
+  @media (prefers-reduced-motion: no-preference) {
+    .verif-teaser-in {
+      animation: verif-teaser-in 0.35s ease-out;
+    }
+    @keyframes verif-teaser-in {
+      from { opacity: 0; transform: translateY(8px) scale(0.96); }
+      to { opacity: 1; transform: translateY(0) scale(1); }
+    }
+  }
+
+  /* Coupe le ping si l'utilisateur préfère moins d'animations */
+  @media (prefers-reduced-motion: reduce) {
+    .verif-ping { animation: none; }
+  }
+</style>
