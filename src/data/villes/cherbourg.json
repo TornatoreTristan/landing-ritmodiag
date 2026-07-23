@@ -1,0 +1,25 @@
+{
+  "slug": "cherbourg",
+  "city_name": "Cherbourg",
+  "email_contact": "cherbourg@ritmodiag.com",
+  "departements": "Manche",
+  "mode": "solo",
+  "seo_titre": "DPE et Diagnostics Immobiliers à Cherbourg (50) - RITMODiag",
+  "seo_desc": "Votre diagnostic immobilier certifié à Cherbourg. Devis en ligne immédiat et intervention sous 24h pour votre DPE.",
+  "agence": {
+    "ville": "Cherbourg",
+    "description": "Nous intervenons à Cherbourg et ses alentours."
+  },
+  "sales_team": [
+    {
+      "nom": "Laura RABASSE",
+      "role": "Responsable administrative et commerciale - Co-gérante de RITMODiag Cherbourg"
+    }
+  ],
+  "technical_team": [
+    {
+      "nom": "Adrien RABASSE",
+      "role": "Diagnostiqueur Immobilier - Co-gérant de RITMODiag Cherbourg"
+    }
+  ]
+}
