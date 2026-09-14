@@ -1,6 +1,8 @@
 {
   "slug": "cherbourg",
   "city_name": "Cherbourg",
+  "header_image": "/cherbourg-en-cotentin-ritmodiag.jpg",
+  "telephone": "02 33 52 79 69",
   "email_contact": "cherbourg@ritmodiag.com",
   "departements": "Manche",
   "mode": "solo",
@@ -8,18 +10,29 @@
   "seo_desc": "Votre diagnostic immobilier certifié à Cherbourg. Devis en ligne immédiat et intervention sous 24h pour votre DPE.",
   "agence": {
     "ville": "Cherbourg",
+    "code_postal": "50100",
     "description": "Nous intervenons à Cherbourg et ses alentours."
   },
   "sales_team": [
     {
       "nom": "Laura RABASSE",
-      "role": "Responsable administrative et commerciale - Co-gérante de RITMODiag Cherbourg"
+      "role": "Administratif et commercial - Co-gérante de RITMODiag Cherbourg",
+      "photo": "/Laura RABASSE - Potrait RITMO.png"
     }
   ],
   "technical_team": [
     {
       "nom": "Adrien RABASSE",
-      "role": "Diagnostiqueur Immobilier - Co-gérant de RITMODiag Cherbourg"
+      "role": "Diagnostiqueur Immobilier - Co-gérant de RITMODiag Cherbourg",
+      "photo": "/Portrait RITMO-Adrien.png"
+    }
+  ],
+  "avis": [
+    {
+      "auteur": "Sylvain Boutrais",
+      "note": 5,
+      "texte": "Rdv fixé 2 jours après la demande. Technicien arrivé en avance comme prévenu au moment du rdv.",
+      "photo": "https://i.pravatar.cc/80?img=11"
     }
   ]
 }
