@@ -2,6 +2,7 @@
   "slug": "cherbourg",
   "city_name": "Cherbourg",
   "header_image": "/cherbourg-en-cotentin-ritmodiag.jpg",
+  "iframe_simulateur": "https://backbone.ritmodiag.com/embed/wizard/671dc187f2ed47e904f2f1355ad2a836aad53863dac69ae1831aa25340412d98",
   "telephone": "02 33 52 79 69",
   "email_contact": "cherbourg@ritmodiag.com",
   "departements": "Manche",
