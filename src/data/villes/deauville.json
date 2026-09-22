@@ -1,0 +1,30 @@
+{
+  "slug": "deauville",
+  "city_name": "Deauville",
+  "header_image": "/RITMO-Deauville.webp",
+  "iframe_simulateur": "https://backbone.ritmodiag.com/embed/wizard/2b8eeb9a39ed3e65b5b7daaf4a755be8ff1c8fc2b5be609681fafbc8b57b5ae6",
+  "telephone": "09 56 91 14 24",
+  "email_contact": "deauville@ritmodiag.com",
+  "departements": "Calvados",
+  "mode": "solo",
+  "seo_titre": "DPE et Diagnostics Immobiliers à Deauville (14) - RITMODiag",
+  "seo_desc": "Votre diagnostic immobilier certifié à Deauville. Devis en ligne immédiat et intervention sous 24h pour votre DPE.",
+  "agence": {
+    "ville": "Deauville",
+    "code_postal": "14800",
+    "description": "Nous intervenons dans tout Deauville et ses alentours."
+  },
+  "technical_team": [
+    {
+      "nom": "Amélie HAUGUEL",
+      "role": "Gérante & Diagnostiqueur Immobilier"
+    }
+  ],
+  "avis": [
+    {
+      "auteur": "Caroline",
+      "note": 5,
+      "texte": "J’ai fait appel à RITMODiag Deauville pour un DPE ainsi qu’un diagnostic électricité, et je suis très satisfaite. Prise de rendez-vous rapide, intervention efficace et surtout de très bons conseils tout au long du diagnostic. Le diagnostiqueur est professionnel, clair dans ses explications et le rapport a été transmis rapidement. Je recommande vivement RITMODiag Deauville pour vos diagnostics immobiliers sur Deauville et alentours !"
+    }
+  ]
+}
