@@ -21,10 +21,11 @@ interface Props {
 	hideMobileCta?: boolean
 	ctaText?: string
 	ctaHref?: string
+	noindex?: boolean
 }
 
 const defaultAgence = { ville: 'Ifs', adresse: '500 boulevard Charles Cros', code_postal: '14123' }
-const { title, description, ville, slug, telephone = '02 31 15 64 88', agence = defaultAgence, hideMobileCta, ctaText, ctaHref } = Astro.props
+const { title, description, ville, slug, telephone = '02 31 15 64 88', agence = defaultAgence, hideMobileCta, ctaText, ctaHref, noindex } = Astro.props
 const simulateurHref = slug ? `/${slug}/simulateur` : '/caen/simulateur'
 const headerCtaText = ctaText || 'Estimez le prix de votre DPE'
 const headerCtaHref = ctaHref || simulateurHref
@@ -40,7 +41,7 @@ const ogImage = new URL('/og-image.jpg', Astro.site || 'https://ritmodiag.com').
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 		<meta name="description" content={metaDescription} />
-		<link rel="canonical" href={canonicalURL.href} />
+		{noindex ? <meta name="robots" content="noindex" /> : <link rel="canonical" href={canonicalURL.href} />}
 		<link rel="icon" type="image/png" href="/favicon.png" />
 		<link rel="preload" href="/fonts/funnel/FunnelDisplay-Regular.woff2" as="font" type="font/woff2" crossorigin />
 		<link rel="preload" href="/fonts/funnel/FunnelDisplay-Bold.woff2" as="font" type="font/woff2" crossorigin />

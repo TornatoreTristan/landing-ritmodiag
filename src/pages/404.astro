@@ -1,0 +1,50 @@
+---
+import Layout from '../layouts/Layout.astro'
+import PhoneIcon from '../components/phone-icon.astro'
+import { villes } from '../data/villes'
+
+// Mêmes critères que src/pages/[ville]/index.astro : seules les villes qui ont une page
+const agences = villes
+  .filter((v) =>
+    Array.isArray(v.technical_team) && v.technical_team.length > 0 &&
+    Array.isArray(v.avis) && v.avis.length > 0
+  )
+  .sort((a, b) => a.city_name.localeCompare(b.city_name, 'fr'))
+---
+
+<Layout title="Page introuvable — RITMODiag" description="Cette page n'existe pas ou a été déplacée." noindex>
+	<section class="py-16 md:py-24">
+		<div class="container-content max-w-3xl flex flex-col items-center text-center gap-4">
+			<p class="text-primary font-bold text-6xl md:text-7xl">404</p>
+			<h1 class="text-2xl sm:text-3xl lg:text-4xl font-bold leading-tight">Cette page est introuvable</h1>
+			<p class="text-base lg:text-lg text-gray-500 max-w-xl">
+				Le lien que vous avez suivi est peut-être erroné, ou la page a été déplacée. Pas d'inquiétude, on vous remet sur la bonne voie.
+			</p>
+
+			<div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 mt-4 w-full sm:w-auto">
+				<a href="/" class="bg-primary text-white px-6 py-3.5 rounded-lg font-semibold hover:bg-primary/85 transition-colors text-center text-sm sm:text-base">
+					Retour à l'accueil
+				</a>
+				<a href="tel:0231156488" class="flex items-center justify-center gap-2 bg-dark text-white px-6 py-3.5 rounded-lg font-semibold hover:bg-dark/90 transition-colors text-sm sm:text-base">
+					<PhoneIcon class="size-5 shrink-0" />
+					02 31 15 64 88
+				</a>
+			</div>
+		</div>
+
+		{agences.length > 0 && (
+			<div class="container-content max-w-3xl mt-16">
+				<h2 class="font-semibold text-xl text-center mb-6">Nos agences</h2>
+				<ul class="grid grid-cols-2 sm:grid-cols-3 gap-3" role="list">
+					{agences.map((agence) => (
+						<li>
+							<a href={`/${agence.slug}`} class="block bg-white border border-gray-200 rounded-lg px-4 py-3 text-center font-semibold text-sm hover:border-primary hover:text-primary transition-colors">
+								{agence.city_name}
+							</a>
+						</li>
+					))}
+				</ul>
+			</div>
+		)}
+	</section>
+</Layout>
