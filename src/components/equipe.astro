@@ -4,7 +4,7 @@ import { Image } from 'astro:assets'
 interface Membre {
   nom: string
   role: string
-  photo: string
+  photo?: string
   certifs?: string
   presentation?: string
 }
@@ -22,8 +22,10 @@ const simulateurHref = slug ? `/${slug}/simulateur` : '/caen/simulateur'
 
 const images = import.meta.glob<{ default: ImageMetadata }>('../assets/img/equipe/*.{jpg,jpeg,png,webp}', { eager: true })
 
+const getImg = (photo?: string) => photo ? images[`../assets/img/equipe/${photo.replace(/^\//, '')}`] : undefined
+
 const solo = mode === 'solo' ? equipe[0] : null
-const soloImg = solo ? images[`../assets/img/equipe/${solo.photo.replace(/^\//, '')}`] : null
+const soloImg = solo ? getImg(solo.photo) : null
 ---
 
 {mode === 'solo' && solo ? (
@@ -71,8 +73,7 @@ const soloImg = solo ? images[`../assets/img/equipe/${solo.photo.replace(/^\//, 
       </div>
       <div class="grid grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
         {equipe.map((membre) => {
-          const imgPath = `../assets/img/equipe/${membre.photo.replace(/^\//, '')}`
-          const img = images[imgPath]
+          const img = getImg(membre.photo)
           return (
             <div class="overflow-hidden rounded-lg">
               <div class="relative bg-gray-200 aspect-[20/17]">
