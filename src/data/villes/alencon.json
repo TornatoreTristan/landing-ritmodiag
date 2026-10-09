@@ -1,0 +1,36 @@
+{
+  "slug": "alencon",
+  "city_name": "Alençon",
+  "header_image": "/alencon-orn-sarthe-ritmodiag.jpg",
+  "telephone": "06 47 13 06 13",
+  "email_contact": "orne@ritmodiag.com",
+  "departements": "Orne, Sarthe",
+  "mode": "solo",
+  "seo_titre": "DPE et Diagnostics Immobiliers à Alençon (61) - RITMODiag",
+  "seo_desc": "Votre diagnostic immobilier certifié à Alençon. Devis en ligne immédiat et intervention sous 24h pour votre DPE.",
+  "agence": {
+    "ville": "Alençon",
+    "code_postal": "61000",
+    "description": "Nous intervenons dans tout Alençon et les départements de l'Orne et de la Sarthe."
+  },
+  "technical_team": [
+    {
+      "nom": "Louis-Arthur SOUPLET",
+      "role": "Gérant & Diagnostiqueur Immobilier"
+    }
+  ],
+  "avis": [
+    {
+      "auteur": "Caroline",
+      "note": 5,
+      "texte": "J’ai fait appel à RITMODiag Alençon pour un DPE ainsi qu’un diagnostic électricité, et je suis très satisfaite. Prise de rendez-vous rapide, intervention efficace et surtout de très bons conseils tout au long du diagnostic. Le diagnostiqueur est professionnel, clair dans ses explications et le rapport a été transmis rapidement. Je recommande vivement RITMODiag pour vos diagnostics immobiliers sur Alençon et alentours !",
+      "photo": "https://i.pravatar.cc/80?img=1"
+    },
+    {
+      "auteur": "Zaz",
+      "note": 5,
+      "texte": "Travail très professionnel effectué par le diagnostiqueur immobiliers les explication a la fin du diagnostic étais clair et précise . Personne que je recommande pour des diagnostics a domicile",
+      "photo": "https://i.pravatar.cc/80?img=5"
+    }
+  ]
+}
