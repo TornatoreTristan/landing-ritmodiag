@@ -1,4 +1,6 @@
 ---
+import franchisesJson from '../data/franchises.json'
+
 interface Props {
   agence?: {
     ville: string
@@ -18,19 +20,13 @@ const defaultAgence = {
   description: "Nous intervenons dans tout le Calvados et ses alentours."
 }
 
-const defaultFranchises = [
-  "Saint-Lô",
-  "Vire",
-  "Cherbourg",
-  "Le Havre",
-  "Angers",
-  "Limoges",
-  "Strasbourg",
-  "Vierzon"
-]
+// Liste centralisée des franchises (src/data/franchises.json, gérée dans Pages CMS).
+// Caen est retirée par défaut : c'est l'agence principale (Ifs).
+const defaultFranchises = franchisesJson.map((f) => f.nom).filter((nom) => nom !== 'Caen')
 
 const agenceData = agence ?? defaultAgence
-const franchisesData = franchises ?? defaultFranchises
+// Dédoublonnage : le CMS peut contenir plusieurs fois la même ville
+const franchisesData = [...new Set(franchises ?? defaultFranchises)]
 ---
 
 <section class="py-12 lg:py-16 bg-secondary">
