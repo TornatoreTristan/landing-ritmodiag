@@ -26,7 +26,7 @@ const images = import.meta.glob<{ default: ImageMetadata }>('../assets/img/equip
       <h2 class="font-semibold text-2xl">Vos conseillers à votre écoute</h2>
       <p class="max-w-xl text-gray-500 text-base lg:text-lg leading-relaxed">Notre équipe conseil est là pour vous guider. Le saviez-vous ? Tous les conseillers chez RITMODiag ont suivi la formation diagnostiqueur immobilier et ont obtenu leurs certifications ! Alors n'hésitez pas à leur poser des questions et à partager avec eux votre projet pour obtenir la meilleure réponse.</p>
     </div>
-    <div class="grid grid-cols-1 sm:grid-cols-2 gap-8 max-w-lg sm:max-w-none mx-auto">
+    <div class:list={["grid grid-cols-1 gap-8 max-w-lg sm:max-w-none mx-auto", conseillers.length > 1 && "sm:grid-cols-2"]}>
       {conseillers.map((conseiller) => {
         const img = conseiller.photo ? images[`../assets/img/equipe/${conseiller.photo.replace(/^\//, '')}`] : undefined
         return (

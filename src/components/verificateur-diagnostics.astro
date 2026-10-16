@@ -9,7 +9,6 @@ import iconERP from '../assets/img/ERP.svg'
 import iconCopro from '../assets/img/Copro.svg'
 import iconParasitaire from '../assets/img/etat-parasitaire.svg'
 import photoMargot from '../assets/img/equipe/Margot-ladroue-diagnostiqueur-immobilier-ritmodiag.png'
-import photoHugo from '../assets/img/equipe/Hugo-belliard-diagnostiqueur-immobilier-ritmodiag.png'
 import photoAntonin from '../assets/img/equipe/Antonin-SBETTA-diagnostiqueur-immobilier-ritmodiag.png'
 import photoNassim from '../assets/img/equipe/Nassim-CHAARYA-diagnostiqueur-immobilier-ritmodiag.png'
 
@@ -23,7 +22,7 @@ const telHref = `tel:${telephone.replace(/\s/g, '')}`
 const simulateurHref = slug ? `/${slug}/simulateur` : '/caen/simulateur'
 
 // Pile d'avatars de l'équipe (crop carré géré en CSS via object-cover)
-const teamPhotos = [photoMargot, photoHugo, photoAntonin, photoNassim]
+const teamPhotos = [photoMargot, photoAntonin, photoNassim]
 const avatars = await Promise.all(
   teamPhotos.map((src) => getImage({ src, width: 96, quality: 70, format: 'webp' }))
 )
