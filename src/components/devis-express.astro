@@ -838,8 +838,10 @@ const fieldIcon = (name: string) =>
       $('dx-success-title').focus({ preventScroll: true })
       keepInView()
 
-      pushDataLayer('lead-devis-normandie', {
+      // Même événement de conversion que le simulateur (déclencheur Google Ads / Meta dans GTM)
+      pushDataLayer('generate_lead', {
         event_id: leadEventId,
+        lead_source: config.source,
         devis_projet: answers.projet,
         devis_bien: answers.bien,
         devis_delai: answers.delai,
