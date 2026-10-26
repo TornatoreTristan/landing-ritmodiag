@@ -1,0 +1,273 @@
+---
+import Layout from '../../layouts/Layout.astro'
+import { Image } from 'astro:assets'
+import GoogleAvis from '../../components/google-avis.astro'
+import PhoneIcon from '../../components/phone-icon.astro'
+import DevisExpress from '../../components/devis-express.astro'
+import { villes } from '../../data/villes'
+import imgHero from '../../assets/img/RITMO-Deauville.webp'
+
+// Agences couvrant la Normandie (ordre d'affichage)
+const slugsNormandie = ['caen', 'le-havre', 'cherbourg', 'saint-lo', 'deauville', 'vire', 'alencon']
+const agences = slugsNormandie
+  .map((slug) => villes.find((v) => v.slug === slug))
+  .filter((v) => v && Array.isArray(v.technical_team) && v.technical_team.length > 0)
+
+const caen = agences.find((a) => a.slug === 'caen')
+const telephone = caen?.telephone || '02 31 15 64 88'
+const telHref = `tel:${telephone.replace(/\s/g, '')}`
+
+const images = import.meta.glob<{ default: ImageMetadata }>('../../assets/img/equipe/*.{jpg,jpeg,png,webp}', { eager: true })
+const getImg = (photo?: string) => photo ? images[`../../assets/img/equipe/${photo.replace(/^\//, '')}`]?.default : undefined
+
+// Avis : 2 avis détaillés par agence, 6 max (certains avis sont présents dans plusieurs fichiers ville)
+const vus = new Set<string>()
+const avis = agences
+  .flatMap((a) => (a.avis || [])
+    .filter((x: any) => x.texte.length > 90 && !vus.has(x.auteur) && vus.add(x.auteur))
+    .slice(0, 2)
+    .map((x: any) => ({ ...x, ville: a.city_name })))
+  .slice(0, 6)
+
+const checkSvg = `<svg xmlns="http://www.w3.org/2000/svg" class="size-5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" /></svg>`
+
+const faqItems = [
+  {
+    question: 'Combien coûtent les diagnostics immobiliers en Normandie ?',
+    reponse: "Le prix dépend du type de bien, de sa surface, de son année de construction et des diagnostics à réaliser. Répondez aux questions du formulaire : votre agence RITMODiag locale vous envoie un devis personnalisé sous 24h, gratuit et sans engagement. Le pack de diagnostics est toujours moins cher que des diagnostics réalisés séparément.",
+  },
+  {
+    question: 'Sous quel délai pouvez-vous intervenir ?',
+    reponse: "Nous proposons un rendez-vous sous 48h après acceptation du devis, partout en Normandie grâce à nos 7 agences locales. Le rapport (Dossier de Diagnostic Technique) vous est remis sous 72h maximum après l'intervention.",
+  },
+  {
+    question: 'Quels diagnostics sont obligatoires pour vendre ?',
+    reponse: "Pour une vente : DPE et État des Risques et Pollutions dans tous les cas, amiante si le permis de construire date d'avant juillet 1997, plomb si le logement date d'avant 1949, électricité et gaz si les installations ont plus de 15 ans, Loi Carrez pour un lot en copropriété, et audit énergétique pour une maison classée E, F ou G. En Normandie, un état parasitaire est fortement recommandé en raison du risque de mérule.",
+  },
+  {
+    question: 'Quels diagnostics sont obligatoires pour louer ?',
+    reponse: "Pour une location : DPE, État des Risques et Pollutions, plomb si le logement date d'avant 1949, électricité et gaz si les installations ont plus de 15 ans, et surface habitable (Loi Boutin) pour un logement vide. L'amiante (DAPP) est à tenir à disposition du locataire pour les immeubles collectifs d'avant juillet 1997.",
+  },
+  {
+    question: 'Vos diagnostiqueurs sont-ils certifiés ?',
+    reponse: "Oui. Tous nos diagnostiqueurs sont certifiés par Bureau Veritas, organisme accrédité COFRAC, et assurés en responsabilité civile professionnelle. Ils sont formés en continu aux évolutions de la réglementation.",
+  },
+]
+
+const faqSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: faqItems.map((item) => ({
+    '@type': 'Question',
+    name: item.question,
+    acceptedAnswer: { '@type': 'Answer', text: item.reponse },
+  })),
+}
+---
+
+<Layout
+  title="Devis Diagnostics Immobiliers en Normandie — Gratuit en 1 minute | RITMODiag"
+  description="Devis diagnostics immobiliers en Normandie en 1 minute : DPE, amiante, plomb, électricité, gaz. 7 agences locales, intervention sous 48h, diagnostiqueurs certifiés."
+  telephone={telephone}
+  ctaText="Obtenir mon devis"
+  ctaHref="#devis"
+  hideMobileCta
+  noindex
+  compactCookies
+>
+  <script type="application/ld+json" set:html={JSON.stringify(faqSchema)} />
+
+  <!-- ===== HERO + FORMULAIRE ===== -->
+  <section class="relative isolate overflow-hidden bg-dark pt-6 pb-12 lg:pt-14 lg:pb-20">
+    <!-- Photo de fond + voile sombre pour la lisibilité du texte -->
+    <Image
+      src={imgHero}
+      alt=""
+      class="absolute inset-0 -z-10 size-full object-cover"
+      widths={[640, 1024, 1600, 2000]}
+      sizes="100vw"
+      quality={70}
+      loading="eager"
+      fetchpriority="high"
+    />
+    <div class="absolute inset-0 -z-10 bg-gradient-to-b lg:bg-gradient-to-r from-dark/90 via-dark/75 to-dark/55" aria-hidden="true"></div>
+
+    <div class="container-content grid grid-cols-1 lg:grid-cols-[1fr_minmax(0,30rem)] gap-6 lg:gap-14 items-start">
+      <div class="flex flex-col gap-4 lg:pt-6 text-white">
+        <p class="inline-flex self-start items-center gap-1.5 text-sm font-semibold bg-white/10 backdrop-blur-sm border border-white/15 px-3 py-1.5 rounded-full">
+          <span class="size-1.5 rounded-full bg-primary" aria-hidden="true"></span>
+          Diagnostics immobiliers en Normandie
+        </p>
+        <h1 class="text-[1.5rem] leading-tight sm:text-4xl lg:text-[2.75rem] font-bold">
+          Quels diagnostics obligatoires pour votre logement&nbsp;?
+          <span class="block text-primary mt-1 sm:mt-2">Obtenez un prix en 1&nbsp;minute chrono&nbsp;!</span>
+        </h1>
+        <p class="hidden sm:block text-base lg:text-lg text-white/80 max-w-xl">
+          Découvrez les diagnostics obligatoires pour votre bien et recevez votre devis de l'agence RITMODiag la plus proche. Rendez-vous sous 48h, partout en Normandie.
+        </p>
+
+        <ul class="hidden lg:flex flex-col gap-2.5 mt-2" role="list">
+          {[
+            'Meilleur rapport qualité/prix',
+            'Intervention sous 48h, rapport sous 72h',
+            'Diagnostiqueurs certifiés',
+            '7 agences locales en Normandie',
+          ].map((item) => (
+            <li class="flex items-center gap-2.5 font-semibold">
+              <span class="text-primary shrink-0" aria-hidden="true"><Fragment set:html={checkSvg} /></span>
+              {item}
+            </li>
+          ))}
+        </ul>
+
+        <div class="hidden lg:block text-dark">
+          <GoogleAvis />
+        </div>
+
+        <!-- Mobile : preuve sociale compacte au-dessus du formulaire -->
+        <div class="flex lg:hidden items-center gap-2 text-sm">
+          <div class="flex" aria-hidden="true">
+            {Array.from({ length: 5 }).map(() => (
+              <svg class="size-4 text-yellow-400" viewBox="0 0 20 20" fill="currentColor"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" /></svg>
+            ))}
+          </div>
+          <span class="font-semibold">4,9/5</span>
+          <span class="text-white/70">· +267 avis Google</span>
+        </div>
+      </div>
+
+      <DevisExpress agences={agences} telephone={telephone} />
+    </div>
+  </section>
+
+  <!-- ===== BANDEAU CONFIANCE ===== -->
+  <section class="border-y border-gray-100 bg-white">
+    <div class="container-content grid grid-cols-2 lg:grid-cols-4 gap-6 py-8">
+      {[
+        { titre: '4,9/5', texte: 'sur plus de 267 avis Google' },
+        { titre: '48h', texte: 'pour obtenir votre rendez-vous' },
+        { titre: '72h', texte: 'maximum pour recevoir votre rapport' },
+        { titre: '7 agences', texte: 'de proximité en Normandie' },
+      ].map((item) => (
+        <div class="text-center">
+          <p class="text-2xl sm:text-3xl font-bold text-primary">{item.titre}</p>
+          <p class="text-sm text-gray-500 mt-1">{item.texte}</p>
+        </div>
+      ))}
+    </div>
+  </section>
+
+  <!-- ===== COMMENT ÇA MARCHE ===== -->
+  <section class="py-12 lg:py-16">
+    <div class="container-content max-w-5xl">
+      <h2 class="text-2xl sm:text-3xl font-bold text-center">Vos diagnostics en 3 étapes</h2>
+      <ol class="grid md:grid-cols-3 gap-4 mt-10">
+        {[
+          { titre: 'Décrivez votre bien', texte: '8 questions rapides pour identifier les diagnostics obligatoires.' },
+          { titre: 'Recevez votre devis', texte: "Votre agence locale vous recontacte sous 24h avec un prix ferme." },
+          { titre: 'Rendez-vous sous 48h', texte: 'Un diagnostiqueur certifié intervient, rapport livré sous 72h.' },
+        ].map((etape, i) => (
+          <li class="bg-white rounded-2xl p-6 border border-gray-100">
+            <span class="inline-flex items-center justify-center size-9 rounded-full bg-primary text-white font-bold">{i + 1}</span>
+            <p class="font-bold text-lg mt-4">{etape.titre}</p>
+            <p class="text-gray-500 text-sm mt-1.5 leading-relaxed">{etape.texte}</p>
+          </li>
+        ))}
+      </ol>
+      <div class="flex justify-center mt-10">
+        <a href="#devis" class="bg-primary text-white px-8 py-4 rounded-xl font-semibold hover:bg-primary/85 transition-colors">Commencer mon devis</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== AGENCES ===== -->
+  <section class="py-12 lg:py-16 bg-secondary">
+    <div class="container-content max-w-5xl">
+      <h2 class="text-2xl sm:text-3xl font-bold text-center">Un diagnostiqueur près de chez vous</h2>
+      <p class="text-gray-600 text-center mt-3 max-w-2xl mx-auto">Pas de plateforme nationale : votre dossier est traité par l'agence RITMODiag de votre secteur.</p>
+      <ul class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 mt-10" role="list">
+        {agences.map((a) => {
+          const membre = a.technical_team[0]
+          const img = getImg(membre?.photo)
+          return (
+            <li class="flex items-center gap-4 bg-white rounded-2xl p-4">
+              {img ? (
+                <Image src={img} alt={`${membre.nom}, diagnostiqueur RITMODiag ${a.city_name}`} width={64} height={64} quality={72} class="size-16 rounded-full object-cover bg-gray-100 shrink-0" />
+              ) : (
+                <span class="size-16 rounded-full bg-gray-100 shrink-0"></span>
+              )}
+              <div class="min-w-0">
+                <p class="font-bold">RITMODiag {a.city_name}</p>
+                <p class="text-xs text-gray-500 truncate">{a.departements}</p>
+                <a href={`tel:${a.telephone.replace(/\s/g, '')}`} class="inline-flex items-center gap-1.5 text-sm font-semibold text-primary mt-1 hover:underline" aria-label={`Appeler RITMODiag ${a.city_name} au ${a.telephone}`}>
+                  <PhoneIcon class="size-3.5" />
+                  {a.telephone}
+                </a>
+              </div>
+            </li>
+          )
+        })}
+      </ul>
+    </div>
+  </section>
+
+  <!-- ===== AVIS ===== -->
+  {avis.length > 0 && (
+    <section class="py-12 lg:py-16">
+      <div class="container-content max-w-5xl">
+        <h2 class="text-2xl sm:text-3xl font-bold text-center">Ils nous ont fait confiance</h2>
+        <div class="flex justify-center"><GoogleAvis /></div>
+        <ul class="grid md:grid-cols-2 lg:grid-cols-3 gap-4 mt-8" role="list">
+          {avis.map((item) => (
+            <li class="bg-white rounded-2xl p-6 border border-gray-100 flex flex-col gap-3">
+              <div class="flex" aria-label={`${item.note} étoiles sur 5`} role="img">
+                {Array.from({ length: 5 }).map((_, i) => (
+                  <svg class:list={['size-4', i < item.note ? 'text-yellow-400' : 'text-gray-300']} viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" /></svg>
+                ))}
+              </div>
+              <p class="text-gray-600 text-sm leading-relaxed line-clamp-5">{item.texte}</p>
+              <p class="text-sm mt-auto"><span class="font-bold">{item.auteur}</span> <span class="text-gray-400">· {item.ville}</span></p>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </section>
+  )}
+
+  <!-- ===== FAQ ===== -->
+  <section class="py-12 lg:py-16 bg-white">
+    <div class="container-content max-w-3xl mx-auto">
+      <h2 class="text-2xl font-bold text-center mb-10">Questions fréquentes</h2>
+      <div class="flex flex-col divide-y divide-gray-200">
+        {faqItems.map((item) => (
+          <details class="group py-5">
+            <summary class="flex cursor-pointer items-center justify-between gap-4 font-semibold text-dark text-sm sm:text-base">
+              <span>{item.question}</span>
+              <svg class="size-5 shrink-0 text-gray-400 transition-transform duration-300 group-open:rotate-45" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                <path d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z" />
+              </svg>
+            </summary>
+            <p class="mt-3 text-gray-500 leading-relaxed text-sm">{item.reponse}</p>
+          </details>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== CTA FINAL ===== -->
+  <section class="pt-12 lg:pt-16">
+    <div class="container-content max-w-5xl">
+      <div class="bg-dark rounded-3xl px-6 py-10 sm:px-12 sm:py-14 text-center">
+        <h2 class="text-2xl sm:text-3xl font-bold text-white">Votre devis en 1 minute, sans engagement</h2>
+        <p class="text-white/60 mt-3">Ou appelez directement un conseiller RITMODiag.</p>
+        <div class="flex flex-col sm:flex-row justify-center gap-3 mt-8">
+          <a href="#devis" class="bg-primary text-white px-8 py-4 rounded-xl font-semibold hover:bg-primary/85 transition-colors">Obtenir mon devis gratuit</a>
+          <a href={telHref} class="flex items-center justify-center gap-2 bg-white text-dark px-8 py-4 rounded-xl font-semibold hover:bg-white/90 transition-colors" aria-label={`Appeler RITMODiag au ${telephone}`}>
+            <PhoneIcon class="size-5 shrink-0" />
+            {telephone}
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+</Layout>

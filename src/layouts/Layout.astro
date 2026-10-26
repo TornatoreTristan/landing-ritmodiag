@@ -22,10 +22,12 @@ interface Props {
 	ctaText?: string
 	ctaHref?: string
 	noindex?: boolean
+	// Bandeau cookies réduit à une barre fine (pages tunnel mobile, ex. landing Facebook Ads)
+	compactCookies?: boolean
 }
 
 const defaultAgence = { ville: 'Ifs', adresse: '500 boulevard Charles Cros', code_postal: '14123' }
-const { title, description, ville, slug, telephone = '02 31 15 64 88', agence = defaultAgence, hideMobileCta, ctaText, ctaHref, noindex } = Astro.props
+const { title, description, ville, slug, telephone = '02 31 15 64 88', agence = defaultAgence, hideMobileCta, ctaText, ctaHref, noindex, compactCookies } = Astro.props
 const simulateurHref = slug ? `/${slug}/simulateur` : '/caen/simulateur'
 const headerCtaText = ctaText || 'Estimez le prix de votre DPE'
 const headerCtaHref = ctaHref || simulateurHref
@@ -36,7 +38,7 @@ const ogImage = new URL('/og-image.jpg', Astro.site || 'https://ritmodiag.com').
 ---
 
 <!doctype html>
-<html lang="fr">
+<html lang="fr" class:list={[compactCookies && 'cc-compact']}>
 	<head>
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -225,6 +227,8 @@ const ogImage = new URL('/og-image.jpg', Astro.site || 'https://ritmodiag.com').
 				});
 			}
 
+			const compact = document.documentElement.classList.contains('cc-compact');
+
 			CookieConsent.run({
 				guiOptions: {
 					consentModal: {
@@ -257,6 +261,8 @@ const ogImage = new URL('/og-image.jpg', Astro.site || 'https://ritmodiag.com').
 								{ name: '_gcl_au' },
 								{ name: /^_gcl/ },
 								{ name: /^_gac/ },
+								{ name: '_fbp' },
+								{ name: '_fbc' },
 							],
 						},
 					},
@@ -276,7 +282,9 @@ const ogImage = new URL('/og-image.jpg', Astro.site || 'https://ritmodiag.com').
 						fr: {
 							consentModal: {
 								title: 'Gestion des cookies',
-								description: 'Nous utilisons des cookies pour améliorer votre expérience, mesurer l\'audience de notre site et optimiser nos campagnes publicitaires. Vous pouvez choisir les cookies que vous acceptez.',
+								description: compact
+									? 'Nous utilisons des cookies pour mesurer l\'audience et nos publicités.'
+									: 'Nous utilisons des cookies pour améliorer votre expérience, mesurer l\'audience de notre site et optimiser nos campagnes publicitaires. Vous pouvez choisir les cookies que vous acceptez.',
 								acceptAllBtn: 'Tout accepter',
 								acceptNecessaryBtn: 'Tout refuser',
 								showPreferencesBtn: 'Personnaliser',
@@ -304,7 +312,7 @@ const ogImage = new URL('/og-image.jpg', Astro.site || 'https://ritmodiag.com').
 									},
 									{
 										title: 'Cookies publicitaires',
-										description: 'Ces cookies sont utilisés pour mesurer l\'efficacité de nos campagnes Google Ads et vous proposer des annonces personnalisées (conversion et remarketing).',
+										description: 'Ces cookies sont utilisés pour mesurer l\'efficacité de nos campagnes Google Ads et Meta (Facebook, Instagram) et vous proposer des annonces personnalisées (conversion et remarketing).',
 										linkedCategory: 'ads',
 									},
 									{
@@ -324,5 +332,62 @@ const ogImage = new URL('/og-image.jpg', Astro.site || 'https://ritmodiag.com').
 <style>
 	.safe-area-bottom {
 		padding-bottom: max(0.75rem, env(safe-area-inset-bottom));
+	}
+</style>
+
+<style is:global>
+	/* Bandeau cookies compact : une ligne de texte + 3 boutons de même poids sur une ligne (refuser aussi simple qu'accepter).
+	   !important nécessaire : la librairie force l'empilement vertical en !important sous 640px. */
+	html.cc-compact #cc-main .cm__title {
+		display: none !important;
+	}
+	html.cc-compact #cc-main .cm__body {
+		flex-direction: column !important;
+		align-items: stretch !important;
+		max-width: 55rem !important;
+		padding: 0 !important;
+	}
+	html.cc-compact #cc-main .cm__texts {
+		padding: 0.75rem 1rem 0 !important;
+	}
+	html.cc-compact #cc-main .cm__desc {
+		font-size: 0.8125rem !important;
+		line-height: 1.4 !important;
+		padding: 0 !important;
+		max-height: none !important;
+	}
+	html.cc-compact #cc-main .cm__btns {
+		display: flex !important;
+		flex-direction: row !important;
+		gap: 0.5rem !important;
+		max-width: none !important;
+		padding: 0.625rem 1rem max(0.75rem, env(safe-area-inset-bottom)) !important;
+		border: none !important;
+	}
+	html.cc-compact #cc-main .cm__btn-group {
+		display: flex !important;
+		flex-direction: row !important;
+		gap: 0.5rem !important;
+		margin: 0 !important;
+	}
+	html.cc-compact #cc-main .cm__btn-group:first-child {
+		flex: 2 !important;
+	}
+	html.cc-compact #cc-main .cm__btn-group:last-child {
+		flex: 1 !important;
+	}
+	html.cc-compact #cc-main .cm__btn {
+		flex: 1 !important;
+		min-width: 0 !important;
+		min-height: 2.5rem !important;
+		margin: 0 !important;
+		padding: 0.5rem 0.25rem !important;
+		font-size: 0.8125rem !important;
+		white-space: nowrap !important;
+	}
+	@media (max-width: 380px) {
+		html.cc-compact #cc-main .cm__btn {
+			font-size: 0.75rem !important;
+		}
 	}
 </style>
