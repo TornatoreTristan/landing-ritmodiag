@@ -1,0 +1,866 @@
+---
+import { getImage } from 'astro:assets'
+import PhoneIcon from './phone-icon.astro'
+
+interface Agence {
+  technical_team?: { nom: string; role: string; photo?: string }[]
+}
+
+interface Props {
+  agences: Agence[]
+  telephone?: string
+  source?: string
+  // Départements couverts (2 premiers chiffres du code postal) : sert uniquement à signaler les demandes hors zone
+  departements?: string[]
+}
+
+const { agences, telephone = '02 31 15 64 88', source = 'devis-normandie', departements = ['14', '27', '50', '61', '76', '72'] } = Astro.props
+const telHref = `tel:${telephone.replace(/\s/g, '')}`
+
+const images = import.meta.glob<{ default: ImageMetadata }>('../assets/img/equipe/*.{jpg,jpeg,png,webp}', { eager: true })
+const getImg = (photo?: string) => photo ? images[`../assets/img/equipe/${photo.replace(/^\//, '')}`]?.default : undefined
+
+// Pile d'avatars de diagnostiqueurs (réassurance à l'étape code postal, sans attribuer d'agence)
+const avatars = await Promise.all(
+  agences
+    .map((a) => getImg(a.technical_team?.[0]?.photo))
+    .filter((img): img is ImageMetadata => !!img)
+    .slice(0, 3)
+    .map((src) => getImage({ src, width: 80, quality: 70, format: 'webp' }))
+)
+
+const config = {
+  telephone,
+  source,
+  departements,
+  // Même liste Listmonk / même webhook n8n que etat-parasitaire et amiante : routage via 'source'
+  listmonkList: '7246c0ba-8eda-418f-9719-7709a2a0a640',
+  n8nWebhook: 'https://n8n.spines.fr/webhook/e7c7a55f-e665-4690-9282-d1796e42502c',
+}
+
+const inputClass = 'w-full border border-gray-200 rounded-xl px-4 py-3.5 text-base focus:outline-none focus:ring-2 focus:ring-primary/40 focus:border-primary'
+const inputIconClass = `${inputClass} pl-11`
+
+// Icônes au trait (style Lucide, 24x24), partagées entre le HTML et le script client
+const icons: Record<string, string> = {
+  projet: '<rect width="8" height="4" x="8" y="2" rx="1"/><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><path d="M12 11h4"/><path d="M12 16h4"/><path d="M8 11h.01"/><path d="M8 16h.01"/>',
+  vente: '<path d="M12.586 2.586A2 2 0 0 0 11.172 2H4a2 2 0 0 0-2 2v7.172a2 2 0 0 0 .586 1.414l8.704 8.704a2.426 2.426 0 0 0 3.42 0l6.58-6.58a2.426 2.426 0 0 0 0-3.42z"/><circle cx="7.5" cy="7.5" r=".5" fill="currentColor"/>',
+  location: '<path d="m15.5 7.5 2.3 2.3a1 1 0 0 0 1.4 0l2.1-2.1a1 1 0 0 0 0-1.4L19 4"/><path d="m21 2-9.6 9.6"/><circle cx="7.5" cy="15.5" r="5.5"/>',
+  travaux: '<path d="m15 12-8.373 8.373a1 1 0 1 1-3-3L12 9"/><path d="m18 15 4-4"/><path d="m21.5 11.5-1.914-1.914A2 2 0 0 1 19 8.172V7l-2.26-2.26a6 6 0 0 0-4.202-1.756L9 2.96l.92.82A6.18 6.18 0 0 1 12 8.4V10l2 2h1.172a2 2 0 0 1 1.414.586L18.5 14.5"/>',
+  maison: '<path d="M15 21v-8a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v8"/><path d="M3 10a2 2 0 0 1 .709-1.528l7-5.999a2 2 0 0 1 2.582 0l7 5.999A2 2 0 0 1 21 10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>',
+  appartement: '<rect width="16" height="20" x="4" y="2" rx="2"/><path d="M9 22v-4h6v4"/><path d="M8 6h.01"/><path d="M16 6h.01"/><path d="M12 6h.01"/><path d="M12 10h.01"/><path d="M12 14h.01"/><path d="M16 10h.01"/><path d="M16 14h.01"/><path d="M8 10h.01"/><path d="M8 14h.01"/>',
+  local: '<path d="m2 7 4.41-4.41A2 2 0 0 1 7.83 2h8.34a2 2 0 0 1 1.42.59L22 7"/><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/><path d="M15 22v-4a2 2 0 0 0-2-2h-2a2 2 0 0 0-2 2v4"/><path d="M2 7h20"/><path d="M22 7v3a2 2 0 0 1-2 2 2.7 2.7 0 0 1-1.59-.63.7.7 0 0 0-.82 0A2.7 2.7 0 0 1 16 12a2.7 2.7 0 0 1-1.59-.63.7.7 0 0 0-.82 0A2.7 2.7 0 0 1 12 12a2.7 2.7 0 0 1-1.59-.63.7.7 0 0 0-.82 0A2.7 2.7 0 0 1 8 12a2.7 2.7 0 0 1-1.59-.63.7.7 0 0 0-.82 0A2.7 2.7 0 0 1 4 12a2 2 0 0 1-2-2V7"/>',
+  immeuble: '<path d="M6 22V4a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v18Z"/><path d="M6 12H4a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h2"/><path d="M18 9h2a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2h-2"/><path d="M10 6h4"/><path d="M10 10h4"/><path d="M10 14h4"/><path d="M10 18h4"/>',
+  pin: '<path d="M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0"/><circle cx="12" cy="10" r="3"/>',
+  surface: '<path d="M21.3 15.3a2.4 2.4 0 0 1 0 3.4l-2.6 2.6a2.4 2.4 0 0 1-3.4 0L2.7 8.7a2.41 2.41 0 0 1 0-3.4l2.6-2.6a2.41 2.41 0 0 1 3.4 0Z"/><path d="m14.5 12.5 2-2"/><path d="m11.5 9.5 2-2"/><path d="m8.5 6.5 2-2"/><path d="m17.5 15.5 2-2"/>',
+  calendrier: '<path d="M8 2v4"/><path d="M16 2v4"/><rect width="18" height="18" x="3" y="4" rx="2"/><path d="M3 10h18"/>',
+  electricite: '<path d="M4 14a1 1 0 0 1-.78-1.63l9.9-10.2a.5.5 0 0 1 .86.46l-1.92 6.02A1 1 0 0 0 13 10h7a1 1 0 0 1 .78 1.63l-9.9 10.2a.5.5 0 0 1-.86-.46l1.92-6.02A1 1 0 0 0 11 14z"/>',
+  gaz: '<path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z"/>',
+  horloge: '<circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/>',
+  urgent: '<line x1="10" x2="14" y1="2" y2="2"/><line x1="12" x2="15" y1="14" y2="11"/><circle cx="12" cy="14" r="8"/>',
+  recherche: '<circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/>',
+  user: '<path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/>',
+  tel: '<path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/>',
+  mail: '<rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/>',
+  lock: '<rect width="18" height="11" x="3" y="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/>',
+  check: '<path d="M20 6L9 17l-5-5"/>',
+  fleche: '<path d="M5 12h14"/><path d="m12 5 7 7-7 7"/>',
+}
+const svg = (name: string, cls = 'size-5') =>
+  `<svg xmlns="http://www.w3.org/2000/svg" class="${cls}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${icons[name]}</svg>`
+const fieldIcon = (name: string) =>
+  `<span class="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-gray-400">${svg(name, 'size-[18px]')}</span>`
+---
+
+<script type="application/json" id="dx-config" set:html={JSON.stringify({ ...config, icons })} />
+
+<div id="devis" class="dx bg-white rounded-3xl shadow-xl shadow-dark/5 border border-gray-100 overflow-hidden scroll-mt-20">
+  <!-- En-tête : étape + progression -->
+  <div class="px-5 sm:px-7 pt-5">
+    <div class="flex items-center justify-between gap-3 h-8">
+      <button type="button" id="dx-back" class="invisible -ml-1.5 inline-flex items-center gap-1 px-1.5 py-1 rounded-lg text-sm font-semibold text-gray-400 hover:text-dark hover:bg-gray-100 transition-colors cursor-pointer" aria-label="Question précédente">
+        <svg xmlns="http://www.w3.org/2000/svg" class="size-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 18l-6-6 6-6"/></svg>
+        Retour
+      </button>
+      <p id="dx-step" class="text-xs font-semibold text-gray-400" aria-live="polite"></p>
+    </div>
+    <div class="mt-3 h-1.5 bg-gray-100 rounded-full overflow-hidden" aria-hidden="true">
+      <div id="dx-progress" class="h-full bg-primary rounded-full transition-all duration-300" style="width: 6%"></div>
+    </div>
+  </div>
+
+  <div class="px-5 sm:px-7 pt-6 pb-6 sm:pb-7">
+    <!-- Écran question (rempli par le script) -->
+    <div id="dx-question">
+      <div class="flex items-center gap-3">
+        <span id="dx-title-icon" class="shrink-0 inline-flex items-center justify-center size-10 rounded-xl bg-primary/10 text-primary" aria-hidden="true"></span>
+        <h2 id="dx-title" class="text-xl sm:text-2xl font-bold text-dark leading-snug outline-none" tabindex="-1"></h2>
+      </div>
+      <p id="dx-help" class="hidden text-sm text-gray-500 mt-2"></p>
+      <div id="dx-options" class="grid gap-2.5 mt-5"></div>
+
+      <!-- Localisation : adresse avec suggestions (API Adresse Géoplateforme), code postal seul en repli -->
+      <div id="dx-cp" class="hidden mt-5">
+        <div id="dx-addr-mode">
+          <label for="dx-addr-input" class="sr-only">Adresse du bien</label>
+          <div class="relative">
+            <Fragment set:html={fieldIcon('pin')} />
+            <input
+              id="dx-addr-input"
+              type="text"
+              autocomplete="off"
+              spellcheck="false"
+              role="combobox"
+              aria-autocomplete="list"
+              aria-expanded="false"
+              aria-controls="dx-addr-list"
+              placeholder="Ex. 12 rue Eugène Colas, Deauville"
+              class={inputIconClass}
+            />
+            <ul id="dx-addr-list" role="listbox" aria-label="Adresses suggérées" class="hidden absolute z-20 inset-x-0 top-full mt-1.5 bg-white border border-gray-200 rounded-xl shadow-lg shadow-dark/10 overflow-hidden"></ul>
+          </div>
+          <p id="dx-addr-hint" class="hidden text-sm mt-2"></p>
+          <button type="button" id="dx-addr-to-cp" class="mt-2.5 text-sm font-semibold text-gray-500 underline underline-offset-2 hover:text-dark cursor-pointer">
+            Je n'ai pas l'adresse exacte
+          </button>
+        </div>
+
+        <div id="dx-cp-mode" class="hidden">
+          <label for="dx-cp-input" class="sr-only">Code postal du bien</label>
+          <div class="relative">
+            <Fragment set:html={fieldIcon('pin')} />
+            <input id="dx-cp-input" type="text" inputmode="numeric" autocomplete="postal-code" maxlength="5" placeholder="Code postal, ex. 14000" class={`${inputIconClass} text-lg tracking-wider`} />
+          </div>
+          <p id="dx-cp-error" class="hidden text-sm text-red-600 mt-2">Indiquez un code postal à 5 chiffres.</p>
+          <button type="button" id="dx-cp-to-addr" class="mt-2.5 text-sm font-semibold text-gray-500 underline underline-offset-2 hover:text-dark cursor-pointer">
+            Saisir l'adresse complète
+          </button>
+        </div>
+        <div id="dx-cp-agence" class="hidden mt-4 flex items-center gap-3 p-3 rounded-2xl bg-primary/8">
+          <div id="dx-cp-avatars" class="flex -space-x-2.5 shrink-0">
+            {avatars.map((a) => (
+              <img src={a.src} width="36" height="36" alt="" aria-hidden="true" class="size-9 rounded-full object-cover ring-2 ring-white bg-gray-100" />
+            ))}
+          </div>
+          <p class="text-sm leading-snug"><span id="dx-cp-agence-text" class="font-semibold text-dark"></span><br /><span id="dx-cp-agence-sub" class="text-gray-500"></span></p>
+        </div>
+        <button type="button" id="dx-cp-next" class="mt-4 w-full inline-flex items-center justify-center gap-2 bg-primary text-white py-4 rounded-xl font-semibold text-base hover:bg-primary/85 transition-colors cursor-pointer disabled:opacity-40 disabled:cursor-not-allowed" disabled>
+          Continuer
+          <Fragment set:html={svg('fleche', 'size-5')} />
+        </button>
+      </div>
+    </div>
+
+    <!-- Écran coordonnées -->
+    <div id="dx-contact" class="hidden">
+      <p class="inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-wide text-primary">
+        <svg xmlns="http://www.w3.org/2000/svg" class="size-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg>
+        Dernière étape
+      </p>
+      <h2 class="text-xl sm:text-2xl font-bold text-dark leading-snug mt-1.5 outline-none" tabindex="-1" id="dx-contact-title"></h2>
+
+      <ul id="dx-diag-list" class="flex flex-wrap gap-1.5 mt-4"></ul>
+
+      <iframe name="dx-listmonk-frame" class="hidden" aria-hidden="true" tabindex="-1"></iframe>
+      <form id="dx-form" action="https://mailing.spines.fr/subscription/form" method="POST" target="dx-listmonk-frame" class="flex flex-col gap-3 mt-5" novalidate>
+        <input type="hidden" name="l" value={config.listmonkList} />
+        <div>
+          <label for="dx-nom" class="text-sm font-semibold text-dark block mb-1.5">Nom et prénom</label>
+          <div class="relative">
+            <Fragment set:html={fieldIcon('user')} />
+            <input type="text" id="dx-nom" name="name" required minlength="2" autocomplete="name" placeholder="Marie Dupont" class={inputIconClass} />
+          </div>
+        </div>
+        <div>
+          <label for="dx-tel" class="text-sm font-semibold text-dark block mb-1.5">Téléphone</label>
+          <div class="relative">
+            <Fragment set:html={fieldIcon('tel')} />
+            <input type="tel" id="dx-tel" name="telephone" required autocomplete="tel" inputmode="tel" placeholder="06 12 34 56 78" class={inputIconClass} />
+          </div>
+        </div>
+        <div>
+          <label for="dx-email" class="text-sm font-semibold text-dark block mb-1.5">Email</label>
+          <div class="relative">
+            <Fragment set:html={fieldIcon('mail')} />
+            <input type="email" id="dx-email" name="email" required autocomplete="email" inputmode="email" placeholder="marie@exemple.fr" class={inputIconClass} />
+          </div>
+        </div>
+        <p id="dx-form-error" class="hidden text-sm text-red-600" role="alert"></p>
+        <button type="submit" class="mt-1 w-full inline-flex items-center justify-center gap-2 bg-primary text-white py-4 rounded-xl font-bold text-base hover:bg-primary/85 transition-colors cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed">
+          Recevoir mon devis gratuit
+          <Fragment set:html={svg('fleche', 'size-5')} />
+        </button>
+        <p class="flex flex-wrap justify-center gap-x-4 gap-y-1 text-xs text-gray-500">
+          <span class="inline-flex items-center gap-1"><Fragment set:html={svg('check', 'size-3.5 text-primary')} />Meilleur rapport qualité/prix</span>
+          <span class="inline-flex items-center gap-1"><Fragment set:html={svg('horloge', 'size-3.5 text-primary')} />Réponse sous 24h</span>
+        </p>
+        <p class="flex gap-1.5 text-[11px] text-gray-400 leading-relaxed">
+          <Fragment set:html={svg('lock', 'size-3.5 shrink-0 mt-0.5')} />
+          <span>Vos coordonnées servent uniquement à établir votre devis et à vous recontacter. <a href="/politique-de-confidentialite" class="underline hover:text-dark">Politique de confidentialité</a>.</span>
+        </p>
+      </form>
+    </div>
+
+    <!-- Écran succès -->
+    <div id="dx-success" class="hidden text-center" role="status" aria-live="polite">
+      <div class="flex items-center justify-center size-14 rounded-full bg-primary/10 mx-auto">
+        <svg xmlns="http://www.w3.org/2000/svg" class="size-7 text-primary" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg>
+      </div>
+      <h2 class="text-xl sm:text-2xl font-bold text-dark mt-4 outline-none" tabindex="-1" id="dx-success-title">Demande envoyée !</h2>
+      <p id="dx-success-text" class="text-gray-500 mt-2 leading-relaxed"></p>
+      <p class="text-sm text-gray-500 mt-6">Pressé ? Appelez directement un conseiller :</p>
+      <a href={telHref} class="mt-2 flex items-center justify-center gap-2 bg-dark text-white py-3.5 rounded-xl font-semibold hover:bg-dark/90 transition-colors" aria-label={`Appeler RITMODiag au ${telephone}`}>
+        <PhoneIcon class="size-5 shrink-0" />
+        {telephone}
+      </a>
+    </div>
+  </div>
+</div>
+
+<script>
+  interface DxConfig {
+    telephone: string
+    source: string
+    departements: string[]
+    listmonkList: string
+    n8nWebhook: string
+    icons: Record<string, string>
+  }
+  interface Option { value: string; label: string; sub?: string; icon?: string }
+  interface Step { key: string; title: string; icon: string; help?: string; type: 'choice' | 'cp'; cols?: 1 | 2; options?: Option[] }
+
+  const configEl = document.getElementById('dx-config')
+  if (configEl) {
+    const config: DxConfig = JSON.parse(configEl.textContent || '{}')
+
+    const icon = (name: string, cls = 'size-5') =>
+      `<svg xmlns="http://www.w3.org/2000/svg" class="${cls}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${config.icons[name] || ''}</svg>`
+
+    // --- Questions (une par écran, avance automatique au clic) ---
+    const steps: Step[] = [
+      {
+        key: 'projet', type: 'choice', cols: 1, icon: 'projet',
+        title: 'Quel est votre projet ?',
+        options: [
+          { value: 'vente', label: 'Vendre mon bien', icon: 'vente' },
+          { value: 'location', label: 'Mettre en location', icon: 'location' },
+          { value: 'travaux', label: 'Faire des travaux', sub: 'Repérage amiante, audit…', icon: 'travaux' },
+        ],
+      },
+      {
+        key: 'bien', type: 'choice', cols: 2, icon: 'maison',
+        title: 'Quel type de bien ?',
+        options: [
+          { value: 'maison', label: 'Maison', icon: 'maison' },
+          { value: 'appartement', label: 'Appartement', icon: 'appartement' },
+          { value: 'local', label: 'Local commercial / bureau', icon: 'local' },
+          { value: 'immeuble', label: 'Immeuble / autre', icon: 'immeuble' },
+        ],
+      },
+      {
+        key: 'cp', type: 'cp', icon: 'pin',
+        title: 'Quelle est l’adresse du bien ?',
+        help: 'Commencez à taper, puis choisissez votre adresse dans la liste.',
+      },
+      {
+        key: 'surface', type: 'choice', cols: 2, icon: 'surface',
+        title: 'Quelle est sa surface ?',
+        help: 'Une estimation suffit, annexes comprises.',
+        options: [
+          { value: '<40', label: 'Moins de 40 m²' },
+          { value: '40-80', label: '40 à 80 m²' },
+          { value: '80-120', label: '80 à 120 m²' },
+          { value: '120-200', label: '120 à 200 m²' },
+          { value: '>200', label: 'Plus de 200 m²' },
+          { value: 'inconnu', label: 'Je ne sais pas' },
+        ],
+      },
+      {
+        key: 'annee', type: 'choice', cols: 1, icon: 'calendrier',
+        title: 'Quand a-t-il été construit ?',
+        help: 'Date du permis de construire.',
+        options: [
+          { value: 'avant1949', label: 'Avant 1949' },
+          { value: '1949-1997', label: 'Entre 1949 et juillet 1997' },
+          { value: 'apres1997', label: 'Après juillet 1997' },
+          { value: 'inconnu', label: 'Je ne sais pas' },
+        ],
+      },
+      {
+        key: 'electricite', type: 'choice', cols: 1, icon: 'electricite',
+        title: 'Quel âge a votre installation électrique ?',
+        help: 'Comptez depuis la mise en service ou la dernière rénovation complète.',
+        options: [
+          { value: 'plus15', label: 'Plus de 15 ans' },
+          { value: 'moins15', label: 'Moins de 15 ans' },
+          { value: 'inconnu', label: 'Je ne sais pas' },
+        ],
+      },
+      {
+        key: 'gaz', type: 'choice', cols: 1, icon: 'gaz',
+        title: 'Et votre installation de gaz ?',
+        help: 'Chaudière, cuisinière ou chauffe-eau au gaz de ville ou en citerne.',
+        options: [
+          { value: 'plus15', label: 'Plus de 15 ans' },
+          { value: 'moins15', label: 'Moins de 15 ans' },
+          { value: 'aucun', label: 'Pas d’installation gaz' },
+          { value: 'inconnu', label: 'Je ne sais pas' },
+        ],
+      },
+      {
+        key: 'delai', type: 'choice', cols: 1, icon: 'horloge',
+        title: 'Pour quand en avez-vous besoin ?',
+        options: [
+          { value: 'urgent', label: 'Au plus vite', sub: 'Compromis ou bail imminent', icon: 'urgent' },
+          { value: 'mois', label: 'Dans le mois', icon: 'calendrier' },
+          { value: 'plus-tard', label: 'Plus tard, je me renseigne', icon: 'recherche' },
+        ],
+      },
+    ]
+    const totalSteps = steps.length + 1 // + écran coordonnées
+
+    type Answers = Record<string, string>
+
+    // --- Diagnostics obligatoires (réglementation FR, cf. verificateur-diagnostics) ---
+    function computeDiagnostics(a: Answers): string[] {
+      const list: string[] = []
+      if (a.projet === 'travaux') {
+        if (a.annee !== 'apres1997') list.push('Repérage amiante avant travaux')
+        list.push('DPE', 'Audit énergétique')
+        if (a.annee === 'avant1949') list.push('Plomb avant travaux')
+        return list
+      }
+      list.push('DPE', 'ERP')
+      if (a.annee === 'avant1949' && a.bien !== 'local') list.push('Plomb')
+      if (a.annee !== 'apres1997') list.push('Amiante')
+      // « Je ne sais pas » : on l'inclut par prudence, le diagnostiqueur confirme sur place
+      if (a.bien !== 'local' && a.electricite !== 'moins15') list.push('Électricité')
+      if (a.bien !== 'local' && (a.gaz === 'plus15' || a.gaz === 'inconnu')) list.push('Gaz')
+      if (a.bien === 'appartement') list.push(a.projet === 'location' ? 'Loi Boutin' : 'Loi Carrez')
+      if (a.projet === 'vente') list.push('État parasitaire / termites')
+      if (a.projet === 'vente' && a.bien === 'maison') list.push('Audit énergétique (si E, F ou G)')
+      return list
+    }
+
+    // --- Zone couverte : pas d'attribution d'agence, simple signalement des demandes hors zone ---
+    const isHorsZone = (cp: string) => !config.departements.includes(cp.slice(0, 2))
+
+    // --- DOM ---
+    const $ = <T extends HTMLElement = HTMLElement>(id: string) => document.getElementById(id) as T
+    const root = $('devis')
+    const backBtn = $('dx-back')
+    const stepLabel = $('dx-step')
+    const progress = $('dx-progress')
+    const questionScreen = $('dx-question')
+    const title = $('dx-title')
+    const titleIcon = $('dx-title-icon')
+    const help = $('dx-help')
+    const optionsSlot = $('dx-options')
+    const cpBlock = $('dx-cp')
+    const cpInput = $<HTMLInputElement>('dx-cp-input')
+    const cpError = $('dx-cp-error')
+    const cpAgence = $('dx-cp-agence')
+    const cpNext = $<HTMLButtonElement>('dx-cp-next')
+    const addrModeBlock = $('dx-addr-mode')
+    const cpModeBlock = $('dx-cp-mode')
+    const addrInput = $<HTMLInputElement>('dx-addr-input')
+    const addrList = $('dx-addr-list')
+    const addrHint = $('dx-addr-hint')
+    const contactScreen = $('dx-contact')
+    const contactTitle = $('dx-contact-title')
+    const diagList = $('dx-diag-list')
+    const form = $<HTMLFormElement>('dx-form')
+    const formError = $('dx-form-error')
+    const formIframe = document.querySelector('iframe[name="dx-listmonk-frame"]') as HTMLIFrameElement
+    const submitBtn = form.querySelector('button[type="submit"]') as HTMLButtonElement
+    const successScreen = $('dx-success')
+
+    // --- Attribution publicitaire (Google Ads, Meta, UTM) ---
+    // Conservée en sessionStorage : un rechargement ou un retour sur la page ne fait pas perdre la source du clic
+    const ATTR_KEYS = ['gclid', 'fbclid', 'utm_source', 'utm_medium', 'utm_campaign', 'utm_content', 'utm_term'] as const
+    const attribution: Record<string, string> = (() => {
+      let stored: Record<string, string> = {}
+      try { stored = JSON.parse(sessionStorage.getItem('dx_attr') || '{}') } catch {}
+      const params = new URLSearchParams(window.location.search)
+      const fromUrl: Record<string, string> = {}
+      for (const k of ATTR_KEYS) { const v = params.get(k); if (v) fromUrl[k] = v }
+      // fbclid_ts : horodatage du clic, nécessaire pour reconstruire le paramètre fbc de l'API Conversions
+      if (fromUrl.fbclid && fromUrl.fbclid !== stored.fbclid) fromUrl.fbclid_ts = String(Date.now())
+      const merged = Object.keys(fromUrl).length ? { ...stored, ...fromUrl } : stored
+      try { sessionStorage.setItem('dx_attr', JSON.stringify(merged)) } catch {}
+      return merged
+    })()
+
+    function getCookie(name: string) {
+      return document.cookie.split('; ').find((c) => c.startsWith(`${name}=`))?.slice(name.length + 1) || ''
+    }
+
+    // Cookies Meta : _fbp posé par le Pixel ; _fbc posé par le Pixel ou reconstruit depuis fbclid (format fb.1.<ts>.<fbclid>)
+    function metaIds() {
+      const fbp = getCookie('_fbp')
+      const fbc = getCookie('_fbc') || (attribution.fbclid ? `fb.1.${attribution.fbclid_ts || Date.now()}.${attribution.fbclid}` : '')
+      return { fbp, fbc }
+    }
+
+    // Consentement « publicitaires » du bandeau cookies (vanilla-cookieconsent, cookie cc_cookie)
+    function adsConsent() {
+      try { return (JSON.parse(decodeURIComponent(getCookie('cc_cookie'))).categories || []).includes('ads') } catch { return false }
+    }
+
+    function newEventId() {
+      return crypto.randomUUID?.() || `${Date.now()}-${Math.random().toString(36).slice(2, 10)}`
+    }
+    let leadEventId = ''
+    let current = 0
+    const answers: Answers = {}
+    let horsZone = false
+    let diagnostics: string[] = []
+    let started = false
+
+    function pushDataLayer(event: string, extra: Record<string, unknown> = {}) {
+      ;(window as any).dataLayer = (window as any).dataLayer || []
+      ;(window as any).dataLayer.push({ event, ...extra })
+    }
+
+    function setProgress(index: number) {
+      stepLabel.textContent = `Étape ${index + 1} sur ${totalSteps}`
+      progress.style.width = `${Math.max(6, (index / totalSteps) * 100)}%`
+      backBtn.classList.toggle('invisible', index === 0)
+    }
+
+    // Recentre la carte sur mobile quand l'écran change (sinon on reste scrollé en bas)
+    function keepInView() {
+      if (root.getBoundingClientRect().top < 0) root.scrollIntoView({ behavior: 'smooth', block: 'start' })
+    }
+
+    function renderStep(focus = true) {
+      const step = steps[current]
+      questionScreen.classList.remove('hidden')
+      contactScreen.classList.add('hidden')
+      setProgress(current)
+      title.textContent = step.title
+      titleIcon.innerHTML = icon(step.icon)
+      help.textContent = step.help || ''
+      help.classList.toggle('hidden', !step.help)
+
+      optionsSlot.innerHTML = ''
+      optionsSlot.classList.toggle('hidden', step.type !== 'choice')
+      cpBlock.classList.toggle('hidden', step.type !== 'cp')
+
+      if (step.type === 'choice') {
+        optionsSlot.className = `grid gap-2.5 mt-5 ${step.cols === 2 ? 'grid-cols-2' : 'grid-cols-1'}`
+        for (const opt of step.options || []) {
+          const btn = document.createElement('button')
+          btn.type = 'button'
+          const selected = answers[step.key] === opt.value
+          // Carte verticale (icône au-dessus) pour les grilles 2 colonnes, sinon ligne horizontale
+          const vertical = step.cols === 2 && !!opt.icon
+          const state = selected ? 'border-primary bg-primary/5' : 'border-gray-200 hover:border-primary/60 hover:bg-secondary/60'
+          btn.className = vertical
+            ? `dx-option group relative flex flex-col items-start gap-3 w-full text-left p-4 rounded-xl border-2 transition-colors cursor-pointer ${state}`
+            : `dx-option group flex items-center gap-3 w-full text-left px-4 ${opt.icon ? 'py-3' : 'py-4'} rounded-xl border-2 transition-colors cursor-pointer ${state}`
+          btn.setAttribute('aria-pressed', String(selected))
+          const iconHtml = opt.icon
+            ? `<span class="dx-opt-icon shrink-0 inline-flex items-center justify-center size-10 rounded-lg transition-colors ${selected ? 'bg-primary text-white' : 'bg-primary/10 text-primary'}">${icon(opt.icon)}</span>`
+            : ''
+          const radio = `<span class="dx-radio shrink-0 size-5 rounded-full border-2 ${vertical ? 'absolute top-4 right-4' : ''} ${selected ? 'border-primary bg-primary' : 'border-gray-300 group-hover:border-primary/60'}"></span>`
+          btn.innerHTML = `${iconHtml}<span class="min-w-0 grow"><span class="dx-label block font-semibold text-dark text-[15px] leading-snug"></span>${opt.sub ? '<span class="dx-sub block text-xs text-gray-500 mt-0.5"></span>' : ''}</span>${radio}`
+          btn.querySelector('.dx-label')!.textContent = opt.label
+          if (opt.sub) btn.querySelector('.dx-sub')!.textContent = opt.sub
+          btn.addEventListener('click', () => choose(step, opt, btn))
+          optionsSlot.appendChild(btn)
+        }
+      } else {
+        renderLocation(focus)
+      }
+      if (focus && step.type === 'choice') title.focus({ preventScroll: true })
+    }
+
+    function choose(step: Step, opt: Option, btn: HTMLButtonElement) {
+      answers[step.key] = opt.value
+      // Retour visuel immédiat avant d'avancer
+      optionsSlot.querySelectorAll('.dx-option').forEach((b) => b.classList.remove('border-primary', 'bg-primary/5'))
+      btn.classList.add('border-primary', 'bg-primary/5')
+      btn.querySelector('.dx-radio')?.classList.add('border-primary', 'bg-primary')
+      btn.querySelector('.dx-opt-icon')?.classList.replace('bg-primary/10', 'bg-primary')
+      btn.querySelector('.dx-opt-icon')?.classList.replace('text-primary', 'text-white')
+      if (!started) {
+        started = true
+        pushDataLayer('devis_start', { devis_source: config.source })
+      }
+      pushDataLayer('devis_step', { devis_step: current + 1, devis_question: step.key, devis_answer: opt.value })
+      window.setTimeout(next, 220)
+    }
+
+    function next() {
+      if (current < steps.length - 1) {
+        current++
+        renderStep()
+      } else {
+        showContact()
+      }
+      keepInView()
+    }
+
+    // --- Localisation : adresse (autocomplétion) ou code postal seul ---
+    interface Adresse { label: string; ligne: string; cp: string; ville: string; insee: string; lat: number; lon: number; precise: boolean }
+    const ADDR_API = 'https://data.geopf.fr/geocodage/search'
+    let addrMode = true
+    let adresse: Adresse | null = null
+    let suggestions: Adresse[] = []
+    let activeIndex = -1
+    let addrTimer = 0
+    let addrController: AbortController | null = null
+
+    function renderLocation(focus: boolean) {
+      addrModeBlock.classList.toggle('hidden', !addrMode)
+      cpModeBlock.classList.toggle('hidden', addrMode)
+      title.textContent = addrMode ? 'Quelle est l’adresse du bien ?' : 'Quel est le code postal du bien ?'
+      help.textContent = addrMode
+        ? 'Commencez à taper, puis choisissez votre adresse dans la liste.'
+        : 'Il nous permet de vous attribuer le diagnostiqueur le plus proche.'
+      hideHint()
+      closeList()
+      if (addrMode) {
+        addrInput.value = adresse?.label || ''
+        showAgence(adresse?.cp || null)
+      } else {
+        cpInput.value = answers.cp || ''
+        updateCp()
+      }
+      if (focus) window.setTimeout(() => (addrMode ? addrInput : cpInput).focus({ preventScroll: true }), 50)
+    }
+
+    function setHint(text: string, tone: 'error' | 'info') {
+      addrHint.textContent = text
+      addrHint.className = `text-sm mt-2 ${tone === 'error' ? 'text-red-600' : 'text-amber-700'}`
+    }
+    function hideHint() { addrHint.className = 'hidden' }
+
+    function closeList() {
+      addrList.classList.add('hidden')
+      addrInput.setAttribute('aria-expanded', 'false')
+      addrInput.removeAttribute('aria-activedescendant')
+      activeIndex = -1
+    }
+
+    // Conserve le numéro saisi quand l'API ne renvoie que la rue (numéro absent de la Base Adresse Nationale)
+    function toAdresse(f: any, saisie: string): Adresse {
+      const p = f.properties
+      const numSaisi = saisie.match(/^\s*(\d+(?:\s?(?:bis|ter|[a-d]))?)\b/i)?.[1]
+      const precise = p.type === 'housenumber' || !!numSaisi
+      const ligne = p.type === 'housenumber' || !numSaisi ? p.name : `${numSaisi} ${p.name}`
+      return {
+        label: `${ligne}, ${p.postcode} ${p.city}`,
+        ligne,
+        cp: p.postcode,
+        ville: p.city,
+        insee: p.citycode,
+        lat: f.geometry.coordinates[1],
+        lon: f.geometry.coordinates[0],
+        precise,
+      }
+    }
+
+    async function searchAdresse(q: string) {
+      addrController?.abort()
+      addrController = new AbortController()
+      // Biais géographique sur la Normandie (centre ≈ Caen) pour classer les résultats locaux en premier
+      const url = `${ADDR_API}?q=${encodeURIComponent(q)}&limit=5&autocomplete=1&index=address&lat=49.18&lon=-0.37`
+      try {
+        const res = await fetch(url, { signal: addrController.signal })
+        if (!res.ok) throw new Error(String(res.status))
+        const data = await res.json()
+        suggestions = (data.features || [])
+          .filter((f: any) => f.properties.type !== 'municipality')
+          .map((f: any) => toAdresse(f, q))
+        renderSuggestions()
+      } catch (err) {
+        if ((err as Error).name === 'AbortError') return
+        // Service indisponible : on bascule sur le code postal pour ne pas bloquer le lead
+        addrMode = false
+        renderLocation(true)
+        cpError.textContent = 'La recherche d’adresse est momentanément indisponible, indiquez simplement le code postal.'
+        cpError.className = 'text-sm mt-2 text-amber-700'
+      }
+    }
+
+    function renderSuggestions() {
+      addrList.innerHTML = ''
+      activeIndex = -1
+      if (suggestions.length === 0) {
+        closeList()
+        setHint('Aucune adresse trouvée. Vérifiez la saisie ou indiquez seulement le code postal.', 'info')
+        return
+      }
+      hideHint()
+      suggestions.forEach((s, i) => {
+        const li = document.createElement('li')
+        li.id = `dx-addr-opt-${i}`
+        li.setAttribute('role', 'option')
+        li.className = 'dx-addr-opt flex items-center gap-3 px-4 py-3 cursor-pointer hover:bg-secondary border-b border-gray-100 last:border-b-0'
+        li.innerHTML = `<span class="shrink-0 text-gray-400">${icon('pin', 'size-4')}</span><span class="min-w-0"><span class="block text-sm font-semibold text-dark truncate"></span><span class="block text-xs text-gray-500"></span></span>`
+        const spans = li.querySelectorAll('span span')
+        spans[0].textContent = s.ligne
+        spans[1].textContent = `${s.cp} ${s.ville}`
+        // mousedown plutôt que click : se déclenche avant le blur de l'input
+        li.addEventListener('mousedown', (e) => { e.preventDefault(); selectAdresse(s) })
+        addrList.appendChild(li)
+      })
+      addrList.classList.remove('hidden')
+      addrInput.setAttribute('aria-expanded', 'true')
+    }
+
+    function highlight(index: number) {
+      const items = addrList.querySelectorAll('.dx-addr-opt')
+      items.forEach((el, i) => {
+        el.classList.toggle('bg-secondary', i === index)
+        el.setAttribute('aria-selected', String(i === index))
+      })
+      activeIndex = index
+      if (index >= 0) addrInput.setAttribute('aria-activedescendant', `dx-addr-opt-${index}`)
+    }
+
+    function selectAdresse(s: Adresse) {
+      adresse = s
+      addrInput.value = s.label
+      closeList()
+      showAgence(s.cp)
+      if (s.precise) hideHint()
+      else setHint('Pensez à ajouter le numéro de rue pour une adresse exacte.', 'info')
+    }
+
+    addrInput.addEventListener('input', () => {
+      // Toute modification invalide l'adresse retenue
+      adresse = null
+      showAgence(null)
+      hideHint()
+      const q = addrInput.value.trim()
+      window.clearTimeout(addrTimer)
+      if (q.length < 3) { closeList(); return }
+      addrTimer = window.setTimeout(() => searchAdresse(q), 200)
+    })
+
+    addrInput.addEventListener('keydown', (e) => {
+      const open = !addrList.classList.contains('hidden')
+      if (e.key === 'ArrowDown' && open) { e.preventDefault(); highlight(Math.min(activeIndex + 1, suggestions.length - 1)) }
+      else if (e.key === 'ArrowUp' && open) { e.preventDefault(); highlight(Math.max(activeIndex - 1, 0)) }
+      else if (e.key === 'Escape') closeList()
+      else if (e.key === 'Enter') {
+        e.preventDefault()
+        if (open && suggestions.length) selectAdresse(suggestions[Math.max(activeIndex, 0)])
+        else submitCp()
+      }
+    })
+    addrInput.addEventListener('blur', () => window.setTimeout(closeList, 100))
+
+    $('dx-addr-to-cp').addEventListener('click', () => {
+      addrMode = false
+      adresse = null
+      renderLocation(true)
+    })
+    $('dx-cp-to-addr').addEventListener('click', () => {
+      addrMode = true
+      renderLocation(true)
+    })
+
+    function updateCp() {
+      const cp = cpInput.value.replace(/\D/g, '').slice(0, 5)
+      if (cpInput.value !== cp) cpInput.value = cp
+      cpError.classList.add('hidden')
+      showAgence(/^\d{5}$/.test(cp) ? cp : null)
+    }
+
+    function showAgence(cp: string | null) {
+      cpNext.disabled = !cp
+      cpAgence.classList.toggle('hidden', !cp)
+      if (!cp) return
+      // hors_zone n'est jamais révélé au client : message neutre (mais vrai) au lieu de « nous intervenons chez vous »
+      horsZone = isHorsZone(cp)
+      $('dx-cp-agence-text').textContent = horsZone
+        ? 'Des diagnostiqueurs certifiés à votre écoute'
+        : 'Bonne nouvelle, nous intervenons chez vous'
+      $('dx-cp-agence-sub').textContent = horsZone
+        ? 'Un conseiller vous répond sous 24h'
+        : 'Diagnostiqueur certifié, rendez-vous sous 48h'
+    }
+
+    cpInput.addEventListener('input', updateCp)
+    cpInput.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') { e.preventDefault(); submitCp() }
+    })
+    cpNext.addEventListener('click', submitCp)
+
+    function submitCp() {
+      if (addrMode) {
+        if (!adresse) {
+          setHint(suggestions.length ? 'Choisissez votre adresse dans la liste.' : 'Indiquez l’adresse du bien.', 'error')
+          addrInput.focus()
+          return
+        }
+        answers.cp = adresse.cp
+      } else {
+        const cp = cpInput.value
+        if (!/^\d{5}$/.test(cp)) {
+          cpError.textContent = 'Indiquez un code postal à 5 chiffres.'
+          cpError.className = 'text-sm mt-2 text-red-600'
+          return
+        }
+        answers.cp = cp
+        adresse = null
+      }
+      pushDataLayer('devis_step', {
+        devis_step: current + 1,
+        devis_question: 'cp',
+        devis_answer: answers.cp.slice(0, 2),
+        devis_hors_zone: horsZone,
+        devis_adresse: adresse ? (adresse.precise ? 'precise' : 'rue') : 'code_postal',
+      })
+      next()
+    }
+
+    // --- Coordonnées ---
+    function showContact() {
+      diagnostics = computeDiagnostics(answers)
+      questionScreen.classList.add('hidden')
+      contactScreen.classList.remove('hidden')
+      setProgress(steps.length)
+      const n = diagnostics.length
+      contactTitle.textContent = answers.projet === 'travaux'
+        ? 'Où envoyer votre devis gratuit ?'
+        : `${n} diagnostic${n > 1 ? 's' : ''} à prévoir. Où envoyer votre devis ?`
+      diagList.innerHTML = ''
+      for (const d of diagnostics) {
+        const li = document.createElement('li')
+        li.className = 'inline-flex items-center gap-1 text-xs font-semibold text-dark bg-secondary px-2.5 py-1.5 rounded-lg'
+        li.innerHTML = `<span class="text-primary">${icon('check', 'size-3.5')}</span><span></span>`
+        li.lastElementChild!.textContent = d
+        diagList.appendChild(li)
+      }
+      contactTitle.focus({ preventScroll: true })
+      pushDataLayer('devis_contact_view', { devis_hors_zone: horsZone, devis_nb_diagnostics: n })
+    }
+
+    const phoneRe = /^(?:(?:\+|00)33|0)[1-9]\d{8}$/
+    const emailRe = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/
+
+    function showFormError(msg: string, field: HTMLInputElement) {
+      formError.textContent = msg
+      formError.classList.remove('hidden')
+      field.setAttribute('aria-invalid', 'true')
+      field.focus()
+    }
+
+    let sent = false
+    form.addEventListener('submit', (e) => {
+      const nom = $<HTMLInputElement>('dx-nom')
+      const tel = $<HTMLInputElement>('dx-tel')
+      const email = $<HTMLInputElement>('dx-email')
+      ;[nom, tel, email].forEach((f) => f.removeAttribute('aria-invalid'))
+      formError.classList.add('hidden')
+
+      if (nom.value.trim().length < 2) { e.preventDefault(); return showFormError('Indiquez votre nom.', nom) }
+      if (!phoneRe.test(tel.value.replace(/[\s.\-()]/g, ''))) { e.preventDefault(); return showFormError('Indiquez un numéro de téléphone valide.', tel) }
+      if (!emailRe.test(email.value.trim())) { e.preventDefault(); return showFormError('Indiquez une adresse email valide.', email) }
+
+      submitBtn.disabled = true
+      submitBtn.textContent = 'Envoi en cours…'
+      sent = true
+      // Même identifiant envoyé à n8n (API Conversions) et au dataLayer (Pixel via GTM) : Meta dédoublonne
+      leadEventId = newEventId()
+      const consent = adsConsent()
+      const meta = consent ? metaIds() : { fbp: '', fbc: '' }
+
+      // Envoi parallèle vers n8n (fire-and-forget), routé par 'source' ; l'agence est attribuée ensuite côté équipe
+      fetch(config.n8nWebhook, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          nom: nom.value.trim(),
+          email: email.value.trim(),
+          telephone: tel.value.trim(),
+          projet: answers.projet || '',
+          type_bien: answers.bien || '',
+          adresse: adresse?.label || '',
+          adresse_precise: adresse?.precise ?? false,
+          code_postal: answers.cp || '',
+          ville: adresse?.ville || '',
+          code_insee: adresse?.insee || '',
+          latitude: adresse?.lat ?? '',
+          longitude: adresse?.lon ?? '',
+          surface: answers.surface || '',
+          annee_construction: answers.annee || '',
+          electricite: answers.electricite || '',
+          gaz: answers.gaz || '',
+          delai: answers.delai || '',
+          diagnostics: diagnostics.join(', '),
+          hors_zone: horsZone,
+          gclid: attribution.gclid || '',
+          fbclid: attribution.fbclid || '',
+          utm_source: attribution.utm_source || '',
+          utm_medium: attribution.utm_medium || '',
+          utm_campaign: attribution.utm_campaign || '',
+          utm_content: attribution.utm_content || '',
+          utm_term: attribution.utm_term || '',
+          // API Conversions Meta : à n'utiliser côté n8n que si consentement_pub = true
+          consentement_pub: consent,
+          event_id: leadEventId,
+          event_name: 'Lead',
+          fbp: meta.fbp,
+          fbc: meta.fbc,
+          user_agent: navigator.userAgent,
+          source: config.source,
+          page_url: window.location.href,
+          submitted_at: new Date().toISOString(),
+        }),
+        keepalive: true,
+      }).catch(() => {})
+
+      // Filet de sécurité si l'iframe Listmonk ne répond pas
+      window.setTimeout(showSuccess, 5000)
+    })
+
+    formIframe.addEventListener('load', () => {
+      if (sent) showSuccess()
+    })
+
+    let successShown = false
+    function showSuccess() {
+      if (successShown) return
+      successShown = true
+      contactScreen.classList.add('hidden')
+      successScreen.classList.remove('hidden')
+      progress.style.width = '100%'
+      stepLabel.textContent = 'Demande envoyée'
+      backBtn.classList.add('invisible')
+
+      $('dx-success-text').textContent = 'Un conseiller RITMODiag vous recontacte sous 24h avec votre devis personnalisé.'
+      $('dx-success-title').focus({ preventScroll: true })
+      keepInView()
+
+      pushDataLayer('lead-devis-normandie', {
+        event_id: leadEventId,
+        devis_projet: answers.projet,
+        devis_bien: answers.bien,
+        devis_delai: answers.delai,
+        devis_hors_zone: horsZone,
+      })
+    }
+
+    backBtn.addEventListener('click', () => {
+      if (!contactScreen.classList.contains('hidden')) {
+        renderStep()
+      } else if (current > 0) {
+        current--
+        renderStep()
+      }
+    })
+
+    // Liens « #devis » de la page : recentre sur la carte et met le focus sur la question
+    document.querySelectorAll('a[href="#devis"]').forEach((a) =>
+      a.addEventListener('click', () => window.setTimeout(() => title.focus({ preventScroll: true }), 400))
+    )
+
+    renderStep(false)
+  }
+</script>
