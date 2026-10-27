@@ -35,7 +35,7 @@ const config = {
   departements,
   // Même liste Listmonk / même webhook n8n que etat-parasitaire et amiante : routage via 'source'
   listmonkList: '7246c0ba-8eda-418f-9719-7709a2a0a640',
-  n8nWebhook: 'https://n8n.spines.fr/webhook/e7c7a55f-e665-4690-9282-d1796e42502c',
+  n8nWebhook: 'https://n8n.spines.fr/webhook/21af1e08-78ae-4f13-a6d1-9b1007ce6247',
 }
 
 const inputClass = 'w-full border border-gray-200 rounded-xl px-4 py-3.5 text-base focus:outline-none focus:ring-2 focus:ring-primary/40 focus:border-primary'
@@ -751,6 +751,12 @@ const fieldIcon = (name: string) =>
       field.focus()
     }
 
+    // Libellé affiché au client pour la réponse donnée à une question (ex. surface '80-120' → '80 à 120 m²')
+    function libelle(key: string) {
+      const opt = steps.find((s) => s.key === key)?.options?.find((o) => o.value === answers[key])
+      return opt ? opt.label : answers[key] || ''
+    }
+
     let sent = false
     form.addEventListener('submit', (e) => {
       const nom = $<HTMLInputElement>('dx-nom')
@@ -794,6 +800,17 @@ const fieldIcon = (name: string) =>
           gaz: answers.gaz || '',
           delai: answers.delai || '',
           diagnostics: diagnostics.join(', '),
+          // Versions lisibles pour les notifications (n8n → Google Chat), sans logique côté n8n
+          projet_libelle: libelle('projet'),
+          type_bien_libelle: libelle('bien'),
+          surface_libelle: libelle('surface'),
+          annee_libelle: libelle('annee'),
+          electricite_libelle: libelle('electricite'),
+          gaz_libelle: libelle('gaz'),
+          delai_libelle: libelle('delai'),
+          adresse_affichee: adresse ? `${adresse.label}${adresse.precise ? '' : ' (sans numéro)'}` : `${answers.cp || ''} (code postal seul)`,
+          carte_url: adresse ? `https://www.google.com/maps?q=${adresse.lat},${adresse.lon}` : '',
+          alerte: horsZone ? '⚠️ HORS ZONE' : '',
           hors_zone: horsZone,
           gclid: attribution.gclid || '',
           fbclid: attribution.fbclid || '',
