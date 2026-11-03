@@ -35,6 +35,7 @@ const config = {
   departements,
   // Même liste Listmonk / même webhook n8n que etat-parasitaire et amiante : routage via 'source'
   listmonkList: '7246c0ba-8eda-418f-9719-7709a2a0a640',
+  listmonkUrl: 'https://mailing.spines.fr/subscription/form',
   n8nWebhook: 'https://n8n.spines.fr/webhook/21af1e08-78ae-4f13-a6d1-9b1007ce6247',
 }
 
@@ -162,8 +163,13 @@ const fieldIcon = (name: string) =>
       <ul id="dx-diag-list" class="flex flex-wrap gap-1.5 mt-4"></ul>
 
       <iframe name="dx-listmonk-frame" class="hidden" aria-hidden="true" tabindex="-1"></iframe>
-      <form id="dx-form" action="https://mailing.spines.fr/subscription/form" method="POST" target="dx-listmonk-frame" class="flex flex-col gap-3 mt-5" novalidate>
+      <form id="dx-form" method="POST" target="dx-listmonk-frame" class="flex flex-col gap-3 mt-5" novalidate>
         <input type="hidden" name="l" value={config.listmonkList} />
+        <!-- Pot de miel anti-spam : invisible pour un humain, rempli par les robots -->
+        <div class="absolute -left-[9999px] w-px h-px overflow-hidden" aria-hidden="true">
+          <label for="dx-site">Site web</label>
+          <input type="text" id="dx-site" name="site_web" tabindex="-1" autocomplete="off" />
+        </div>
         <div>
           <label for="dx-nom" class="text-sm font-semibold text-dark block mb-1.5">Nom et prénom</label>
           <div class="relative">
@@ -223,6 +229,7 @@ const fieldIcon = (name: string) =>
     source: string
     departements: string[]
     listmonkList: string
+    listmonkUrl: string
     n8nWebhook: string
     icons: Record<string, string>
   }
@@ -416,6 +423,7 @@ const fieldIcon = (name: string) =>
     let horsZone = false
     let diagnostics: string[] = []
     let started = false
+    let startedAt = 0
 
     function pushDataLayer(event: string, extra: Record<string, unknown> = {}) {
       ;(window as any).dataLayer = (window as any).dataLayer || []
@@ -486,6 +494,7 @@ const fieldIcon = (name: string) =>
       btn.querySelector('.dx-opt-icon')?.classList.replace('text-primary', 'text-white')
       if (!started) {
         started = true
+        startedAt = Date.now()
         pushDataLayer('devis_start', { devis_source: config.source })
       }
       pushDataLayer('devis_step', { devis_step: current + 1, devis_question: step.key, devis_answer: opt.value })
@@ -757,6 +766,16 @@ const fieldIcon = (name: string) =>
       return opt ? opt.label : answers[key] || ''
     }
 
+    // Anti-spam : un humain répond aux 8 questions avant d'arriver ici, ce qui prend bien plus de 10 secondes
+    const minFillMs = 10000
+    const urlRe = /https?:\/\/|www\.|\.(?:com|ru|xyz|top|info)\b|@/i
+    function looksLikeSpam(nom: string) {
+      if ($<HTMLInputElement>('dx-site').value) return true
+      if (!started || !answers.projet || !answers.cp) return true
+      if (Date.now() - startedAt < minFillMs) return true
+      return urlRe.test(nom)
+    }
+
     let sent = false
     form.addEventListener('submit', (e) => {
       const nom = $<HTMLInputElement>('dx-nom')
@@ -771,6 +790,9 @@ const fieldIcon = (name: string) =>
 
       submitBtn.disabled = true
       submitBtn.textContent = 'Envoi en cours…'
+      // Spam : on affiche le succès sans rien envoyer, pour que le robot ne réessaie pas
+      if (looksLikeSpam(nom.value.trim())) { e.preventDefault(); return showSuccess(true) }
+      form.action = config.listmonkUrl
       sent = true
       // Même identifiant envoyé à n8n (API Conversions) et au dataLayer (Pixel via GTM) : Meta dédoublonne
       leadEventId = newEventId()
@@ -842,7 +864,7 @@ const fieldIcon = (name: string) =>
     })
 
     let successShown = false
-    function showSuccess() {
+    function showSuccess(spam = false) {
       if (successShown) return
       successShown = true
       contactScreen.classList.add('hidden')
@@ -856,6 +878,8 @@ const fieldIcon = (name: string) =>
       keepInView()
 
       // Même événement de conversion que le simulateur (déclencheur Google Ads / Meta dans GTM)
+      // Pas de conversion pour le spam : elle fausserait l'optimisation des campagnes
+      if (spam) return
       pushDataLayer('generate_lead', {
         event_id: leadEventId,
         lead_source: config.source,
