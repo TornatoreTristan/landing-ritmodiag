@@ -34,6 +34,7 @@ const config = {
   simulateurHref,
   // Réutilise la liste Listmonk état-parasitaire en attendant une liste dédiée (cf. formulaire-devis-amiante)
   listmonkList: '7246c0ba-8eda-418f-9719-7709a2a0a640',
+  listmonkUrl: 'https://mailing.spines.fr/subscription/form',
   // Webhook n8n de production (scénario dédié "verificateur-diagnostics")
   n8nWebhook: 'https://n8n.spines.fr/webhook/21af1e08-78ae-4f13-a6d1-9b1007ce6247',
   icons: {
@@ -189,12 +190,16 @@ const config = {
           <iframe name="verif-listmonk-frame" class="hidden" aria-hidden="true" tabindex="-1"></iframe>
           <form
             id="verif-form"
-            action="https://mailing.spines.fr/subscription/form"
             method="POST"
             target="verif-listmonk-frame"
             class="flex flex-col gap-3.5"
           >
             <input type="hidden" name="l" value={config.listmonkList} />
+            <!-- Pot de miel anti-spam : invisible pour un humain, rempli par les robots -->
+            <div class="absolute -left-[9999px] w-px h-px overflow-hidden" aria-hidden="true">
+              <label for="verif-site">Site web</label>
+              <input type="text" id="verif-site" name="site_web" tabindex="-1" autocomplete="off" />
+            </div>
             <div>
               <label for="verif-nom" class="text-sm font-semibold text-dark block mb-1.5">Nom et prénom <span aria-hidden="true" class="text-primary">*</span></label>
               <input type="text" id="verif-nom" name="name" required minlength="2" autocomplete="name" placeholder="Marie Dupont" class="w-full border border-gray-200 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary/40 focus:border-primary" />
@@ -214,6 +219,7 @@ const config = {
             <input type="hidden" name="electricite" id="verif-hidden-electricite" />
             <input type="hidden" name="gaz" id="verif-hidden-gaz" />
             <input type="hidden" name="diagnostics" id="verif-hidden-diagnostics" />
+            <p id="verif-form-error" class="hidden text-sm text-red-600" role="alert"></p>
             <button type="submit" class="bg-primary text-white py-3.5 rounded-lg font-semibold hover:bg-primary/85 transition-colors cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed mt-1">
               Je souhaite être rappelé
             </button>
@@ -240,6 +246,7 @@ const config = {
     telHref: string
     simulateurHref: string
     listmonkList: string
+    listmonkUrl: string
     n8nWebhook: string
     icons: Record<string, string>
   }
@@ -367,6 +374,7 @@ const config = {
     let currentStep = 0
     let answers: Answers = {}
     let lastDiagnostics: ReturnType<typeof computeDiagnostics> = []
+    let startedAt = 0
 
     function pushDataLayer(event: string, extra: Record<string, unknown> = {}) {
       ;(window as any).dataLayer = (window as any).dataLayer || []
@@ -388,6 +396,7 @@ const config = {
         btn.className = `w-full text-left px-4 py-3.5 rounded-xl border-2 font-semibold text-sm transition-colors cursor-pointer ${selected ? 'border-primary bg-primary/5 text-primary' : 'border-gray-200 text-dark hover:border-primary/50 hover:bg-secondary/40'}`
         btn.textContent = opt.labelText
         btn.addEventListener('click', () => {
+          if (!startedAt) startedAt = Date.now()
           answers[q.key] = opt.value
           if (currentStep < questions.length - 1) {
             currentStep++
@@ -519,11 +528,40 @@ const config = {
     })
 
     const submitBtn = form.querySelector('button[type="submit"]') as HTMLButtonElement
-    form.addEventListener('submit', () => {
+    // Anti-spam : quiz rempli par un humain (plus de 5 s), téléphone français, nom sans lien ni suite aléatoire
+    const phoneRe = /^(?:(?:\+|00)33|0)[1-9]\d{8}$/
+    const urlRe = /https?:\/\/|www\.|\.(?:com|ru|xyz|top|info)\b|@/i
+    const randomNameRe = /[a-z][A-Z].*[a-z][A-Z]/
+    const formError = document.getElementById('verif-form-error') as HTMLElement
+    function looksLikeSpam(fd: FormData) {
+      const nom = String(fd.get('name') || '')
+      if (fd.get('site_web')) return true
+      if (!startedAt || !answers.projet || Date.now() - startedAt < 5000) return true
+      return urlRe.test(nom) || randomNameRe.test(nom)
+    }
+
+    form.addEventListener('submit', (e) => {
+      const fd = new FormData(form)
+      formError.classList.add('hidden')
+      if (!phoneRe.test(String(fd.get('telephone') || '').replace(/[\s.\-()]/g, ''))) {
+        e.preventDefault()
+        formError.textContent = 'Indiquez un numéro de téléphone français valide.'
+        formError.classList.remove('hidden')
+        return (document.getElementById('verif-tel') as HTMLInputElement).focus()
+      }
+
       submitBtn.disabled = true
       submitBtn.textContent = 'Envoi en cours…'
 
-      const fd = new FormData(form)
+      // Spam : on affiche le succès sans rien envoyer, pour que le robot ne réessaie pas
+      if (looksLikeSpam(fd)) {
+        e.preventDefault()
+        form.classList.add('hidden')
+        successBox.classList.remove('hidden')
+        return
+      }
+      form.action = config.listmonkUrl
+
       // Envoi parallèle vers n8n (fire-and-forget), routé par 'source'
       fetch(config.n8nWebhook, {
         method: 'POST',
