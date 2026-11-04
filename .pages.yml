@@ -74,6 +74,10 @@ content:
       - name: departements
         label: Départements couverts
         type: string
+      - name: footer_zones
+        label: Zones du pied de page (vide = tout le réseau)
+        type: string
+        list: true
       - name: mode
         label: Mode d'affichage équipe
         type: select
@@ -82,6 +86,19 @@ content:
             - { value: solo, label: "Solo (1 diagnostiqueur)" }
             - { value: team, label: "Équipe" }
           default: team
+      - name: masquer_franchises
+        label: Masquer la liste des autres agences
+        type: boolean
+      - name: hero
+        label: Bandeau Google Ads (H1 court, prix, formulaire)
+        description: "Laisser vide pour garder le bandeau classique. Le texte avant la première virgule du titre passe en vert."
+        type: object
+        fields:
+          - { name: h1, label: Titre par défaut, type: string }
+          - { name: h1_prix, label: "Titre si ?angle=prix", type: string }
+          - { name: h1_vente, label: "Titre si ?angle=vente", type: string }
+          - { name: h1_location, label: "Titre si ?angle=location", type: string }
+          - { name: prix_dpe, label: Prix d'appel DPE (€), type: number }
       - name: seo_titre
         label: Titre SEO
         type: string

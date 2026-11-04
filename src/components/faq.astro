@@ -1,9 +1,10 @@
 ---
 interface Props {
   ville?: string
+  prixDpe?: number
 }
 
-const { ville } = Astro.props
+const { ville, prixDpe } = Astro.props
 
 const questions = [
   {
@@ -14,15 +15,17 @@ const questions = [
   },
   {
     question: "Combien de temps est valable un DPE ?",
-    reponse: "Un DPE est valable 10 ans. Attention toutefois, les DPE réalisés entre le 1er janvier 2018 et le 30 juin 2021 ne sont valables que jusqu'au 31 décembre 2024. Nous vous conseillons de vérifier la date de validité de votre DPE avant toute transaction."
+    reponse: "Un DPE est valable 10 ans ; ceux réalisés avant le 1er juillet 2021 ne sont plus valables. Depuis le 1er janvier 2026, le calcul a évolué : le coefficient appliqué à l'électricité passe de 2,3 à 1,9, ce qui améliore la classe de nombreux logements chauffés à l'électricité. Côté location, les logements classés G ne peuvent plus être loués depuis 2025, et ce sera le cas des logements classés F à partir du 1er janvier 2028."
   },
   {
     question: "Quel est le délai pour obtenir un rendez-vous ?",
-    reponse: "Chez RITMODiag, nous nous engageons à vous proposer un rendez-vous sous 48 heures. En cas d'urgence, nous faisons notre maximum pour intervenir dans la journée. Les rapports sont ensuite livrés sous 3 jours ouvrés."
+    reponse: "Chez RITMODiag, nous nous engageons à vous proposer un rendez-vous sous 48 heures. En cas d'urgence, nous faisons notre maximum pour intervenir dans la journée. Le rapport vous est ensuite remis sous 72 heures."
   },
   {
     question: "Combien coûte un DPE ?",
-    reponse: "Le prix d'un DPE varie en fonction de la superficie et du type de bien (appartement ou maison). Chez RITMODiag, nous proposons des tarifs compétitifs et transparents. Utilisez notre simulateur en ligne pour obtenir un devis gratuit et immédiat."
+    reponse: prixDpe
+      ? `${ville ? `À ${ville}, le` : 'Le'} DPE est proposé à partir de ${prixDpe} €. Le prix final dépend de la superficie et du type de bien (appartement ou maison). Utilisez notre simulateur en ligne pour obtenir un devis gratuit et immédiat.`
+      : "Le prix d'un DPE varie en fonction de la superficie et du type de bien (appartement ou maison). Chez RITMODiag, nous proposons des tarifs compétitifs et transparents. Utilisez notre simulateur en ligne pour obtenir un devis gratuit et immédiat."
   },
   {
     question: "Qu'est-ce qu'un audit énergétique et est-il obligatoire ?",
