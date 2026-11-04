@@ -5,6 +5,7 @@ import { Image, type ImageMetadata } from 'astro:assets';
 import GoogleAvis from './google-avis.astro';
 import AvisMobile from './avis-mobile.astro';
 import FormulaireAccueil from './formulaire-accueil.astro';
+import PhoneIcon from './phone-icon.astro';
 
 interface Avis {
   auteur: string
@@ -66,14 +67,17 @@ const puces = ['RDV en moins de 48 heures', 'Rapport livré sous 72 h', 'Diagnos
           }
         </script>
       )}
-      <div class="flex flex-wrap items-center gap-3 [&>div]:mt-0">
+      <div class="[&>div]:mt-0">
         <GoogleAvis />
-        {hero.prix_dpe && (
-          <p class="inline-flex items-baseline gap-1.5 bg-primary text-white rounded-2xl px-4 py-3">
-            <span class="text-sm font-semibold">DPE dès</span>
-            <span class="text-2xl font-bold leading-none">{hero.prix_dpe} €</span>
-          </p>
-        )}
+      </div>
+      <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 mt-2">
+        <a href={`/${slug}/simulateur`} class="bg-primary text-white px-6 py-3.5 rounded-lg font-semibold hover:bg-primary/85 transition-colors text-center text-sm sm:text-base">
+          Estimez le prix de votre DPE
+        </a>
+        <a href={`tel:${telephone.replace(/\s/g, '')}`} class="flex items-center justify-center gap-2 bg-dark text-white px-6 py-3.5 rounded-lg font-semibold hover:bg-dark/90 transition-colors text-sm sm:text-base">
+          <PhoneIcon class="size-5 shrink-0" />
+          {telephone}
+        </a>
       </div>
     </div>
 
