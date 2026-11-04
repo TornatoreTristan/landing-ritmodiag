@@ -6,9 +6,20 @@
   "telephone": "02 33 87 65 60",
   "email_contact": "cherbourg@ritmodiag.com",
   "departements": "Manche",
+  "footer_zones": [
+    "Manche"
+  ],
   "mode": "solo",
+  "masquer_franchises": true,
+  "hero": {
+    "h1": "DPE et diagnostics à Cherbourg, RDV sous 48 h",
+    "h1_prix": "DPE à Cherbourg dès 99 €, RDV sous 48 h",
+    "h1_vente": "Diagnostics vente à Cherbourg, RDV sous 48 h",
+    "h1_location": "Diagnostics location à Cherbourg, RDV sous 48 h",
+    "prix_dpe": 99
+  },
   "seo_titre": "DPE et Diagnostics Immobiliers à Cherbourg (50) - RITMODiag",
-  "seo_desc": "Votre diagnostic immobilier certifié à Cherbourg. Devis en ligne immédiat et intervention sous 24h pour votre DPE.",
+  "seo_desc": "Votre diagnostic immobilier certifié à Cherbourg. DPE dès 99 €, devis en ligne immédiat et rendez-vous sous 48h.",
   "agence": {
     "ville": "Cherbourg",
     "code_postal": "50100",

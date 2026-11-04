@@ -6,9 +6,20 @@
   "telephone": "02 32 79 97 48",
   "email_contact": "lehavre@ritmodiag.com",
   "departements": "Seine-Maritime",
+  "footer_zones": [
+    "Seine-Maritime"
+  ],
   "mode": "solo",
+  "masquer_franchises": true,
+  "hero": {
+    "h1": "DPE et diagnostics au Havre, RDV sous 48 h",
+    "h1_prix": "DPE au Havre dès 99 €, RDV sous 48 h",
+    "h1_vente": "Diagnostics vente au Havre, RDV sous 48 h",
+    "h1_location": "Diagnostics location au Havre, RDV sous 48 h",
+    "prix_dpe": 99
+  },
   "seo_titre": "DPE et Diagnostics Immobiliers au Havre (76) - RITMODiag",
-  "seo_desc": "Votre diagnostic immobilier certifié au Havre. Devis en ligne immédiat et intervention sous 24h pour votre DPE.",
+  "seo_desc": "Votre diagnostic immobilier certifié au Havre. DPE dès 99 €, devis en ligne immédiat et rendez-vous sous 48h.",
   "agence": {
     "ville": "Le Havre",
     "adresse": "Le Havre",

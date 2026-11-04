@@ -1,9 +1,11 @@
 ---
+import { prepositionVille } from '../utils/ville'
 interface Props {
   ville: string
 }
 
 const { ville } = Astro.props
+const [preposition, nomVille] = prepositionVille(ville)
 
 const etapes = [
   { titre: 'Vous décrivez votre projet', texte: 'Vente ou location, type de bien, localisation et coordonnées.' },
@@ -20,7 +22,7 @@ const etapes = [
         <span class="inline-block bg-dark/5 text-dark px-4 py-2 rounded-lg font-semibold text-sm">Simple et efficace</span>
         <h2 class="text-xl sm:text-2xl font-bold leading-snug max-w-2xl">
           Comment se déroulent les <span class="text-primary">diagnostics immobiliers</span>{' '}<br class="hidden sm:block" />
-          à <span class="text-primary">{ville}</span> avec RITMODiag
+          {preposition} <span class="text-primary">{nomVille}</span> avec RITMODiag
         </h2>
       </div>
 

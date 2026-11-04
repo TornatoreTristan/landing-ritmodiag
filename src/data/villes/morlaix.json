@@ -6,9 +6,20 @@
   "telephone": "06 04 48 29 76",
   "email_contact": "morlaix@ritmodiag.com",
   "departements": "Finistère",
+  "footer_zones": [
+    "Finistère"
+  ],
   "mode": "solo",
+  "masquer_franchises": true,
+  "hero": {
+    "h1": "DPE et diagnostics à Morlaix, RDV sous 48 h",
+    "h1_prix": "DPE à Morlaix dès 99 €, RDV sous 48 h",
+    "h1_vente": "Diagnostics vente à Morlaix, RDV sous 48 h",
+    "h1_location": "Diagnostics location à Morlaix, RDV sous 48 h",
+    "prix_dpe": 99
+  },
   "seo_titre": "DPE et Diagnostics Immobiliers à Morlaix (29) - RITMODiag",
-  "seo_desc": "Votre diagnostic immobilier certifié fiable à Morlaix. Devis en ligne immédiat et intervention sous 24h pour votre DPE.",
+  "seo_desc": "Votre diagnostic immobilier certifié fiable à Morlaix. DPE dès 99 €, devis en ligne immédiat et rendez-vous sous 48h.",
   "agence": {
     "ville": "Morlaix",
     "code_postal": "29300",

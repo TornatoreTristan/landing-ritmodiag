@@ -1,4 +1,5 @@
 ---
+import { aVille } from '../utils/ville'
 import '../styles/global.css';
 import 'vanilla-cookieconsent/dist/cookieconsent.css';
 import logo from '../assets/logo-ritmodiag-diagnostics-immobiliers-dpe.svg'
@@ -36,7 +37,8 @@ const headerCtaHref = ctaHref || simulateurHref
 const telHref = `tel:${telephone.replace(/\s/g, '')}`
 const metaDescription = description || "RITMODiag, votre partenaire de confiance pour vos diagnostics immobiliers, DPE et audits énergétiques en Normandie. Certifiés, réactifs et à votre écoute."
 const zonesPied = footerZones?.length ? footerZones : ['Normandie', 'Finistère', 'Loire-Atlantique', 'Cher', 'Bas-Rhin']
-const regionPied = footerZones?.length ? `en ${footerZones.join(', ')}` : 'en Normandie'
+// Page ville locale : « à Angers et ses alentours » (évite « en Manche », « en Calvados »…)
+const regionPied = footerZones?.length && ville ? `${aVille(ville)} et ses alentours` : 'en Normandie'
 const canonicalURL = new URL(Astro.url.pathname, Astro.site || 'https://ritmodiag.com')
 const ogImage = new URL('/og-image.jpg', Astro.site || 'https://ritmodiag.com').href
 ---
@@ -77,7 +79,7 @@ const ogImage = new URL('/og-image.jpg', Astro.site || 'https://ritmodiag.com').
 				"@context": "https://schema.org",
 				"@type": "LocalBusiness",
 				"name": `RITMODiag ${ville}`,
-				"description": `Diagnostics immobiliers, DPE et audits énergétiques à ${ville}`,
+				"description": `Diagnostics immobiliers, DPE et audits énergétiques ${aVille(ville)}`,
 				"url": canonicalURL.href,
 				"telephone": telephone,
 				"address": {

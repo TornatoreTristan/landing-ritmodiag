@@ -6,10 +6,22 @@
   "telephone": "06 18 57 07 32",
   "email_contact": "saint-lo@ritmodiag.com",
   "departements": "Manche",
+  "footer_zones": [
+    "Manche"
+  ],
   "mode": "solo",
+  "masquer_franchises": true,
+  "hero": {
+    "h1": "DPE et diagnostics à Saint-Lô, RDV sous 48 h",
+    "h1_prix": "DPE à Saint-Lô dès 99 €, RDV sous 48 h",
+    "h1_vente": "Diagnostics vente à Saint-Lô, RDV sous 48 h",
+    "h1_location": "Diagnostics location à Saint-Lô, RDV sous 48 h",
+    "prix_dpe": 99
+  },
   "seo_titre": "RITMODiag - Saint-Lô",
   "agence": {
-    "ville": "Saint-Lô"
+    "ville": "Saint-Lô",
+    "code_postal": "50000"
   },
   "technical_team": [
     {
@@ -31,5 +43,6 @@
       "texte": "Accueil et personnes très agréables et chaleureuses, intervention rapide et efficace tout était parfait, merci encore !",
       "photo": "https://i.pravatar.cc/80?img=9"
     }
-  ]
+  ],
+  "seo_desc": "Votre diagnostic immobilier certifié à Saint-Lô. DPE dès 99 €, devis en ligne immédiat et rendez-vous sous 48h."
 }

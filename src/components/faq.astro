@@ -1,4 +1,5 @@
 ---
+import { aVille } from '../utils/ville'
 interface Props {
   ville?: string
   prixDpe?: number
@@ -8,9 +9,9 @@ const { ville, prixDpe } = Astro.props
 
 const questions = [
   {
-    question: ville ? `Quels sont les diagnostics obligatoires pour vendre un bien à ${ville} ?` : 'Quels sont les diagnostics obligatoires pour vendre un bien immobilier ?',
+    question: ville ? `Quels sont les diagnostics obligatoires pour vendre un bien ${aVille(ville)} ?` : 'Quels sont les diagnostics obligatoires pour vendre un bien immobilier ?',
     reponse: ville
-      ? `Pour vendre un bien immobilier à ${ville}, vous devez fournir un DPE (Diagnostic de Performance Énergétique), un diagnostic amiante (si le permis de construire date d'avant juillet 1997), un diagnostic plomb (si le logement date d'avant 1949), un état de l'installation électrique et gaz (si elles ont plus de 15 ans), un ERP (État des Risques et Pollutions) et un diagnostic termites si la zone est concernée.`
+      ? `Pour vendre un bien immobilier ${aVille(ville)}, vous devez fournir un DPE (Diagnostic de Performance Énergétique), un diagnostic amiante (si le permis de construire date d'avant juillet 1997), un diagnostic plomb (si le logement date d'avant 1949), un état de l'installation électrique et gaz (si elles ont plus de 15 ans), un ERP (État des Risques et Pollutions) et un diagnostic termites si la zone est concernée.`
       : `Pour vendre un bien immobilier, vous devez fournir un DPE (Diagnostic de Performance Énergétique), un diagnostic amiante (si le permis de construire date d'avant juillet 1997), un diagnostic plomb (si le logement date d'avant 1949), un état de l'installation électrique et gaz (si elles ont plus de 15 ans), un ERP (État des Risques et Pollutions) et un diagnostic termites si la zone est concernée.`
   },
   {
@@ -24,7 +25,7 @@ const questions = [
   {
     question: "Combien coûte un DPE ?",
     reponse: prixDpe
-      ? `${ville ? `À ${ville}, le` : 'Le'} DPE est proposé à partir de ${prixDpe} €. Le prix final dépend de la superficie et du type de bien (appartement ou maison). Utilisez notre simulateur en ligne pour obtenir un devis gratuit et immédiat.`
+      ? `${ville ? `${aVille(ville, true)}, le` : 'Le'} DPE est proposé à partir de ${prixDpe} €. Le prix final dépend de la superficie et du type de bien (appartement ou maison). Utilisez notre simulateur en ligne pour obtenir un devis gratuit et immédiat.`
       : "Le prix d'un DPE varie en fonction de la superficie et du type de bien (appartement ou maison). Chez RITMODiag, nous proposons des tarifs compétitifs et transparents. Utilisez notre simulateur en ligne pour obtenir un devis gratuit et immédiat."
   },
   {
