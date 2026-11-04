@@ -1,0 +1,99 @@
+---
+// Deux blocs alignés sur les groupes d'annonces : bailleurs (location) et pack vente.
+// Leurs boutons ramènent au formulaire d'accueil (#devis) en pré-remplissant le projet.
+interface Props {
+  ville: string
+}
+
+const { ville } = Astro.props
+
+const calendrier = [
+  { annee: 'Depuis 2025', classe: 'G', texte: 'Interdits à la location : nouveau bail, renouvellement et reconduction tacite' },
+  { annee: '2028', classe: 'F', texte: 'Interdits à la location à leur tour à partir du 1er janvier' },
+  { annee: '2034', classe: 'E', texte: 'Prochaine étape du calendrier de la loi Climat et résilience' },
+]
+const classeCouleur: Record<string, string> = {
+  G: 'bg-red-600',
+  F: 'bg-orange-500',
+  E: 'bg-amber-400',
+}
+
+const packVente = [
+  { titre: 'DPE', condition: 'Tous les biens' },
+  { titre: 'État des Risques et Pollutions (ERP)', condition: 'Tous les biens' },
+  { titre: 'Amiante', condition: 'Permis de construire avant juillet 1997' },
+  { titre: 'Plomb (CREP)', condition: 'Logement construit avant 1949' },
+  { titre: 'Électricité et gaz', condition: 'Installations de plus de 15 ans' },
+  { titre: 'Loi Carrez', condition: 'Lot en copropriété' },
+  { titre: 'Termites', condition: 'Commune concernée par un arrêté préfectoral' },
+  { titre: 'Audit énergétique', condition: 'Maison ou immeuble classé E, F ou G' },
+]
+
+const check = '<svg xmlns="http://www.w3.org/2000/svg" class="size-5" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" /></svg>'
+---
+
+<section class="py-12 lg:py-16">
+  <div class="container-content grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6">
+    <!-- Bailleurs -->
+    <div id="bailleurs" class="min-w-0 flex flex-col bg-white rounded-2xl border border-gray-100 p-6 sm:p-8 scroll-mt-24">
+      <span class="self-start bg-primary/10 text-primary px-3 py-1.5 rounded-lg font-semibold text-sm">Bailleurs</span>
+      <h2 class="text-xl sm:text-2xl font-bold mt-4 leading-snug">Votre logement peut-il encore être loué ?</h2>
+      <p class="text-gray-500 text-sm sm:text-base mt-2 leading-relaxed">
+        La classe énergétique de votre DPE décide désormais si vous pouvez mettre votre bien en location à {ville}. Un logement classé F ou G a aussi ses loyers gelés.
+      </p>
+      <ul class="flex flex-col gap-3 mt-6" role="list">
+        {calendrier.map((etape) => (
+          <li class="flex items-center gap-4 p-3 rounded-xl bg-secondary/50">
+            <span class:list={['flex items-center justify-center size-10 shrink-0 rounded-lg text-white font-bold text-lg', classeCouleur[etape.classe]]} aria-label={`Classe ${etape.classe}`}>{etape.classe}</span>
+            <div class="min-w-0">
+              <p class="font-bold text-sm text-dark">{etape.annee}</p>
+              <p class="text-gray-500 text-xs sm:text-sm mt-0.5">{etape.texte}</p>
+            </div>
+          </li>
+        ))}
+      </ul>
+      <p class="text-gray-500 text-sm mt-5 leading-relaxed">
+        Depuis le 1er janvier 2026, le nouveau calcul du DPE peut faire gagner une classe aux logements chauffés à l'électricité. Un DPE à jour peut suffire à rendre votre bien de nouveau louable.
+      </p>
+      <a href="#devis" data-projet="location" class="mt-auto pt-6 self-stretch sm:self-start">
+        <span class="block bg-primary text-white text-center px-6 py-3.5 rounded-lg font-semibold hover:bg-primary/85 transition-colors">Faire mon DPE avant de louer</span>
+      </a>
+    </div>
+
+    <!-- Pack vente -->
+    <div id="pack-vente" class="min-w-0 flex flex-col bg-white rounded-2xl border border-gray-100 p-6 sm:p-8 scroll-mt-24">
+      <span class="self-start bg-primary/10 text-primary px-3 py-1.5 rounded-lg font-semibold text-sm">Pack vente</span>
+      <h2 class="text-xl sm:text-2xl font-bold mt-4 leading-snug">Les diagnostics à prévoir avant le compromis</h2>
+      <p class="text-gray-500 text-sm sm:text-base mt-2 leading-relaxed">
+        Le dossier de diagnostic technique doit être annexé à la promesse de vente. Sans lui, l'acheteur peut retarder la signature ou demander une baisse de prix.
+      </p>
+      <ul class="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-3 mt-6" role="list">
+        {packVente.map((diag) => (
+          <li class="flex gap-2.5">
+            <span class="text-primary shrink-0 mt-0.5"><Fragment set:html={check} /></span>
+            <div class="min-w-0">
+              <p class="font-bold text-sm text-dark">{diag.titre}</p>
+              <p class="text-gray-400 text-xs mt-0.5">{diag.condition}</p>
+            </div>
+          </li>
+        ))}
+      </ul>
+      <p class="text-gray-500 text-sm mt-5 leading-relaxed">
+        Rendez-vous sous 48 h, rapport complet remis sous 72 h.
+      </p>
+      <a href="#devis" data-projet="vente" class="mt-auto pt-6 self-stretch sm:self-start">
+        <span class="block bg-dark text-white text-center px-6 py-3.5 rounded-lg font-semibold hover:bg-dark/90 transition-colors">Recevoir mon devis pack vente</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<script>
+  // Pré-remplit le projet du formulaire d'accueil selon le bloc cliqué
+  document.querySelectorAll<HTMLAnchorElement>('a[data-projet]').forEach((lien) => {
+    lien.addEventListener('click', () => {
+      const champ = document.getElementById('fa-projet') as HTMLInputElement | null
+      if (champ) champ.value = lien.dataset.projet || ''
+    })
+  })
+</script>

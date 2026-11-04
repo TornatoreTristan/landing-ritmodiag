@@ -2,6 +2,7 @@
 import Layout from '../../layouts/Layout.astro';
 import Header from '../../components/header-page.astro'
 import HeaderConversion from '../../components/header-conversion.astro'
+import BlocsProjet from '../../components/blocs-projet.astro'
 import Equipe from '../../components/equipe.astro'
 import Diagnostics from '../../components/diagnostics.astro'
 import Reassurance from '../../components/reassurance.astro'
@@ -71,6 +72,8 @@ const autresFranchises = data.masquer_franchises
 			</div>
 		</div>
 	</section>
+
+	{data.hero && <BlocsProjet ville={data.city_name} />}
 
 	<Diagnostics ville={data.city_name} />
 
