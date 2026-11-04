@@ -112,6 +112,8 @@ content:
           - { name: ville, label: Ville, type: string }
           - { name: adresse, label: Adresse, type: string }
           - { name: code_postal, label: Code postal, type: string }
+          - { name: rayon_km, label: Rayon d'intervention (km), type: number }
+          - { name: villes_desservies, label: Villes desservies, type: string, list: true }
           - { name: description, label: Description, type: text }
       - name: sales_team
         label: Équipe commerciale
