@@ -24,15 +24,19 @@ interface Props {
 	noindex?: boolean
 	// Bandeau cookies réduit à une barre fine (pages tunnel mobile, ex. landing Facebook Ads)
 	compactCookies?: boolean
+	// Départements affichés dans le pied de page (page ville locale) ; sinon zones de tout le réseau
+	footerZones?: string[]
 }
 
 const defaultAgence = { ville: 'Ifs', adresse: '500 boulevard Charles Cros', code_postal: '14123' }
-const { title, description, ville, slug, telephone = '02 31 15 64 88', agence = defaultAgence, hideMobileCta, ctaText, ctaHref, noindex, compactCookies } = Astro.props
+const { title, description, ville, slug, telephone = '02 31 15 64 88', agence = defaultAgence, hideMobileCta, ctaText, ctaHref, noindex, compactCookies, footerZones } = Astro.props
 const simulateurHref = slug ? `/${slug}/simulateur` : '/caen/simulateur'
 const headerCtaText = ctaText || 'Estimez le prix de votre DPE'
 const headerCtaHref = ctaHref || simulateurHref
 const telHref = `tel:${telephone.replace(/\s/g, '')}`
 const metaDescription = description || "RITMODiag, votre partenaire de confiance pour vos diagnostics immobiliers, DPE et audits énergétiques en Normandie. Certifiés, réactifs et à votre écoute."
+const zonesPied = footerZones?.length ? footerZones : ['Normandie', 'Finistère', 'Loire-Atlantique', 'Cher', 'Bas-Rhin']
+const regionPied = footerZones?.length ? `en ${footerZones.join(', ')}` : 'en Normandie'
 const canonicalURL = new URL(Astro.url.pathname, Astro.site || 'https://ritmodiag.com')
 const ogImage = new URL('/og-image.jpg', Astro.site || 'https://ritmodiag.com').href
 ---
@@ -78,7 +82,7 @@ const ogImage = new URL('/og-image.jpg', Astro.site || 'https://ritmodiag.com').
 				"telephone": telephone,
 				"address": {
 					"@type": "PostalAddress",
-					"streetAddress": agence.adresse,
+					"streetAddress": agence.adresse || undefined,
 					"addressLocality": agence.ville,
 					"postalCode": agence.code_postal,
 					"addressCountry": "FR"
@@ -174,8 +178,9 @@ const ogImage = new URL('/og-image.jpg', Astro.site || 'https://ritmodiag.com').
 				<a href={headerCtaHref} class="flex-1 bg-primary text-white text-center py-3 rounded-lg font-semibold text-sm hover:bg-primary/85 transition-colors">
 					{headerCtaText}
 				</a>
-				<a href={telHref} class="flex items-center justify-center bg-dark text-white px-4 py-3 rounded-lg hover:bg-dark/90 transition-colors" aria-label={`Appeler le ${telephone}`}>
+				<a href={telHref} class="flex items-center justify-center gap-2 bg-dark text-white px-4 py-3 rounded-lg font-semibold text-sm hover:bg-dark/90 transition-colors" aria-label={`Appeler le ${telephone}`}>
 					<PhoneIcon />
+					Appeler
 				</a>
 			</div>
 		</div>
@@ -185,7 +190,7 @@ const ogImage = new URL('/og-image.jpg', Astro.site || 'https://ritmodiag.com').
 				<div class="flex flex-col md:flex-row justify-between gap-8">
 					<div class="max-w-md">
 						<img src={logo.src} alt="RITMODiag" width="150" height="40" class="mb-4" />
-						<p class="text-gray-500 text-sm leading-relaxed">RITMODiag, votre partenaire de confiance pour tous vos diagnostics immobiliers, DPE et audits énergétiques en Normandie. Certifiés, réactifs et à votre écoute.</p>
+						<p class="text-gray-500 text-sm leading-relaxed">RITMODiag, votre partenaire de confiance pour tous vos diagnostics immobiliers, DPE et audits énergétiques {regionPied}. Certifiés, réactifs et à votre écoute.</p>
 					</div>
 					<div class="flex flex-col gap-2 text-sm">
 						<span class="font-semibold text-dark mb-1">Certifications & assurance</span>
@@ -194,11 +199,7 @@ const ogImage = new URL('/og-image.jpg', Astro.site || 'https://ritmodiag.com').
 					</div>
 					<div class="flex flex-col gap-2 text-sm">
 						<span class="font-semibold text-dark mb-1">Zones d'intervention</span>
-						<span class="text-gray-500">Normandie</span>
-						<span class="text-gray-500">Finistère</span>
-						<span class="text-gray-500">Loire-Atlantique</span>
-						<span class="text-gray-500">Cher</span>
-						<span class="text-gray-500">Bas-Rhin</span>
+						{zonesPied.map((zone) => <span class="text-gray-500">{zone}</span>)}
 					</div>
 					<div class="flex flex-col gap-2 text-sm">
 						<span class="font-semibold text-dark mb-1">Informations légales</span>

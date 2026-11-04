@@ -1,0 +1,183 @@
+---
+import PhoneIcon from './phone-icon.astro'
+
+interface Props {
+  ville: string
+  telephone: string
+  slug: string
+}
+
+const { ville, telephone, slug } = Astro.props
+const telHref = `tel:${telephone.replace(/\s/g, '')}`
+
+const config = {
+  // Même liste Listmonk et même webhook n8n que le formulaire de rappel du vérificateur
+  listmonkList: '7246c0ba-8eda-418f-9719-7709a2a0a640',
+  listmonkUrl: 'https://mailing.spines.fr/subscription/form',
+  n8nWebhook: 'https://n8n.spines.fr/webhook/21af1e08-78ae-4f13-a6d1-9b1007ce6247',
+  ville,
+}
+const inputClass = 'w-full border border-gray-200 rounded-lg px-4 py-3 text-base sm:text-sm focus:outline-none focus:ring-2 focus:ring-primary/40 focus:border-primary'
+---
+
+<script type="application/json" id="fa-config" set:html={JSON.stringify(config)} />
+
+<div id="devis" class="scroll-mt-24 bg-white rounded-2xl shadow-xl shadow-dark/10 border border-gray-100 p-5 sm:p-6 w-full">
+  <div id="fa-content">
+    <h2 class="text-lg sm:text-xl font-bold text-dark leading-snug">Votre devis gratuit, rappelé sous 24 h</h2>
+    <p class="text-gray-500 text-sm mt-1">Un conseiller vous rappelle pour fixer votre rendez-vous.</p>
+
+    <iframe name="fa-listmonk-frame" class="hidden" aria-hidden="true" tabindex="-1"></iframe>
+    <form id="fa-form" method="POST" target="fa-listmonk-frame" class="flex flex-col gap-3 mt-4" novalidate>
+      <input type="hidden" name="l" value={config.listmonkList} />
+      <input type="hidden" name="projet" id="fa-projet" />
+      <!-- Pot de miel anti-spam : invisible pour un humain, rempli par les robots -->
+      <div class="absolute -left-[9999px] w-px h-px overflow-hidden" aria-hidden="true">
+        <label for="fa-site">Site web</label>
+        <input type="text" id="fa-site" name="site_web" tabindex="-1" autocomplete="off" />
+      </div>
+      <div>
+        <label for="fa-nom" class="text-sm font-semibold text-dark block mb-1.5">Nom</label>
+        <input type="text" id="fa-nom" name="name" required minlength="2" autocomplete="name" placeholder="Marie Dupont" class={inputClass} />
+      </div>
+      <div>
+        <label for="fa-tel" class="text-sm font-semibold text-dark block mb-1.5">Téléphone</label>
+        <input type="tel" id="fa-tel" name="telephone" required autocomplete="tel" inputmode="tel" placeholder="06 12 34 56 78" class={inputClass} />
+      </div>
+      <div>
+        <label for="fa-email" class="text-sm font-semibold text-dark block mb-1.5">Email <span class="font-normal text-gray-400">(facultatif)</span></label>
+        <input type="email" id="fa-email" name="email" autocomplete="email" inputmode="email" placeholder="marie@exemple.fr" class={inputClass} />
+      </div>
+      <p id="fa-error" class="hidden text-sm text-red-600" role="alert"></p>
+      <button type="submit" class="mt-1 bg-primary text-white py-3.5 rounded-lg font-semibold hover:bg-primary/85 transition-colors cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed">
+        Recevoir mon devis gratuit
+      </button>
+      <p class="text-[11px] text-gray-400 leading-relaxed">
+        Vos coordonnées servent uniquement à établir votre devis. <a href="/politique-de-confidentialite" class="underline hover:text-dark">Politique de confidentialité</a>.
+      </p>
+    </form>
+
+    <div class="flex flex-wrap items-center justify-between gap-x-4 gap-y-2 mt-4 pt-4 border-t border-gray-100 text-sm">
+      <a href={telHref} class="inline-flex items-center gap-2 font-semibold text-dark hover:text-primary transition-colors" aria-label={`Appeler le ${telephone}`}>
+        <PhoneIcon class="size-4 shrink-0" />
+        {telephone}
+      </a>
+      <a href={`/${slug}/simulateur`} class="font-semibold text-primary hover:underline">Estimer le prix en ligne</a>
+    </div>
+  </div>
+
+  <div id="fa-success" role="status" aria-live="polite" class="hidden text-center py-6">
+    <div class="flex items-center justify-center size-12 rounded-full bg-primary/10 mx-auto mb-4">
+      <svg xmlns="http://www.w3.org/2000/svg" class="size-6 text-primary" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg>
+    </div>
+    <p class="font-bold text-dark text-lg">Demande envoyée</p>
+    <p class="text-gray-500 text-sm mt-2">Un conseiller vous rappelle sous 24 h. Besoin d'une réponse immédiate ? Appelez le <a href={telHref} class="text-primary font-semibold hover:underline">{telephone}</a></p>
+  </div>
+</div>
+
+<script>
+  const configEl = document.getElementById('fa-config')
+  const form = document.getElementById('fa-form') as HTMLFormElement | null
+  if (configEl && form) {
+    const config = JSON.parse(configEl.textContent || '{}')
+    const params = new URLSearchParams(window.location.search)
+    const content = document.getElementById('fa-content')!
+    const success = document.getElementById('fa-success')!
+    const formError = document.getElementById('fa-error')!
+    const formIframe = document.querySelector('iframe[name="fa-listmonk-frame"]') as HTMLIFrameElement
+    const submitBtn = form.querySelector('button[type="submit"]') as HTMLButtonElement
+    const nomInput = document.getElementById('fa-nom') as HTMLInputElement
+    const telInput = document.getElementById('fa-tel') as HTMLInputElement
+    const emailInput = document.getElementById('fa-email') as HTMLInputElement
+
+    // Projet pré-rempli selon le groupe d'annonces (?angle=vente|location)
+    const angle = params.get('angle')
+    if (angle === 'vente' || angle === 'location') {
+      ;(document.getElementById('fa-projet') as HTMLInputElement).value = angle
+    }
+
+    function pushDataLayer(event: string, extra: Record<string, unknown> = {}) {
+      ;(window as any).dataLayer = (window as any).dataLayer || []
+      ;(window as any).dataLayer.push({ event, ...extra })
+    }
+
+    // Anti-spam : pot de miel, saisie trop rapide, nom contenant un lien ou une suite aléatoire
+    let startedAt = 0
+    form.addEventListener('input', () => { if (!startedAt) startedAt = Date.now() }, { once: true })
+    const phoneRe = /^(?:(?:\+|00)33|0)[1-9]\d{8}$/
+    const emailRe = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+    const urlRe = /https?:\/\/|www\.|\.(?:com|ru|xyz|top|info)\b|@/i
+    const randomNameRe = /[a-z][A-Z].*[a-z][A-Z]/
+    function looksLikeSpam(nom: string) {
+      if ((document.getElementById('fa-site') as HTMLInputElement).value) return true
+      if (!startedAt || Date.now() - startedAt < 3000) return true
+      return urlRe.test(nom) || randomNameRe.test(nom)
+    }
+
+    function showError(msg: string, field: HTMLInputElement) {
+      formError.textContent = msg
+      formError.classList.remove('hidden')
+      field.setAttribute('aria-invalid', 'true')
+      field.focus()
+    }
+
+    let successShown = false
+    function showSuccess(spam = false) {
+      if (successShown) return
+      successShown = true
+      content.classList.add('hidden')
+      success.classList.remove('hidden')
+      // Même événement de conversion que les autres formulaires (déclencheurs Google Ads / Meta dans GTM)
+      if (!spam) pushDataLayer('generate_lead', { lead_source: 'formulaire-accueil' })
+    }
+
+    form.addEventListener('submit', (e) => {
+      ;[nomInput, telInput, emailInput].forEach((f) => f.removeAttribute('aria-invalid'))
+      formError.classList.add('hidden')
+      const nom = nomInput.value.trim()
+      const email = emailInput.value.trim()
+
+      if (nom.length < 2) { e.preventDefault(); return showError('Indiquez votre nom.', nomInput) }
+      if (!phoneRe.test(telInput.value.replace(/[\s.\-()]/g, ''))) { e.preventDefault(); return showError('Indiquez un numéro de téléphone français valide.', telInput) }
+      if (email && !emailRe.test(email)) { e.preventDefault(); return showError('Indiquez une adresse email valide, ou laissez le champ vide.', emailInput) }
+
+      submitBtn.disabled = true
+      submitBtn.textContent = 'Envoi en cours…'
+
+      // Spam : on affiche le succès sans rien envoyer, pour que le robot ne réessaie pas
+      if (looksLikeSpam(nom)) { e.preventDefault(); return showSuccess(true) }
+
+      fetch(config.n8nWebhook, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          nom,
+          email,
+          telephone: telInput.value.trim(),
+          projet: (document.getElementById('fa-projet') as HTMLInputElement).value,
+          ville: config.ville,
+          gclid: params.get('gclid') || '',
+          utm_source: params.get('utm_source') || '',
+          utm_campaign: params.get('utm_campaign') || '',
+          utm_term: params.get('utm_term') || '',
+          // Même source que le vérificateur pour emprunter le scénario n8n existant ; 'formulaire' distingue l'origine
+          source: 'verificateur-diagnostics',
+          formulaire: 'accueil',
+          page_url: window.location.href,
+          submitted_at: new Date().toISOString(),
+        }),
+        keepalive: true,
+      }).catch(() => {})
+
+      // Listmonk exige un email : sans email, seul n8n reçoit la demande
+      if (!email) { e.preventDefault(); return showSuccess() }
+      form.action = config.listmonkUrl
+      // Filet de sécurité si l'iframe Listmonk ne répond pas
+      window.setTimeout(() => showSuccess(), 5000)
+    })
+
+    formIframe.addEventListener('load', () => {
+      if (submitBtn.disabled) showSuccess()
+    })
+  }
+</script>

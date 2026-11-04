@@ -6,10 +6,24 @@
   "telephone": "06 73 62 03 84",
   "email_contact": "angers@ritmodiag.com",
   "departements": "Maine-et-Loire",
+  "footer_zones": [
+    "Maine-et-Loire"
+  ],
   "mode": "solo",
+  "masquer_franchises": true,
+  "hero": {
+    "h1": "DPE et diagnostics à Angers, RDV sous 48 h",
+    "h1_prix": "DPE à Angers dès 99 €, RDV sous 48 h",
+    "h1_vente": "Diagnostics vente à Angers, RDV sous 48 h",
+    "h1_location": "Diagnostics location à Angers, RDV sous 48 h",
+    "prix_dpe": 99
+  },
   "seo_titre": "DPE et Diagnostics Immobiliers à Angers (49) - RITMODiag",
-  "seo_desc": "Votre diagnostic immobilier certifié à Angers. Devis en ligne immédiat et intervention sous 24h pour votre DPE.",
+  "seo_desc": "Votre diagnostic immobilier certifié à Angers. DPE dès 99 €, devis en ligne immédiat et rendez-vous sous 48h.",
   "agence": {
+    "ville": "Angers",
+    "adresse": "",
+    "code_postal": "49000",
     "description": "Nous intervenons dans tout Angers et ses alentours."
   },
   "technical_team": [

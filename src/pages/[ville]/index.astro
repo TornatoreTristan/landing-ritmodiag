@@ -1,6 +1,7 @@
 ---
 import Layout from '../../layouts/Layout.astro';
 import Header from '../../components/header-page.astro'
+import HeaderConversion from '../../components/header-conversion.astro'
 import Equipe from '../../components/equipe.astro'
 import Diagnostics from '../../components/diagnostics.astro'
 import Reassurance from '../../components/reassurance.astro'
@@ -32,13 +33,28 @@ const headerImage = data.header_image
   : undefined
 
 // Liste centralisée des franchises (src/data/franchises.json), on retire la ville courante
-const autresFranchises = franchises
-  .map((f) => f.nom)
-  .filter((nom) => nom !== data.city_name)
+// Masquable par ville : une page locale ne montre alors que son propre secteur
+const autresFranchises = data.masquer_franchises
+  ? []
+  : franchises.map((f) => f.nom).filter((nom) => nom !== data.city_name)
 ---
 
-<Layout title={data.seo_titre} description={data.seo_desc} ville={data.city_name} slug={data.slug} telephone={data.telephone} agence={data.agence}>
-	<Header ville={data.city_name} avis={data.avis} slug={data.slug} telephone={data.telephone} departements={data.departements} headerImage={headerImage} />
+<Layout
+	title={data.seo_titre}
+	description={data.seo_desc}
+	ville={data.city_name}
+	slug={data.slug}
+	telephone={data.telephone}
+	agence={data.agence}
+	footerZones={data.footer_zones}
+	ctaText={data.hero ? 'Devis gratuit' : undefined}
+	ctaHref={data.hero ? '#devis' : undefined}
+>
+	{data.hero ? (
+		<HeaderConversion ville={data.city_name} avis={data.avis} slug={data.slug} telephone={data.telephone} departements={data.departements} headerImage={headerImage} hero={data.hero} />
+	) : (
+		<Header ville={data.city_name} avis={data.avis} slug={data.slug} telephone={data.telephone} departements={data.departements} headerImage={headerImage} />
+	)}
 
 	<section class="bg-secondary py-12 lg:py-16">
 		<div class="container-content flex justify-center">
@@ -68,5 +84,5 @@ const autresFranchises = franchises
 		<Conseillers conseillers={data.sales_team} telephone={data.telephone} />
 	)}
 
-	<Faq ville={data.city_name} />
+	<Faq ville={data.city_name} prixDpe={data.hero?.prix_dpe} />
 </Layout>

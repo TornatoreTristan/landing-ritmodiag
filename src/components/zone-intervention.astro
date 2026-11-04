@@ -43,10 +43,11 @@ const franchisesData = [...new Set(franchises ?? defaultFranchises)]
             <h3 class="font-bold text-lg">Agence principale</h3>
           </div>
           <p class="font-semibold text-dark">{agenceData.ville}</p>
-          <p class="text-gray-500 text-sm mt-1">{agenceData.adresse}, {agenceData.code_postal} {agenceData.ville}</p>
+          <p class="text-gray-500 text-sm mt-1">{agenceData.adresse && `${agenceData.adresse}, `}{agenceData.code_postal} {agenceData.ville}</p>
           <p class="text-gray-500 text-sm mt-3">{agenceData.description}</p>
         </div>
 
+        {franchisesData.length > 0 && (
         <div class="flex-1 bg-white rounded-2xl p-6 sm:p-8">
           <div class="flex items-center gap-3 mb-4">
             <div class="bg-primary/10 rounded-lg p-2">
@@ -60,6 +61,7 @@ const franchisesData = [...new Set(franchises ?? defaultFranchises)]
             ))}
           </div>
         </div>
+        )}
       </div>
     </div>
   </div>
