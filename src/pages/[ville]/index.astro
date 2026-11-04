@@ -2,6 +2,7 @@
 import Layout from '../../layouts/Layout.astro';
 import Header from '../../components/header-page.astro'
 import BlocsProjet from '../../components/blocs-projet.astro'
+import Etapes from '../../components/etapes.astro'
 import Equipe from '../../components/equipe.astro'
 import Diagnostics from '../../components/diagnostics.astro'
 import Reassurance from '../../components/reassurance.astro'
@@ -65,6 +66,8 @@ const autresFranchises = data.masquer_franchises
 			</div>
 		</div>
 	</section>
+
+	{data.hero && <Etapes ville={data.city_name} departements={data.departements} />}
 
 	{data.hero && <BlocsProjet ville={data.city_name} slug={data.slug} />}
 

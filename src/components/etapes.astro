@@ -1,0 +1,33 @@
+---
+interface Props {
+  ville: string
+  departements?: string
+}
+
+const { ville, departements } = Astro.props
+
+const etapes = [
+  { titre: 'Vous décrivez votre projet', texte: 'Vente ou location, type de bien, localisation et coordonnées.' },
+  { titre: 'Nous faisons le point', texte: 'Les diagnostics utiles sont identifiés en fonction de votre situation.' },
+  { titre: 'Intervention sur place', texte: departements ? `La visite est organisée à ${ville} ou dans le ${departements}.` : `La visite est organisée à ${ville}.` },
+  { titre: 'Vous recevez vos rapports', texte: 'Les documents vous permettent d’avancer dans votre vente ou votre location.' },
+]
+---
+
+<section id="etapes" class="py-12 lg:py-16 scroll-mt-16">
+  <div class="container-content">
+    <div class="text-center mb-10 flex flex-col gap-4 items-center">
+      <span class="inline-block bg-dark/5 text-dark px-4 py-2 rounded-lg font-semibold text-sm">Simple et efficace</span>
+      <h2 class="text-2xl font-bold">Comment ça se passe ?</h2>
+    </div>
+    <ol class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
+      {etapes.map((etape, i) => (
+        <li class="border-t border-gray-200 pt-6">
+          <span class="flex items-center justify-center size-10 rounded-full bg-primary text-white font-bold" aria-hidden="true">{i + 1}</span>
+          <h3 class="font-bold text-lg mt-5">{etape.titre}</h3>
+          <p class="text-gray-500 text-sm leading-relaxed mt-2">{etape.texte}</p>
+        </li>
+      ))}
+    </ol>
+  </div>
+</section>
