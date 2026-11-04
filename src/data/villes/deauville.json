@@ -6,9 +6,20 @@
   "telephone": "09 56 91 14 24",
   "email_contact": "deauville@ritmodiag.com",
   "departements": "Calvados",
+  "footer_zones": [
+    "Calvados"
+  ],
   "mode": "solo",
+  "masquer_franchises": true,
+  "hero": {
+    "h1": "DPE et diagnostics à Deauville, RDV sous 48 h",
+    "h1_prix": "DPE à Deauville dès 99 €, RDV sous 48 h",
+    "h1_vente": "Diagnostics vente à Deauville, RDV sous 48 h",
+    "h1_location": "Diagnostics location à Deauville, RDV sous 48 h",
+    "prix_dpe": 99
+  },
   "seo_titre": "DPE et Diagnostics Immobiliers à Deauville (14) - RITMODiag",
-  "seo_desc": "Votre diagnostic immobilier certifié à Deauville. Devis en ligne immédiat et intervention sous 24h pour votre DPE.",
+  "seo_desc": "Votre diagnostic immobilier certifié à Deauville. DPE dès 99 €, devis en ligne immédiat et rendez-vous sous 48h.",
   "agence": {
     "ville": "Deauville",
     "code_postal": "14800",

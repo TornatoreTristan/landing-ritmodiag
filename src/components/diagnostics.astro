@@ -1,4 +1,5 @@
 ---
+import { aVille } from '../utils/ville'
 import iconDPE from '../assets/img/DPE.svg'
 import iconAmiante from '../assets/img/Amiante.svg'
 import iconPlomb from '../assets/img/Plomb.svg'
@@ -30,7 +31,7 @@ const diagnostics = [
 <section class="py-12 lg:py-16">
   <div class="container-content">
     <div class="text-center mb-10 flex flex-col gap-4 items-center">
-      <h2 class="font-semibold text-2xl">{ville ? `Nos diagnostics immobiliers à ${ville}` : 'Nos diagnostics immobiliers'}</h2>
+      <h2 class="font-semibold text-2xl">{ville ? `Nos diagnostics immobiliers ${aVille(ville)}` : 'Nos diagnostics immobiliers'}</h2>
       <p class="max-w-2xl text-gray-500 text-base lg:text-lg">Découvrez l'ensemble des diagnostics immobiliers que nous réalisons pour sécuriser votre projet de vente, location ou rénovation.</p>
     </div>
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">

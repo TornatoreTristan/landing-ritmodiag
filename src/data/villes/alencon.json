@@ -6,9 +6,21 @@
   "telephone": "02 33 80 31 09",
   "email_contact": "orne@ritmodiag.com",
   "departements": "Orne, Sarthe",
+  "footer_zones": [
+    "Orne",
+    "Sarthe"
+  ],
   "mode": "solo",
+  "masquer_franchises": true,
+  "hero": {
+    "h1": "DPE et diagnostics à Alençon, RDV sous 48 h",
+    "h1_prix": "DPE à Alençon dès 99 €, RDV sous 48 h",
+    "h1_vente": "Diagnostics vente à Alençon, RDV sous 48 h",
+    "h1_location": "Diagnostics location à Alençon, RDV sous 48 h",
+    "prix_dpe": 99
+  },
   "seo_titre": "DPE et Diagnostics Immobiliers à Alençon (61) - RITMODiag",
-  "seo_desc": "Votre diagnostic immobilier certifié à Alençon. Devis en ligne immédiat et intervention sous 24h pour votre DPE.",
+  "seo_desc": "Votre diagnostic immobilier certifié à Alençon. DPE dès 99 €, devis en ligne immédiat et rendez-vous sous 48h.",
   "agence": {
     "ville": "Alençon",
     "code_postal": "61000",

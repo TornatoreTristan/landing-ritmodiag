@@ -6,10 +6,22 @@
   "telephone": "07 89 31 50 76",
   "email_contact": "vierzon@ritmodiag.com",
   "departements": "Cher",
+  "footer_zones": [
+    "Cher"
+  ],
   "mode": "solo",
+  "masquer_franchises": true,
+  "hero": {
+    "h1": "DPE et diagnostics à Vierzon, RDV sous 48 h",
+    "h1_prix": "DPE à Vierzon dès 99 €, RDV sous 48 h",
+    "h1_vente": "Diagnostics vente à Vierzon, RDV sous 48 h",
+    "h1_location": "Diagnostics location à Vierzon, RDV sous 48 h",
+    "prix_dpe": 99
+  },
   "seo_titre": "RITMODiag - Vierzon",
   "agence": {
-    "ville": "Vierzon"
+    "ville": "Vierzon",
+    "code_postal": "18100"
   },
   "technical_team": [
     {
@@ -31,5 +43,6 @@
       "texte": "Accueil et personnes très agréables et chaleureuses, intervention rapide et efficace tout était parfait, merci encore !",
       "photo": "https://i.pravatar.cc/80?img=9"
     }
-  ]
+  ],
+  "seo_desc": "Votre diagnostic immobilier certifié à Vierzon. DPE dès 99 €, devis en ligne immédiat et rendez-vous sous 48h."
 }

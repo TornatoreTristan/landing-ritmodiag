@@ -1,4 +1,5 @@
 ---
+import { aVille } from '../utils/ville'
 // Deux blocs alignés sur les groupes d'annonces : bailleurs (location) et pack vente.
 // Leurs boutons mènent au simulateur de la ville.
 interface Props {
@@ -40,7 +41,7 @@ const check = '<svg xmlns="http://www.w3.org/2000/svg" class="size-5" viewBox="0
       <span class="self-start bg-primary/10 text-primary px-3 py-1.5 rounded-lg font-semibold text-sm">Bailleurs</span>
       <h2 class="text-xl sm:text-2xl font-bold mt-4 leading-snug">Votre logement peut-il encore être loué ?</h2>
       <p class="text-gray-500 text-sm sm:text-base mt-2 leading-relaxed">
-        La classe énergétique de votre DPE décide désormais si vous pouvez mettre votre bien en location à {ville}. Un logement classé F ou G a aussi ses loyers gelés.
+        La classe énergétique de votre DPE décide désormais si vous pouvez mettre votre bien en location {aVille(ville)}. Un logement classé F ou G a aussi ses loyers gelés.
       </p>
       <ul class="flex flex-col gap-3 mt-6" role="list">
         {calendrier.map((etape) => (

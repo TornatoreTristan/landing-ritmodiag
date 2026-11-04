@@ -6,11 +6,24 @@
   "telephone": "07 59 76 34 11",
   "email_contact": "vire@ritmodiag.com",
   "departements": "Vire & Sud-Manche",
+  "footer_zones": [
+    "Calvados",
+    "Manche"
+  ],
   "mode": "solo",
+  "masquer_franchises": true,
+  "hero": {
+    "h1": "DPE et diagnostics à Vire, RDV sous 48 h",
+    "h1_prix": "DPE à Vire dès 99 €, RDV sous 48 h",
+    "h1_vente": "Diagnostics vente à Vire, RDV sous 48 h",
+    "h1_location": "Diagnostics location à Vire, RDV sous 48 h",
+    "prix_dpe": 99
+  },
   "seo_titre": "DPE et Diagnostics Immobiliers à Vire - RITMODiag",
-  "seo_desc": "Votre diagnostic immobilier certifié à Vire et Sud-Manche. Devis en ligne immédiat et intervention sous 24h pour votre DPE.",
+  "seo_desc": "Votre diagnostic immobilier certifié à Vire et Sud-Manche. DPE dès 99 €, devis en ligne immédiat et rendez-vous sous 48h.",
   "agence": {
-    "ville": "Vire"
+    "ville": "Vire",
+    "code_postal": "14500"
   },
   "technical_team": [
     {

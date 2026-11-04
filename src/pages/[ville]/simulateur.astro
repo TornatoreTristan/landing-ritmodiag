@@ -1,4 +1,5 @@
 ---
+import { aVille } from '../../utils/ville'
 import Layout from '../../layouts/Layout.astro';
 import { villes } from '../../data/villes';
 
@@ -17,7 +18,7 @@ export async function getStaticPaths() {
 const { data } = Astro.props;
 ---
 
-<Layout title={`Simulateur DPE - ${data.city_name} | RITMODiag`} description={`Estimez le prix de votre DPE à ${data.city_name} avec notre simulateur en ligne.`} ville={data.city_name} slug={data.slug} telephone={data.telephone} hideMobileCta>
+<Layout title={`Simulateur DPE - ${data.city_name} | RITMODiag`} description={`Estimez le prix de votre DPE ${aVille(data.city_name)} avec notre simulateur en ligne.`} ville={data.city_name} slug={data.slug} telephone={data.telephone} hideMobileCta>
   <style>body { background: white !important; }</style>
   <script is:inline>
     window.addEventListener('message', (e) => {
