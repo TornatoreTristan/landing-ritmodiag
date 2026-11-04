@@ -1,0 +1,38 @@
+---
+interface Props {
+  ville: string
+}
+
+const { ville } = Astro.props
+
+const etapes = [
+  { titre: 'Vous décrivez votre projet', texte: 'Vente ou location, type de bien, localisation et coordonnées.' },
+  { titre: 'Nous faisons le point', texte: 'Les diagnostics utiles sont identifiés en fonction de votre situation.' },
+  { titre: 'Intervention sur place', texte: 'Le diagnostiqueur se rend sur place pour effectuer les diagnostics.' },
+  { titre: 'Vous recevez vos rapports', texte: 'Un rapport clair et expliqué pour avancer dans votre vente ou votre location.' },
+]
+---
+
+<section id="etapes" class="py-12 lg:py-16 bg-secondary scroll-mt-16">
+  <div class="container-content">
+    <div class="bg-white rounded-2xl px-6 py-10 sm:px-10 sm:py-14">
+      <div class="text-center flex flex-col gap-4 items-center">
+        <span class="inline-block bg-dark/5 text-dark px-4 py-2 rounded-lg font-semibold text-sm">Simple et efficace</span>
+        <h2 class="text-xl sm:text-2xl font-bold leading-snug max-w-2xl">
+          Comment se déroulent les <span class="text-primary">diagnostics immobiliers</span>{' '}<br class="hidden sm:block" />
+          à <span class="text-primary">{ville}</span> avec RITMODiag
+        </h2>
+      </div>
+
+      <ol class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-0 mt-10">
+        {etapes.map((etape, i) => (
+          <li class:list={['lg:px-6', i < etapes.length - 1 && 'lg:border-r lg:border-gray-200']}>
+            <span class="flex items-center justify-center size-10 rounded-full bg-primary text-white font-bold" aria-hidden="true">{i + 1}</span>
+            <p class="font-bold mt-4">{etape.titre}</p>
+            <p class="text-gray-500 text-sm mt-2 leading-relaxed">{etape.texte}</p>
+          </li>
+        ))}
+      </ol>
+    </div>
+  </div>
+</section>

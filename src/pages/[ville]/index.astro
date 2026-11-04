@@ -1,7 +1,8 @@
 ---
 import Layout from '../../layouts/Layout.astro';
 import Header from '../../components/header-page.astro'
-import HeaderConversion from '../../components/header-conversion.astro'
+import BlocsProjet from '../../components/blocs-projet.astro'
+import Etapes from '../../components/etapes.astro'
 import Equipe from '../../components/equipe.astro'
 import Diagnostics from '../../components/diagnostics.astro'
 import Reassurance from '../../components/reassurance.astro'
@@ -47,14 +48,8 @@ const autresFranchises = data.masquer_franchises
 	telephone={data.telephone}
 	agence={data.agence}
 	footerZones={data.footer_zones}
-	ctaText={data.hero ? 'Devis gratuit' : undefined}
-	ctaHref={data.hero ? '#devis' : undefined}
 >
-	{data.hero ? (
-		<HeaderConversion ville={data.city_name} avis={data.avis} slug={data.slug} telephone={data.telephone} departements={data.departements} headerImage={headerImage} hero={data.hero} />
-	) : (
-		<Header ville={data.city_name} avis={data.avis} slug={data.slug} telephone={data.telephone} departements={data.departements} headerImage={headerImage} />
-	)}
+	<Header ville={data.city_name} avis={data.avis} slug={data.slug} telephone={data.telephone} departements={data.departements} headerImage={headerImage} hero={data.hero} />
 
 	<section class="bg-secondary py-12 lg:py-16">
 		<div class="container-content flex justify-center">
@@ -73,6 +68,10 @@ const autresFranchises = data.masquer_franchises
 	</section>
 
 	<Diagnostics ville={data.city_name} />
+
+	{data.hero && <Etapes ville={data.city_name} />}
+
+	{data.hero && <BlocsProjet ville={data.city_name} slug={data.slug} />}
 
 	<Equipe equipe={data.technical_team} ville={data.city_name} slug={data.slug} mode={data.mode} />
 

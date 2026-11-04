@@ -22,9 +22,21 @@ interface Props {
   telephone?: string
   departements?: string
   headerImage?: ImageMetadata
+  // H1 court optionnel (pages Google Ads) et ses variantes selon ?angle=prix|vente|location
+  hero?: { h1: string; h1_prix?: string; h1_vente?: string; h1_location?: string }
 }
 
-const { ville, avis, slug, telephone = '02 31 15 64 88', departements = 'Calvados, Manche et Orne', headerImage } = Astro.props
+const { ville, avis, slug, telephone = '02 31 15 64 88', departements = 'Calvados, Manche et Orne', headerImage, hero } = Astro.props
+
+// Le texte avant la première virgule passe en couleur principale, comme dans le H1 d'origine
+function decouper(titre: string) {
+  const i = titre.indexOf(',')
+  return i === -1 ? [titre, ''] : [titre.slice(0, i), titre.slice(i)]
+}
+const h1Court = hero?.h1 ? decouper(hero.h1) : undefined
+const variantes = hero
+  ? Object.fromEntries((['prix', 'vente', 'location'] as const).filter((k) => hero[`h1_${k}`]).map((k) => [k, decouper(hero[`h1_${k}`]!)]))
+  : {}
 const telHref = `tel:${telephone.replace(/\s/g, '')}`
 ---
 
@@ -33,9 +45,25 @@ const telHref = `tel:${telephone.replace(/\s/g, '')}`
     <!-- Contenu texte -->
     <div class="flex flex-col gap-4 lg:flex-1 lg:max-w-xl xl:max-w-2xl">
       <p class="text-gray-400 border-b border-gray-200 pb-2 text-sm">Intervention sur tout le {departements}</p>
-      <h1 class="text-2xl sm:text-3xl lg:text-4xl font-bold leading-tight">
-        <span class="text-primary">DPE et diagnostics immobiliers</span> fiables de votre bien par des experts qualifiés et reconnus sur {ville} et ses alentours
-      </h1>
+      {h1Court ? (
+        <h1 class="text-2xl sm:text-3xl lg:text-4xl font-bold leading-tight">
+          <span class="text-primary" id="hero-h1-accent">{h1Court[0]}</span><span id="hero-h1-suite">{h1Court[1]}</span>
+        </h1>
+      ) : (
+        <h1 class="text-2xl sm:text-3xl lg:text-4xl font-bold leading-tight">
+          <span class="text-primary">DPE et diagnostics immobiliers</span> fiables de votre bien par des experts qualifiés et reconnus sur {ville} et ses alentours
+        </h1>
+      )}
+      {Object.keys(variantes).length > 0 && (
+        // Exécuté pendant le rendu, avant l'affichage : pas de changement visible du titre
+        <script is:inline define:vars={{ variantes }}>
+          var v = variantes[new URLSearchParams(location.search).get('angle')]
+          if (v) {
+            document.getElementById('hero-h1-accent').textContent = v[0]
+            document.getElementById('hero-h1-suite').textContent = v[1]
+          }
+        </script>
+      )}
       <p class="text-base lg:text-lg text-gray-500">
         RITMODiag vous guide dans la réalisation de vos diagnostics, DPE, Audits que ce soit pour la vente, la location ou la rénovation de votre bien immobilier.
       </p>

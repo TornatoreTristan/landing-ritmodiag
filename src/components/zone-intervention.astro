@@ -7,6 +7,8 @@ interface Props {
     adresse: string
     code_postal: string
     description: string
+    rayon_km?: number
+    villes_desservies?: string[]
   }
   franchises?: string[]
 }
@@ -29,7 +31,7 @@ const agenceData = agence ?? defaultAgence
 const franchisesData = [...new Set(franchises ?? defaultFranchises)]
 ---
 
-<section class="py-12 lg:py-16 bg-secondary">
+<section id="zone-intervention" class="py-12 lg:py-16 bg-secondary scroll-mt-16">
   <div class="container-content">
     <div class="max-w-4xl mx-auto">
       <h2 class="text-2xl font-bold text-center mb-10">Notre zone d'intervention</h2>
@@ -42,10 +44,26 @@ const franchisesData = [...new Set(franchises ?? defaultFranchises)]
             </div>
             <h3 class="font-bold text-lg">Agence principale</h3>
           </div>
-          <p class="font-semibold text-dark">{agenceData.ville}</p>
+          <p class="font-semibold text-dark">{agenceData.ville}{agenceData.rayon_km && <span class="text-primary"> + {agenceData.rayon_km} km</span>}</p>
           <p class="text-gray-500 text-sm mt-1">{agenceData.adresse && `${agenceData.adresse}, `}{agenceData.code_postal} {agenceData.ville}</p>
           <p class="text-gray-500 text-sm mt-3">{agenceData.description}</p>
         </div>
+
+        {(agenceData.villes_desservies?.length ?? 0) > 0 && (
+          <div class="flex-[2] bg-white rounded-2xl p-6 sm:p-8">
+            <div class="flex items-center gap-3 mb-4">
+              <div class="bg-primary/10 rounded-lg p-2">
+                <svg xmlns="http://www.w3.org/2000/svg" class="size-6 text-primary" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+              </div>
+              <h3 class="font-bold text-lg">Villes desservies</h3>
+            </div>
+            <div class="flex flex-wrap gap-2">
+              {agenceData.villes_desservies.map((ville) => (
+                <span class="bg-dark/5 text-dark text-sm font-medium px-3 py-1.5 rounded-lg">{ville}</span>
+              ))}
+            </div>
+          </div>
+        )}
 
         {franchisesData.length > 0 && (
         <div class="flex-1 bg-white rounded-2xl p-6 sm:p-8">
