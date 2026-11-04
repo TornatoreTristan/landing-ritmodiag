@@ -14,20 +14,23 @@ const etapes = [
 ]
 ---
 
-<section id="etapes" class="py-12 lg:py-16 scroll-mt-16">
-  <div class="container-content">
-    <div class="text-center mb-10 flex flex-col gap-4 items-center">
-      <span class="inline-block bg-dark/5 text-dark px-4 py-2 rounded-lg font-semibold text-sm">Simple et efficace</span>
-      <h2 class="text-2xl font-bold">Comment ça se passe ?</h2>
+<section id="etapes" class="py-12 lg:py-16 bg-secondary scroll-mt-16">
+  <div class="container-content max-w-5xl">
+    <div class="bg-white rounded-2xl px-6 py-10 sm:px-10 sm:py-14">
+      <div class="text-center flex flex-col gap-4 items-center">
+        <span class="inline-block bg-dark/5 text-dark px-4 py-2 rounded-lg font-semibold text-sm">Simple et efficace</span>
+        <h2 class="text-xl sm:text-2xl font-bold leading-snug">Comment ça se passe ?</h2>
+      </div>
+
+      <ol class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-0 mt-10">
+        {etapes.map((etape, i) => (
+          <li class:list={['lg:px-6', i < etapes.length - 1 && 'lg:border-r lg:border-gray-200']}>
+            <span class="flex items-center justify-center size-10 rounded-full bg-primary text-white font-bold" aria-hidden="true">{i + 1}</span>
+            <p class="font-bold mt-4">{etape.titre}</p>
+            <p class="text-gray-500 text-sm mt-2 leading-relaxed">{etape.texte}</p>
+          </li>
+        ))}
+      </ol>
     </div>
-    <ol class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
-      {etapes.map((etape, i) => (
-        <li class="border-t border-gray-200 pt-6">
-          <span class="flex items-center justify-center size-10 rounded-full bg-primary text-white font-bold" aria-hidden="true">{i + 1}</span>
-          <h3 class="font-bold text-lg mt-5">{etape.titre}</h3>
-          <p class="text-gray-500 text-sm leading-relaxed mt-2">{etape.texte}</p>
-        </li>
-      ))}
-    </ol>
   </div>
 </section>
