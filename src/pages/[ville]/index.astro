@@ -67,11 +67,11 @@ const autresFranchises = data.masquer_franchises
 		</div>
 	</section>
 
+	<Diagnostics ville={data.city_name} />
+
 	{data.hero && <Etapes ville={data.city_name} />}
 
 	{data.hero && <BlocsProjet ville={data.city_name} slug={data.slug} />}
-
-	<Diagnostics ville={data.city_name} />
 
 	<Equipe equipe={data.technical_team} ville={data.city_name} slug={data.slug} mode={data.mode} />
 
