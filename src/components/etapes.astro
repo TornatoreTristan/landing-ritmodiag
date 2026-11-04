@@ -19,7 +19,10 @@ const etapes = [
     <div class="bg-white rounded-2xl px-6 py-10 sm:px-10 sm:py-14">
       <div class="text-center flex flex-col gap-4 items-center">
         <span class="inline-block bg-dark/5 text-dark px-4 py-2 rounded-lg font-semibold text-sm">Simple et efficace</span>
-        <h2 class="text-xl sm:text-2xl font-bold leading-snug">Comment se déroulent les diagnostics immobiliers à {ville} avec RITMODiag</h2>
+        <h2 class="text-xl sm:text-2xl font-bold leading-snug max-w-2xl">
+          Comment se déroulent les <span class="text-primary">diagnostics immobiliers</span>{' '}<br class="hidden sm:block" />
+          à <span class="text-primary">{ville}</span> avec RITMODiag
+        </h2>
       </div>
 
       <ol class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-0 mt-10">
