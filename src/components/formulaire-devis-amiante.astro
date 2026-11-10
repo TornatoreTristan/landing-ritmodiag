@@ -22,7 +22,7 @@ const telHref = `tel:${telephone.replace(/\s/g, '')}`
     </div>
 
     <!-- Formulaire -->
-    <!-- Même liste Listmonk que etat-parasitaire — à remplacer par une liste dédiée quand elle sera créée -->
+    <!-- Même liste Listmonk que etat-parasitaire - à remplacer par une liste dédiée quand elle sera créée -->
     <div id="form-wrapper-amiante" class="bg-white rounded-2xl p-6 sm:p-8 shadow-sm">
       <iframe name="listmonk-frame" class="hidden" aria-hidden="true" tabindex="-1"></iframe>
       <form
@@ -72,7 +72,7 @@ const telHref = `tel:${telephone.replace(/\s/g, '')}`
             </div>
             <div>
               <label for="amiante-tel" class="text-sm font-semibold text-dark block mb-1.5">
-                Téléphone <span class="text-xs text-gray-400 font-normal">(optionnel)</span>
+                Téléphone <span class="text-xs text-gray-500 font-normal">(optionnel)</span>
               </label>
               <input
                 type="tel"
@@ -89,7 +89,7 @@ const telHref = `tel:${telephone.replace(/\s/g, '')}`
           <!-- Adresse du bien -->
           <div>
             <label for="amiante-adresse" class="text-sm font-semibold text-dark block mb-1.5">
-              Adresse du bien <span class="text-xs text-gray-400 font-normal">(optionnel)</span>
+              Adresse du bien <span class="text-xs text-gray-500 font-normal">(optionnel)</span>
             </label>
             <input
               type="text"
@@ -104,7 +104,7 @@ const telHref = `tel:${telephone.replace(/\s/g, '')}`
           <!-- Type de travaux prévus -->
           <div>
             <label for="amiante-type-travaux" class="text-sm font-semibold text-dark block mb-1.5">
-              Type de travaux prévus <span class="text-xs text-gray-400 font-normal">(optionnel)</span>
+              Type de travaux prévus <span class="text-xs text-gray-500 font-normal">(optionnel)</span>
             </label>
             <input
               type="text"
@@ -118,7 +118,7 @@ const telHref = `tel:${telephone.replace(/\s/g, '')}`
           <!-- Superficie -->
           <div class="sm:w-1/2">
             <label for="amiante-superficie" class="text-sm font-semibold text-dark block mb-1.5">
-              Superficie en m² <span class="text-xs text-gray-400 font-normal">(optionnel)</span>
+              Superficie en m² <span class="text-xs text-gray-500 font-normal">(optionnel)</span>
             </label>
             <input
               type="number"
@@ -184,6 +184,20 @@ const telHref = `tel:${telephone.replace(/\s/g, '')}`
   const params = new URLSearchParams(window.location.search);
   const gclid = params.get('gclid') || '';
 
+  // form_start : premier focus dans le formulaire (funnel GA4), une seule fois.
+  let formStarted = false;
+  form?.addEventListener('focusin', () => {
+    if (formStarted) return;
+    formStarted = true;
+    ;(window as any).dataLayer = (window as any).dataLayer || [];
+    ;(window as any).dataLayer.push({
+      event: 'form_start',
+      form_id: 'devis-amiante',
+      lead_type: 'amiante_travaux',
+      agence: (window as any).__AGENCE__,
+    });
+  });
+
   form?.addEventListener('submit', () => {
     if (submitBtn) {
       submitBtn.disabled = true;
@@ -195,7 +209,7 @@ const telHref = `tel:${telephone.replace(/\s/g, '')}`
     fetch(N8N_WEBHOOK, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
+      body: JSON.stringify(Object.assign({
         nom: formData.get('name') || '',
         email: formData.get('email') || '',
         telephone: formData.get('telephone') || '',
@@ -206,7 +220,7 @@ const telHref = `tel:${telephone.replace(/\s/g, '')}`
         source: 'reperage-amiante-avant-travaux',
         page_url: window.location.href,
         submitted_at: new Date().toISOString()
-      })
+      }, window.ritmoAttribution?.() ?? {}))
     }).catch(() => {}); // Fire-and-forget, ne bloque pas le flow Listmonk
   });
 
@@ -216,8 +230,16 @@ const telHref = `tel:${telephone.replace(/\s/g, '')}`
     if (wrapper) wrapper.classList.add('hidden');
     if (success) success.classList.remove('hidden');
 
-    // Événement dataLayer pour conversions Google Ads / Facebook Ads
-    window.dataLayer = window.dataLayer || [];
-    window.dataLayer.push({ event: 'lead-amiante-travaux' });
+    // Lead unifié GA4 / Google Ads (remplace l'ancien 'lead-amiante-travaux').
+    ;(window as any).dataLayer = (window as any).dataLayer || [];
+    ;(window as any).dataLayer.push({
+      event: 'generate_lead',
+      lead_type: 'amiante_travaux',
+      form_id: 'devis-amiante',
+      agence: (window as any).__AGENCE__,
+      value: 15, // valeur marginale estimée d'un lead - À CALIBRER
+      currency: 'EUR',
+      gclid: gclid || undefined,
+    });
   });
 </script>
