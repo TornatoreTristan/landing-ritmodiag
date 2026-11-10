@@ -119,6 +119,37 @@ const ogImage = new URL('/og-image.jpg', Astro.site || 'https://ritmodiag.com').
 				}
 			})} />
 		)}
+		<script is:inline>
+			/* RITMODiag : mémorise la provenance du visiteur pour le formulaire de devis.
+			   1) À charger sur TOUTES les pages du site (footer / GTM, balise HTML personnalisée).
+			   2) Au moment de l'envoi du formulaire, ajouter ritmoAttribution() au body envoyé à n8n :
+			        body = Object.assign(body, window.ritmoAttribution());
+			   Logique : on garde la dernière visite "non directe" (UTM, gclid, fbclid ou site externe),
+			   pour qu'une navigation interne ne remplace pas la vraie source. */
+			(function () {
+			  var KEY = 'ritmo_attrib';
+			  var PARAMS = ['utm_source', 'utm_medium', 'utm_campaign', 'utm_content', 'utm_term', 'gclid', 'gbraid', 'wbraid', 'fbclid'];
+			  try {
+			    var p = new URLSearchParams(location.search);
+			    var ref = document.referrer || '';
+			    var externe = false;
+			    try { externe = !!ref && new URL(ref).hostname.replace(/^www\./, '') !== location.hostname.replace(/^www\./, ''); } catch (e) {}
+			    var aDesParams = PARAMS.some(function (k) { return p.get(k); });
+			    var stocke = null;
+			    try { stocke = JSON.parse(localStorage.getItem(KEY) || 'null'); } catch (e) {}
+
+			    if (!stocke || aDesParams || externe) {
+			      var d = { referrer: externe ? ref : '', landing_page: location.href, first_seen: new Date().toISOString() };
+			      PARAMS.forEach(function (k) { d[k] = p.get(k) || ''; });
+			      try { localStorage.setItem(KEY, JSON.stringify(d)); } catch (e) {}
+			    }
+			  } catch (e) {}
+
+			  window.ritmoAttribution = function () {
+			    try { return JSON.parse(localStorage.getItem(KEY) || '{}'); } catch (e) { return {}; }
+			  };
+			})();
+		</script>
 		<!-- Google Tag Manager -->
 		<script is:inline>
 			(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
