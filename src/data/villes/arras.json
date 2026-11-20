@@ -1,0 +1,17 @@
+{
+  "slug": "arras",
+  "city_name": "Arras",
+  "iframe_simulateur": "https://backbone.ritmodiag.com/embed/wizard/a59cba5a27894324310fd607e02e1114f022f38d65b69ae48e8f1ad4578a50f5",
+  "telephone": "06 29 91 19 20",
+  "email_contact": "arras@ritmodiag.com",
+  "departements": "Pas-de-Calais",
+  "mode": "solo",
+  "masquer_franchises": false,
+  "technical_team": [
+    {
+      "nom": "Blandine VAN EECKHOUTTE",
+      "role": "Gérante & Diagnostiqueuse Immobilière",
+      "photo": "/Blandine-VAN EECKHOUTTE.png"
+    }
+  ]
+}
