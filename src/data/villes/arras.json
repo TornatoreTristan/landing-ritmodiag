@@ -7,6 +7,10 @@
   "departements": "Pas-de-Calais",
   "mode": "solo",
   "masquer_franchises": false,
+  "agence": {
+    "ville": "Arras",
+    "code_postal": "62000"
+  },
   "technical_team": [
     {
       "nom": "Blandine VAN EECKHOUTTE",
