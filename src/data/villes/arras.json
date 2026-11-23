@@ -17,5 +17,13 @@
       "role": "Gérante & Diagnostiqueuse Immobilière",
       "photo": "/Blandine-VAN EECKHOUTTE.png"
     }
+  ],
+  "avis": [
+    {
+      "auteur": "Chloé Bremont",
+      "note": 5,
+      "texte": "Un professionnel exemplaire ! La diagnostiqueuse a été ponctuelle, très claire dans ses explications et particulièrement rigoureuse dans son travail. Le diagnostic énergétique a été réalisé avec sérieux et précision, tout en restant accessible grâce à ses explications pédagogiques.",
+      "photo": "https://i.pravatar.cc/80?img=44"
+    }
   ]
 }
